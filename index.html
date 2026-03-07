@@ -76,6 +76,9 @@
         color: var(--amber-light);
       }
 
+      /* Custom tooltip for disabled top-strip links */
+      /* Hindi tooltip — handled inline */
+
       header {
         background: var(--white);
         border-bottom: 3px solid var(--green-light);
@@ -996,7 +999,8 @@
         display: flex;
         flex-direction: column;
         gap: 0.5rem;
-        z-index: 999;
+        z-index: 99999; /* above all modals, dashboards, overlays */
+        pointer-events: auto;
       }
       .a11y-btn {
         width: 44px;
@@ -1011,14 +1015,56 @@
         justify-content: center;
         font-size: 1rem;
         font-weight: 700;
-        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
         transition:
           background 0.2s,
-          transform 0.2s;
+          transform 0.2s,
+          box-shadow 0.2s;
+        position: relative; /* needed for tooltip */
       }
       .a11y-btn:hover {
         background: var(--green-deep);
-        transform: scale(1.1);
+        transform: scale(1.12);
+        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.45);
+      }
+      /* Tooltip label on hover */
+      .a11y-btn::after {
+        content: attr(title);
+        position: absolute;
+        right: 52px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: #1a2e1a;
+        color: #fff;
+        font-size: 11px;
+        font-weight: 600;
+        white-space: nowrap;
+        padding: 4px 10px;
+        border-radius: 6px;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.2s;
+        font-family: "DM Sans", sans-serif;
+        letter-spacing: 0.02em;
+      }
+      .a11y-btn:hover::after {
+        opacity: 1;
+      }
+
+      /* Active state for high-contrast and font changes */
+      .a11y-btn.active {
+        background: var(--green-deep);
+        box-shadow:
+          0 0 0 3px #fff,
+          0 4px 20px rgba(0, 0, 0, 0.4);
+      }
+
+      /* High Contrast Mode */
+      #page-wrap.high-contrast {
+        filter: contrast(1.6) brightness(1.05);
+      }
+      body.high-contrast .a11y-btn {
+        outline: 2px solid #fff;
       }
 
       .fade-up {
@@ -1072,791 +1118,866 @@
     </style>
   </head>
   <body>
-    <div class="top-strip">
-      <span
-        >🇮🇳 उत्तराखंड सरकार – कृषि विभाग &nbsp;|&nbsp; Government of Uttarakhand
-        – Department of Agriculture</span
-      >
-      <div>
-        <a href="#">English</a><a href="#">हिंदी</a><a href="#">Screen Reader</a
-        ><a href="#">Sitemap</a>
-      </div>
-    </div>
-
-    <header>
-      <div class="header-inner">
-        <a class="logo" href="#">
-          <div class="logo-emblem">🌿</div>
-          <div class="logo-text">
-            <div class="brand">BADRI-e-Kisan</div>
-            <div class="sub">Unified Digital Portal · Uttarakhand</div>
-          </div>
-        </a>
-        <nav>
-          <a href="#roles">Users</a>
-          <a href="#modules">Modules</a>
-          <a href="#dashboard">Dashboard</a>
-          <a href="#technology">Technology</a>
-          <a href="#security">Security</a>
-          <button onclick="openAuthModal()" class="btn-login">
-            🔐 Login / Register
-          </button>
-        </nav>
-        <button class="hamburger" id="menuToggle" aria-label="Toggle menu">
-          <span></span><span></span><span></span>
-        </button>
-      </div>
-      <div class="mobile-nav" id="mobileNav">
-        <a href="#roles">👥 Users</a>
-        <a href="#modules">📦 Modules</a>
-        <a href="#dashboard">📊 Dashboard</a>
-        <a href="#technology">⚙️ Technology</a>
-        <a href="#security">🔒 Security</a>
-        <a
-          onclick="openAuthModal()"
-          style="color: var(--amber); font-weight: 600; cursor: pointer"
-          >🔐 Login / Register</a
+    <div id="page-wrap">
+      <div class="top-strip">
+        <span
+          >🇮🇳 उत्तराखंड सरकार – कृषि विभाग &nbsp;|&nbsp; Government of
+          Uttarakhand – Department of Agriculture</span
         >
-      </div>
-    </header>
-
-    <!-- HERO -->
-    <section class="hero">
-      <div class="hero-bg"></div>
-      <div class="hero-inner">
         <div>
-          <div class="hero-badge">
-            🌱 एकीकृत डिजिटल पोर्टल · Unified Digital Portal
-          </div>
-          <h1>
-            Empowering Farmers of<br /><span>Uttarakhand</span> with Smart
-            Agriculture
-          </h1>
-          <p>
-            BADRI-e-Kisan connects farmers, nurseries, market stakeholders, and
-            officials on one seamless digital platform — powered by AI/ML,
-            Blockchain, and secure cloud infrastructure.
-          </p>
-          <div class="hero-cta">
-            <button class="btn-primary" onclick="openGetStarted()">
-              🚀 Get Started
+          <a
+            href="javascript:void(0)"
+            id="langEn"
+            style="font-weight: 700; color: #fff; cursor: default"
+            >English</a
+          ><span
+            id="langHiWrap"
+            style="
+              margin-left: 1rem;
+              cursor: not-allowed;
+              display: inline-block;
+              position: relative;
+            "
+            onmouseenter="document.getElementById('ht').style.display = 'block'"
+            onmouseleave="document.getElementById('ht').style.display = 'none'"
+          >
+            <span
+              style="
+                opacity: 0.35;
+                color: #a8d5b5;
+                font-size: 0.72rem;
+                letter-spacing: 0.05em;
+                pointer-events: none;
+              "
+              >हिंदी</span
+            >
+            <span
+              id="ht"
+              style="
+                display: none;
+                position: absolute;
+                bottom: calc(100% + 8px);
+                left: 50%;
+                transform: translateX(-50%);
+                background: #1a2e1a;
+                color: #fff;
+                font-size: 11px;
+                font-weight: 700;
+                padding: 5px 12px;
+                border-radius: 6px;
+                white-space: nowrap;
+                z-index: 999999;
+                pointer-events: none;
+                box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+                font-family:
+                  DM Sans,
+                  sans-serif;
+              "
+            >
+              🚧 Coming Soon
+              <span
+                style="
+                  position: absolute;
+                  top: 100%;
+                  left: 50%;
+                  transform: translateX(-50%);
+                  border: 5px solid transparent;
+                  border-top-color: #1a2e1a;
+                  display: block;
+                "
+              ></span>
+            </span> </span
+          ><a href="javascript:void(0)" onclick="openScreenReaderPanel()"
+            >Screen Reader</a
+          ><a href="javascript:void(0)" onclick="openSitemap()">Sitemap</a>
+        </div>
+      </div>
+
+      <header>
+        <div class="header-inner">
+          <a class="logo" href="#">
+            <div class="logo-emblem">🌿</div>
+            <div class="logo-text">
+              <div class="brand">BADRI-e-Kisan</div>
+              <div class="sub">Unified Digital Portal · Uttarakhand</div>
+            </div>
+          </a>
+          <nav>
+            <a href="#roles">Users</a>
+            <a href="#modules">Modules</a>
+            <a href="#dashboard">Dashboard</a>
+            <a href="#technology">Technology</a>
+            <a href="#security">Security</a>
+            <button onclick="openAuthModal()" class="btn-login">
+              🔐 Login / Register
             </button>
-            <a href="#modules" class="btn-secondary">📖 Explore Portal</a>
-          </div>
+          </nav>
+          <button class="hamburger" id="menuToggle" aria-label="Toggle menu">
+            <span></span><span></span><span></span>
+          </button>
         </div>
-        <div class="hero-visual">
-          <div class="stat-card">
-            <div class="stat-icon green">👨‍🌾</div>
-            <div>
-              <div class="stat-num">2,50,000+</div>
-              <div class="stat-label">Registered Farmers · पंजीकृत किसान</div>
-            </div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-icon amber">🌱</div>
-            <div>
-              <div class="stat-num">1,200+</div>
-              <div class="stat-label">
-                Nurseries Connected · जुड़ी नर्सरियां
-              </div>
-            </div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-icon blue">💰</div>
-            <div>
-              <div class="stat-num">₹480 Cr</div>
-              <div class="stat-label">
-                Digital Market Volume · बाजार लेन-देन
-              </div>
-            </div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-icon purple">🤖</div>
-            <div>
-              <div class="stat-num">94.2%</div>
-              <div class="stat-label">AI Advisory Accuracy · AI सटीकता</div>
-            </div>
-          </div>
+        <div class="mobile-nav" id="mobileNav">
+          <a href="#roles">👥 Users</a>
+          <a href="#modules">📦 Modules</a>
+          <a href="#dashboard">📊 Dashboard</a>
+          <a href="#technology">⚙️ Technology</a>
+          <a href="#security">🔒 Security</a>
+          <a
+            onclick="openAuthModal()"
+            style="color: var(--amber); font-weight: 600; cursor: pointer"
+            >🔐 Login / Register</a
+          >
         </div>
-      </div>
-    </section>
+      </header>
 
-    <!-- MARQUEE -->
-    <div class="marquee-bar" aria-hidden="true">
-      <div class="marquee-inner">
-        <span>किसान पंजीकरण खुला है — Register as a Farmer today</span>
-        <span>नई नर्सरी नीति 2025 लागू — New Nursery Policy in Effect</span>
-        <span>Blockchain Mandi prices now live on the portal</span>
-        <span>AI-based Pest & Disease alerts for Rabi season active</span>
-        <span
-          >डिजिटल साक्षरता प्रशिक्षण — Digital Literacy Camps starting March
-          2026</span
-        >
-        <span>Farmer ID – Aadhaar linking deadline: April 2026</span>
-        <span>किसान पंजीकरण खुला है — Register as a Farmer today</span>
-        <span>नई नर्सरी नीति 2025 लागू — New Nursery Policy in Effect</span>
-        <span>Blockchain Mandi prices now live on the portal</span>
-        <span>AI-based Pest & Disease alerts for Rabi season active</span>
-        <span
-          >डिजिटल साक्षरता प्रशिक्षण — Digital Literacy Camps starting March
-          2026</span
-        >
-        <span>Farmer ID – Aadhaar linking deadline: April 2026</span>
-      </div>
-    </div>
-
-    <!-- USER ROLES -->
-    <section class="section roles-bg" id="roles">
-      <div class="section-inner fade-up">
-        <div class="section-label">Portal Access</div>
-        <h2 class="section-title">Who Uses BADRI-e-Kisan?</h2>
-        <p class="section-sub">
-          Four distinct user roles with personalised dashboards, services, and
-          access controls.
-        </p>
-        <div class="roles-grid">
-          <div
-            class="role-card"
-            onclick="openDashboard('farmer')"
-            style="cursor: pointer"
-          >
-            <div class="role-icon">👨‍🌾</div>
-            <div class="role-name">Farmer</div>
-            <div class="role-name-hi">किसान</div>
-            <div class="role-desc">
-              Access crop advisories, digital marketplace, input subsidies,
-              Farmer ID, and AI-based recommendations.
+      <!-- HERO -->
+      <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-inner">
+          <div>
+            <div class="hero-badge">
+              🌱 एकीकृत डिजिटल पोर्टल · Unified Digital Portal
             </div>
-            <div class="role-tag">FRM Access</div>
-            <div class="role-enter-btn">Enter Dashboard →</div>
-          </div>
-          <div
-            class="role-card"
-            onclick="openDashboard('nursery')"
-            style="cursor: pointer"
-          >
-            <div class="role-icon">🌱</div>
-            <div class="role-name">Nursery Worker</div>
-            <div class="role-name-hi">नर्सरी कर्मी</div>
-            <div class="role-desc">
-              Manage sapling production, stock monitoring, seed and fertiliser
-              distribution records.
+            <h1>
+              Empowering Farmers of<br /><span>Uttarakhand</span> with Smart
+              Agriculture
+            </h1>
+            <p>
+              BADRI-e-Kisan connects farmers, nurseries, market stakeholders,
+              and officials on one seamless digital platform — powered by AI/ML,
+              Blockchain, and secure cloud infrastructure.
+            </p>
+            <div class="hero-cta">
+              <button class="btn-primary" onclick="openGetStarted()">
+                🚀 Get Started
+              </button>
+              <a href="#modules" class="btn-secondary">📖 Explore Portal</a>
             </div>
-            <div class="role-tag">Nursery Module</div>
-            <div class="role-enter-btn">Enter Dashboard →</div>
           </div>
-          <div
-            class="role-card"
-            onclick="openDashboard('official')"
-            style="cursor: pointer"
-          >
-            <div class="role-icon">🏛️</div>
-            <div class="role-name">Official</div>
-            <div class="role-name-hi">अधिकारी</div>
-            <div class="role-desc">
-              View analytics, approve requests, manage data warehouse, oversee
-              training delivery systems.
-            </div>
-            <div class="role-tag">Admin Access</div>
-            <div class="role-enter-btn">Enter Dashboard →</div>
-          </div>
-          <div
-            class="role-card"
-            onclick="openDashboard('market')"
-            style="cursor: pointer"
-          >
-            <div class="role-icon">🏪</div>
-            <div class="role-name">Market Stakeholder</div>
-            <div class="role-name-hi">बाजार हितधारक</div>
-            <div class="role-desc">
-              Connect with farmers, view blockchain-verified prices, manage
-              supply chain logistics.
-            </div>
-            <div class="role-tag">Market Module</div>
-            <div class="role-enter-btn">Enter Dashboard →</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- MODULES -->
-    <section class="section modules-bg" id="modules">
-      <div class="section-inner fade-up">
-        <div class="section-label">Core Modules</div>
-        <h2 class="section-title">Integrated Services & Features</h2>
-        <p class="section-sub">
-          Seven interconnected modules forming the backbone of BADRI-e-Kisan's
-          digital agriculture ecosystem.
-        </p>
-        <div class="modules-grid">
-          <div class="module-card">
-            <div class="module-header">
-              <div class="module-icon-wrap ic-green">👥</div>
+          <div class="hero-visual">
+            <div class="stat-card">
+              <div class="stat-icon green">👨‍🌾</div>
               <div>
-                <div class="module-title">Farmer Relationship Management</div>
-                <div class="module-title-hi">
-                  किसान संबंध प्रबंधन प्रणाली (FRM)
+                <div class="stat-num">2,50,000+</div>
+                <div class="stat-label">Registered Farmers · पंजीकृत किसान</div>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon amber">🌱</div>
+              <div>
+                <div class="stat-num">1,200+</div>
+                <div class="stat-label">
+                  Nurseries Connected · जुड़ी नर्सरियां
                 </div>
               </div>
             </div>
-            <div class="module-desc">
-              Centralised profile management, land records linkage, crop
-              history, and personalised advisory delivery to every registered
-              farmer.
-            </div>
-            <div class="module-features">
-              <span class="feature-chip">Profile Management</span
-              ><span class="feature-chip">Land Records</span
-              ><span class="feature-chip">Advisory</span>
-            </div>
-          </div>
-          <div class="module-card">
-            <div class="module-header">
-              <div class="module-icon-wrap ic-amber">🪪</div>
+            <div class="stat-card">
+              <div class="stat-icon blue">💰</div>
               <div>
-                <div class="module-title">Farmer ID System</div>
-                <div class="module-title-hi">विशिष्ट किसान पहचान</div>
+                <div class="stat-num">₹480 Cr</div>
+                <div class="stat-label">
+                  Digital Market Volume · बाजार लेन-देन
+                </div>
               </div>
             </div>
-            <div class="module-desc">
-              Unique digital farmer identity linked with Aadhaar and land
-              records for seamless authentication and subsidy delivery.
-            </div>
-            <div class="module-features">
-              <span class="feature-chip">Aadhaar Linking</span
-              ><span class="feature-chip">Land Records</span
-              ><span class="feature-chip">e-KYC</span>
-            </div>
-          </div>
-          <div class="module-card">
-            <div class="module-header">
-              <div class="module-icon-wrap ic-teal">🌿</div>
+            <div class="stat-card">
+              <div class="stat-icon purple">🤖</div>
               <div>
-                <div class="module-title">Nursery Management</div>
-                <div class="module-title-hi">नर्सरी प्रबंधन प्रणाली</div>
-              </div>
-            </div>
-            <div class="module-desc">
-              End-to-end tracking of sapling production, real-time stock
-              monitoring, and quality certification for registered nurseries
-              across Uttarakhand.
-            </div>
-            <div class="module-features">
-              <span class="feature-chip">Sapling Production</span
-              ><span class="feature-chip">Stock Monitor</span
-              ><span class="feature-chip">Quality Cert</span>
-            </div>
-          </div>
-          <div class="module-card">
-            <div class="module-header">
-              <div class="module-icon-wrap ic-soil">📦</div>
-              <div>
-                <div class="module-title">Distribution Management</div>
-                <div class="module-title-hi">वितरण प्रबंधन प्रणाली</div>
-              </div>
-            </div>
-            <div class="module-desc">
-              Transparent seed, sapling, and fertiliser distribution tracking
-              from warehouse to farmer's doorstep using verifiable digital
-              trails.
-            </div>
-            <div class="module-features">
-              <span class="feature-chip">Seed Tracking</span
-              ><span class="feature-chip">Fertiliser</span
-              ><span class="feature-chip">Last-mile</span>
-            </div>
-          </div>
-          <div class="module-card">
-            <div class="module-header">
-              <div class="module-icon-wrap ic-blue">🏪</div>
-              <div>
-                <div class="module-title">Digital Market Integration</div>
-                <div class="module-title-hi">डिजिटल बाजार एकीकरण</div>
-              </div>
-            </div>
-            <div class="module-desc">
-              Blockchain-verified transparent pricing, direct buyer-seller
-              connections, and real-time mandi rates for fair agricultural
-              trade.
-            </div>
-            <div class="module-features">
-              <span class="feature-chip">Buyer Connect</span
-              ><span class="feature-chip">Blockchain Prices</span
-              ><span class="feature-chip">Mandi Rates</span>
-            </div>
-          </div>
-          <div class="module-card">
-            <div class="module-header">
-              <div class="module-icon-wrap ic-purple">🤖</div>
-              <div>
-                <div class="module-title">Smart Agriculture Tech</div>
-                <div class="module-title-hi">स्मार्ट कृषि प्रौद्योगिकियां</div>
-              </div>
-            </div>
-            <div class="module-desc">
-              AI/ML-powered pest and disease monitoring, IoT-based smart
-              irrigation, and digital soil mapping for precision farming at
-              scale.
-            </div>
-            <div class="module-features">
-              <span class="feature-chip">AI Pest Detection</span
-              ><span class="feature-chip">IoT Irrigation</span
-              ><span class="feature-chip">Soil Mapping</span>
-            </div>
-          </div>
-          <div class="module-card">
-            <div class="module-header">
-              <div class="module-icon-wrap ic-amber">🎓</div>
-              <div>
-                <div class="module-title">Capacity Building</div>
-                <div class="module-title-hi">क्षमता निर्माण</div>
-              </div>
-            </div>
-            <div class="module-desc">
-              Digital literacy programmes, online training for farmers and
-              officials, and e-learning content delivery for sustainable
-              agriculture practices.
-            </div>
-            <div class="module-features">
-              <span class="feature-chip">Farmer Training</span
-              ><span class="feature-chip">Official Training</span
-              ><span class="feature-chip">e-Learning</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- DASHBOARD -->
-    <section class="section dash-bg" id="dashboard">
-      <div class="section-inner fade-up">
-        <div class="section-label">Analytics</div>
-        <h2 class="section-title">Live Dashboard Overview</h2>
-        <p class="section-sub">
-          Real-time insights across all modules, updated from the Central Data
-          Warehouse.
-        </p>
-        <div class="dash-wrap">
-          <div class="dash-header">
-            <h3>📊 BADRI-e-Kisan Analytics — Kharif 2025–26</h3>
-            <div class="dash-tabs">
-              <div class="dash-tab active" onclick="setTab(this, 'overview')">
-                Overview
-              </div>
-              <div class="dash-tab" onclick="setTab(this, 'farmers')">
-                Farmers
-              </div>
-              <div class="dash-tab" onclick="setTab(this, 'market')">
-                Market
-              </div>
-              <div class="dash-tab" onclick="setTab(this, 'nurseries')">
-                Nurseries
-              </div>
-            </div>
-          </div>
-          <div class="kpi-grid" id="liveKpiGrid"></div>
-          <div class="chart-area" id="liveChartArea"></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- AI / BLOCKCHAIN -->
-    <section class="section ai-bg" id="technology">
-      <div class="section-inner fade-up">
-        <div class="section-label">Advanced Technology</div>
-        <h2 class="section-title">AI/ML & Blockchain Capabilities</h2>
-        <p class="section-sub">
-          Cutting-edge technologies embedded across the platform for smarter,
-          transparent, and fairer agriculture.
-        </p>
-        <div class="ai-grid">
-          <div class="ai-card">
-            <div class="ai-card-icon">🧠</div>
-            <div class="ai-card-title">AI Pest & Disease Detection</div>
-            <div class="ai-card-desc">
-              Computer vision models analyse crop images to detect pests,
-              diseases, and nutrient deficiencies in real-time with >94%
-              accuracy.
-            </div>
-          </div>
-          <div class="ai-card">
-            <div class="ai-card-icon">📡</div>
-            <div class="ai-card-title">IoT-Based Smart Irrigation</div>
-            <div class="ai-card-desc">
-              Soil moisture and weather sensors feed real-time data to ML models
-              that automate irrigation scheduling and reduce water wastage.
-            </div>
-          </div>
-          <div class="ai-card">
-            <div class="ai-card-icon">🗺️</div>
-            <div class="ai-card-title">Digital Soil Mapping</div>
-            <div class="ai-card-desc">
-              Satellite and ground-sensor data creates detailed district-level
-              soil health maps for customised crop recommendations.
-            </div>
-          </div>
-          <div class="ai-card">
-            <div class="ai-card-icon">⛓️</div>
-            <div class="ai-card-title">Blockchain Market Pricing</div>
-            <div class="ai-card-desc">
-              Immutable distributed ledger records mandi transactions, ensuring
-              transparent and tamper-proof price discovery for farmers.
-            </div>
-          </div>
-          <div class="ai-card">
-            <div class="ai-card-icon">📦</div>
-            <div class="ai-card-title">Blockchain Supply Chain</div>
-            <div class="ai-card-desc">
-              End-to-end traceability of seeds, fertilisers, and produce from
-              source to market using blockchain smart contracts.
-            </div>
-          </div>
-          <div class="ai-card">
-            <div class="ai-card-icon">📚</div>
-            <div class="ai-card-title">AI Training Content Delivery</div>
-            <div class="ai-card-desc">
-              Adaptive learning algorithms personalise digital literacy and
-              agriculture training content based on farmer profile and learning
-              pace.
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- TECH STACK -->
-    <section class="section tech-bg">
-      <div class="section-inner fade-up">
-        <div class="section-label" style="color: #a8d5b5">Infrastructure</div>
-        <h2 class="section-title" style="color: var(--white)">
-          Technology Infrastructure
-        </h2>
-        <p class="section-sub" style="color: rgba(255, 255, 255, 0.6)">
-          Built on secure, scalable Uttarakhand Government cloud infrastructure
-          with multi-layer protection.
-        </p>
-        <div class="tech-grid">
-          <div class="tech-card">
-            <div class="tech-icon">☁️</div>
-            <div class="tech-name">Cloud Infrastructure</div>
-            <div class="tech-desc">
-              Uttarakhand Gov. cloud hosting with 99.9% uptime SLA,
-              auto-scaling, and disaster recovery.
-            </div>
-          </div>
-          <div class="tech-card">
-            <div class="tech-icon">🗄️</div>
-            <div class="tech-name">Central Data Warehouse</div>
-            <div class="tech-desc">
-              Unified Farmer ID database with Aadhaar API integration and Land
-              Records DB linkage.
-            </div>
-          </div>
-          <div class="tech-card">
-            <div class="tech-icon">⛓️</div>
-            <div class="tech-name">Blockchain Database</div>
-            <div class="tech-desc">
-              Immutable distributed ledger for market and distribution records
-              ensuring full transparency.
-            </div>
-          </div>
-          <div class="tech-card">
-            <div class="tech-icon">🤖</div>
-            <div class="tech-name">AI/ML Models</div>
-            <div class="tech-desc">
-              Continuous learning models for pest detection, yield prediction,
-              and personalised advisories.
-            </div>
-          </div>
-          <div class="tech-card">
-            <div class="tech-icon">📱</div>
-            <div class="tech-name">Web & Mobile App</div>
-            <div class="tech-desc">
-              Responsive PWA accessible via browser, Android, and iOS — works on
-              low-bandwidth networks.
-            </div>
-          </div>
-          <div class="tech-card">
-            <div class="tech-icon">🔌</div>
-            <div class="tech-name">API Integrations</div>
-            <div class="tech-desc">
-              Aadhaar API, Land Records DB, eNAM, Agmarknet, and IMD weather
-              data integrations.
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- SECURITY -->
-    <section class="section" id="security">
-      <div class="section-inner fade-up">
-        <div class="section-label">Cybersecurity</div>
-        <h2 class="section-title">Security Framework</h2>
-        <p class="section-sub">
-          Multi-layer cybersecurity protecting farmer data, financial
-          transactions, and government infrastructure — aligned with the
-          Cybersecurity Layer shown in the portal architecture.
-        </p>
-        <div class="sec-grid">
-          <div class="sec-item">
-            <div class="sec-item-icon">🔥</div>
-            <div>
-              <div class="sec-item-title">Firewall Protection</div>
-              <div class="sec-item-desc">
-                Enterprise next-gen firewall filtering all inbound and outbound
-                traffic with deep packet inspection.
-              </div>
-            </div>
-          </div>
-          <div class="sec-item">
-            <div class="sec-item-icon">🔐</div>
-            <div>
-              <div class="sec-item-title">End-to-End Encryption</div>
-              <div class="sec-item-desc">
-                AES-256 encryption for data at rest and TLS 1.3 for all data in
-                transit across the platform.
-              </div>
-            </div>
-          </div>
-          <div class="sec-item">
-            <div class="sec-item-icon">🛡️</div>
-            <div>
-              <div class="sec-item-title">Access Controls</div>
-              <div class="sec-item-desc">
-                Granular role-based permissions ensuring users only access
-                authorised data based on their role.
-              </div>
-            </div>
-          </div>
-          <div class="sec-item">
-            <div class="sec-item-icon">🪪</div>
-            <div>
-              <div class="sec-item-title">Aadhaar Authentication</div>
-              <div class="sec-item-desc">
-                Secure biometric and OTP-based Aadhaar e-KYC for verified farmer
-                identity management.
-              </div>
-            </div>
-          </div>
-          <div class="sec-item">
-            <div class="sec-item-icon">🔍</div>
-            <div>
-              <div class="sec-item-title">Audit Trails</div>
-              <div class="sec-item-desc">
-                Comprehensive tamper-proof activity logs across all transactions
-                and data access events.
-              </div>
-            </div>
-          </div>
-          <div class="sec-item">
-            <div class="sec-item-icon">⚡</div>
-            <div>
-              <div class="sec-item-title">24×7 SOC</div>
-              <div class="sec-item-desc">
-                Security Operations Centre with automated threat detection and
-                rapid incident response protocols.
+                <div class="stat-num">94.2%</div>
+                <div class="stat-label">AI Advisory Accuracy · AI सटीकता</div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- CTA -->
-    <section class="cta-section" id="contact">
-      <h2>Ready to Join BADRI-e-Kisan?</h2>
-      <p>
-        Register today and access all digital services for free — farming made
-        smarter, fairer, and better connected.
-      </p>
-      <div class="cta-buttons">
-        <button class="btn-primary" onclick="openReg('farmer')">
-          👨‍🌾 Farmer Registration
-        </button>
-        <button class="btn-secondary" onclick="openReg('nursery')">
-          🌱 Nursery Registration
-        </button>
-        <a href="tel:18001804211" class="btn-secondary"
-          >📞 Helpline: 1800-180-4211</a
-        >
-      </div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer>
-      <div class="footer-inner">
-        <div class="footer-grid">
-          <div class="footer-brand">
-            <h3>🌿 BADRI-e-Kisan</h3>
-            <p
-              style="
-                color: rgba(255, 255, 255, 0.4);
-                font-size: 0.72rem;
-                text-transform: uppercase;
-                letter-spacing: 0.08em;
-                margin-bottom: 0.5rem;
-              "
-            >
-              एकीकृत डिजिटल पोर्टल · Uttarakhand
-            </p>
-            <p>
-              A Government of Uttarakhand initiative to transform agriculture
-              through digital technology, AI-powered insights, and transparent
-              market access for every farmer.
-            </p>
-          </div>
-          <div class="footer-col">
-            <h4>Modules</h4>
-            <a
-              href="javascript:void(0)"
-              onclick="
-                scrollToSection('modules');
-                openModuleDetail('frm');
-              "
-              >Farmer Management (FRM)</a
-            >
-            <a
-              href="javascript:void(0)"
-              onclick="
-                scrollToSection('modules');
-                openModuleDetail('farmerid');
-              "
-              >Farmer ID System</a
-            >
-            <a
-              href="javascript:void(0)"
-              onclick="
-                scrollToSection('modules');
-                openModuleDetail('nursery');
-              "
-              >Nursery Management</a
-            >
-            <a
-              href="javascript:void(0)"
-              onclick="
-                scrollToSection('modules');
-                openModuleDetail('distribution');
-              "
-              >Distribution System</a
-            >
-            <a
-              href="javascript:void(0)"
-              onclick="
-                scrollToSection('modules');
-                openModuleDetail('market');
-              "
-              >Digital Market</a
-            >
-            <a
-              href="javascript:void(0)"
-              onclick="
-                scrollToSection('modules');
-                openModuleDetail('smartag');
-              "
-              >Smart Agriculture</a
-            >
-            <a
-              href="javascript:void(0)"
-              onclick="
-                scrollToSection('modules');
-                openModuleDetail('capacity');
-              "
-              >Capacity Building</a
-            >
-          </div>
-          <div class="footer-col">
-            <h4>Quick Links</h4>
-            <a href="javascript:void(0)" onclick="openAuthModal()"
-              >Farmer Login</a
-            >
-            <a href="javascript:void(0)" onclick="openRegSelector()"
-              >New Registration</a
-            >
-            <a href="javascript:void(0)" onclick="openInfoModal('aadhaar')"
-              >Aadhaar Linking</a
-            >
-            <a href="javascript:void(0)" onclick="openInfoModal('marketprices')"
-              >Market Prices</a
-            >
-            <a href="javascript:void(0)" onclick="openInfoModal('training')"
-              >Training Portal</a
-            >
-            <a href="javascript:void(0)" onclick="openInfoModal('app')"
-              >Download App</a
-            >
-            <a href="javascript:void(0)" onclick="openInfoModal('grievance')"
-              >Grievance Redressal</a
-            >
-          </div>
-          <div class="footer-col">
-            <h4>Support</h4>
-            <a href="tel:18001804211">📞 Helpline: 1800-180-4211</a>
-            <a
-              href="/cdn-cgi/l/email-protection#a7d4d2d7d7c8d5d3e7c5c6c3d5ceccced4c6c989d2cc89c0c8d189cec9"
-              >✉
-              <span
-                class="__cf_email__"
-                data-cfemail="1f6c6a6f6f706d6b5f7d7e7b6d7674766c7e71316a7431787069317671"
-                >[email&#160;protected]</span
-              ></a
-            >
-            <a href="javascript:void(0)" onclick="openInfoModal('faq')">FAQs</a>
-            <a href="javascript:void(0)" onclick="openInfoModal('manual')"
-              >User Manual (PDF)</a
-            >
-            <a href="javascript:void(0)" onclick="openInfoModal('a11y')"
-              >Screen Reader Access</a
-            >
-            <a href="javascript:void(0)" onclick="openInfoModal('privacy')"
-              >Privacy Policy</a
-            >
-            <a href="javascript:void(0)" onclick="openInfoModal('terms')"
-              >Terms of Service</a
-            >
-          </div>
-        </div>
-        <div class="footer-bottom">
+      <!-- MARQUEE -->
+      <div class="marquee-bar" aria-hidden="true">
+        <div class="marquee-inner">
+          <span>किसान पंजीकरण खुला है — Register as a Farmer today</span>
+          <span>नई नर्सरी नीति 2025 लागू — New Nursery Policy in Effect</span>
+          <span>Blockchain Mandi prices now live on the portal</span>
+          <span>AI-based Pest & Disease alerts for Rabi season active</span>
           <span
-            >© 2026 Government of Uttarakhand, Department of Agriculture. All
-            rights reserved.</span
+            >डिजिटल साक्षरता प्रशिक्षण — Digital Literacy Camps starting March
+            2026</span
           >
-          <span>
-            <a
-              onclick="openInfoModal('policy')"
-              style="
-                color: rgba(255, 255, 255, 0.5);
-                cursor: pointer;
-                text-decoration: none;
-              "
-              >Website Policy</a
-            >
-            ·
-            <a
-              onclick="openInfoModal('disclaimer')"
-              style="
-                color: rgba(255, 255, 255, 0.5);
-                cursor: pointer;
-                text-decoration: none;
-              "
-              >Disclaimer</a
-            >
-            ·
-            <a
-              onclick="openInfoModal('a11y')"
-              style="
-                color: rgba(255, 255, 255, 0.5);
-                cursor: pointer;
-                text-decoration: none;
-              "
-              >Accessibility Statement</a
-            >
-          </span>
+          <span>Farmer ID – Aadhaar linking deadline: April 2026</span>
+          <span>किसान पंजीकरण खुला है — Register as a Farmer today</span>
+          <span>नई नर्सरी नीति 2025 लागू — New Nursery Policy in Effect</span>
+          <span>Blockchain Mandi prices now live on the portal</span>
+          <span>AI-based Pest & Disease alerts for Rabi season active</span>
+          <span
+            >डिजिटल साक्षरता प्रशिक्षण — Digital Literacy Camps starting March
+            2026</span
+          >
+          <span>Farmer ID – Aadhaar linking deadline: April 2026</span>
         </div>
       </div>
-    </footer>
 
-    <!-- ACCESSIBILITY TOOLBAR -->
+      <!-- USER ROLES -->
+      <section class="section roles-bg" id="roles">
+        <div class="section-inner fade-up">
+          <div class="section-label">Portal Access</div>
+          <h2 class="section-title">Who Uses BADRI-e-Kisan?</h2>
+          <p class="section-sub">
+            Four distinct user roles with personalised dashboards, services, and
+            access controls.
+          </p>
+          <div class="roles-grid">
+            <div
+              class="role-card"
+              onclick="openDashboard('farmer')"
+              style="cursor: pointer"
+            >
+              <div class="role-icon">👨‍🌾</div>
+              <div class="role-name">Farmer</div>
+              <div class="role-name-hi">किसान</div>
+              <div class="role-desc">
+                Access crop advisories, digital marketplace, input subsidies,
+                Farmer ID, and AI-based recommendations.
+              </div>
+              <div class="role-tag">FRM Access</div>
+              <div class="role-enter-btn">Enter Dashboard →</div>
+            </div>
+            <div
+              class="role-card"
+              onclick="openDashboard('nursery')"
+              style="cursor: pointer"
+            >
+              <div class="role-icon">🌱</div>
+              <div class="role-name">Nursery Worker</div>
+              <div class="role-name-hi">नर्सरी कर्मी</div>
+              <div class="role-desc">
+                Manage sapling production, stock monitoring, seed and fertiliser
+                distribution records.
+              </div>
+              <div class="role-tag">Nursery Module</div>
+              <div class="role-enter-btn">Enter Dashboard →</div>
+            </div>
+            <div
+              class="role-card"
+              onclick="openDashboard('official')"
+              style="cursor: pointer"
+            >
+              <div class="role-icon">🏛️</div>
+              <div class="role-name">Official</div>
+              <div class="role-name-hi">अधिकारी</div>
+              <div class="role-desc">
+                View analytics, approve requests, manage data warehouse, oversee
+                training delivery systems.
+              </div>
+              <div class="role-tag">Admin Access</div>
+              <div class="role-enter-btn">Enter Dashboard →</div>
+            </div>
+            <div
+              class="role-card"
+              onclick="openDashboard('market')"
+              style="cursor: pointer"
+            >
+              <div class="role-icon">🏪</div>
+              <div class="role-name">Market Stakeholder</div>
+              <div class="role-name-hi">बाजार हितधारक</div>
+              <div class="role-desc">
+                Connect with farmers, view blockchain-verified prices, manage
+                supply chain logistics.
+              </div>
+              <div class="role-tag">Market Module</div>
+              <div class="role-enter-btn">Enter Dashboard →</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- MODULES -->
+      <section class="section modules-bg" id="modules">
+        <div class="section-inner fade-up">
+          <div class="section-label">Core Modules</div>
+          <h2 class="section-title">Integrated Services & Features</h2>
+          <p class="section-sub">
+            Seven interconnected modules forming the backbone of BADRI-e-Kisan's
+            digital agriculture ecosystem.
+          </p>
+          <div class="modules-grid">
+            <div class="module-card">
+              <div class="module-header">
+                <div class="module-icon-wrap ic-green">👥</div>
+                <div>
+                  <div class="module-title">Farmer Relationship Management</div>
+                  <div class="module-title-hi">
+                    किसान संबंध प्रबंधन प्रणाली (FRM)
+                  </div>
+                </div>
+              </div>
+              <div class="module-desc">
+                Centralised profile management, land records linkage, crop
+                history, and personalised advisory delivery to every registered
+                farmer.
+              </div>
+              <div class="module-features">
+                <span class="feature-chip">Profile Management</span
+                ><span class="feature-chip">Land Records</span
+                ><span class="feature-chip">Advisory</span>
+              </div>
+            </div>
+            <div class="module-card">
+              <div class="module-header">
+                <div class="module-icon-wrap ic-amber">🪪</div>
+                <div>
+                  <div class="module-title">Farmer ID System</div>
+                  <div class="module-title-hi">विशिष्ट किसान पहचान</div>
+                </div>
+              </div>
+              <div class="module-desc">
+                Unique digital farmer identity linked with Aadhaar and land
+                records for seamless authentication and subsidy delivery.
+              </div>
+              <div class="module-features">
+                <span class="feature-chip">Aadhaar Linking</span
+                ><span class="feature-chip">Land Records</span
+                ><span class="feature-chip">e-KYC</span>
+              </div>
+            </div>
+            <div class="module-card">
+              <div class="module-header">
+                <div class="module-icon-wrap ic-teal">🌿</div>
+                <div>
+                  <div class="module-title">Nursery Management</div>
+                  <div class="module-title-hi">नर्सरी प्रबंधन प्रणाली</div>
+                </div>
+              </div>
+              <div class="module-desc">
+                End-to-end tracking of sapling production, real-time stock
+                monitoring, and quality certification for registered nurseries
+                across Uttarakhand.
+              </div>
+              <div class="module-features">
+                <span class="feature-chip">Sapling Production</span
+                ><span class="feature-chip">Stock Monitor</span
+                ><span class="feature-chip">Quality Cert</span>
+              </div>
+            </div>
+            <div class="module-card">
+              <div class="module-header">
+                <div class="module-icon-wrap ic-soil">📦</div>
+                <div>
+                  <div class="module-title">Distribution Management</div>
+                  <div class="module-title-hi">वितरण प्रबंधन प्रणाली</div>
+                </div>
+              </div>
+              <div class="module-desc">
+                Transparent seed, sapling, and fertiliser distribution tracking
+                from warehouse to farmer's doorstep using verifiable digital
+                trails.
+              </div>
+              <div class="module-features">
+                <span class="feature-chip">Seed Tracking</span
+                ><span class="feature-chip">Fertiliser</span
+                ><span class="feature-chip">Last-mile</span>
+              </div>
+            </div>
+            <div class="module-card">
+              <div class="module-header">
+                <div class="module-icon-wrap ic-blue">🏪</div>
+                <div>
+                  <div class="module-title">Digital Market Integration</div>
+                  <div class="module-title-hi">डिजिटल बाजार एकीकरण</div>
+                </div>
+              </div>
+              <div class="module-desc">
+                Blockchain-verified transparent pricing, direct buyer-seller
+                connections, and real-time mandi rates for fair agricultural
+                trade.
+              </div>
+              <div class="module-features">
+                <span class="feature-chip">Buyer Connect</span
+                ><span class="feature-chip">Blockchain Prices</span
+                ><span class="feature-chip">Mandi Rates</span>
+              </div>
+            </div>
+            <div class="module-card">
+              <div class="module-header">
+                <div class="module-icon-wrap ic-purple">🤖</div>
+                <div>
+                  <div class="module-title">Smart Agriculture Tech</div>
+                  <div class="module-title-hi">
+                    स्मार्ट कृषि प्रौद्योगिकियां
+                  </div>
+                </div>
+              </div>
+              <div class="module-desc">
+                AI/ML-powered pest and disease monitoring, IoT-based smart
+                irrigation, and digital soil mapping for precision farming at
+                scale.
+              </div>
+              <div class="module-features">
+                <span class="feature-chip">AI Pest Detection</span
+                ><span class="feature-chip">IoT Irrigation</span
+                ><span class="feature-chip">Soil Mapping</span>
+              </div>
+            </div>
+            <div class="module-card">
+              <div class="module-header">
+                <div class="module-icon-wrap ic-amber">🎓</div>
+                <div>
+                  <div class="module-title">Capacity Building</div>
+                  <div class="module-title-hi">क्षमता निर्माण</div>
+                </div>
+              </div>
+              <div class="module-desc">
+                Digital literacy programmes, online training for farmers and
+                officials, and e-learning content delivery for sustainable
+                agriculture practices.
+              </div>
+              <div class="module-features">
+                <span class="feature-chip">Farmer Training</span
+                ><span class="feature-chip">Official Training</span
+                ><span class="feature-chip">e-Learning</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- DASHBOARD -->
+      <section class="section dash-bg" id="dashboard">
+        <div class="section-inner fade-up">
+          <div class="section-label">Analytics</div>
+          <h2 class="section-title">Live Dashboard Overview</h2>
+          <p class="section-sub">
+            Real-time insights across all modules, updated from the Central Data
+            Warehouse.
+          </p>
+          <div class="dash-wrap">
+            <div class="dash-header">
+              <h3>📊 BADRI-e-Kisan Analytics — Kharif 2025–26</h3>
+              <div class="dash-tabs">
+                <div class="dash-tab active" onclick="setTab(this, 'overview')">
+                  Overview
+                </div>
+                <div class="dash-tab" onclick="setTab(this, 'farmers')">
+                  Farmers
+                </div>
+                <div class="dash-tab" onclick="setTab(this, 'market')">
+                  Market
+                </div>
+                <div class="dash-tab" onclick="setTab(this, 'nurseries')">
+                  Nurseries
+                </div>
+              </div>
+            </div>
+            <div class="kpi-grid" id="liveKpiGrid"></div>
+            <div class="chart-area" id="liveChartArea"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- AI / BLOCKCHAIN -->
+      <section class="section ai-bg" id="technology">
+        <div class="section-inner fade-up">
+          <div class="section-label">Advanced Technology</div>
+          <h2 class="section-title">AI/ML & Blockchain Capabilities</h2>
+          <p class="section-sub">
+            Cutting-edge technologies embedded across the platform for smarter,
+            transparent, and fairer agriculture.
+          </p>
+          <div class="ai-grid">
+            <div class="ai-card">
+              <div class="ai-card-icon">🧠</div>
+              <div class="ai-card-title">AI Pest & Disease Detection</div>
+              <div class="ai-card-desc">
+                Computer vision models analyse crop images to detect pests,
+                diseases, and nutrient deficiencies in real-time with >94%
+                accuracy.
+              </div>
+            </div>
+            <div class="ai-card">
+              <div class="ai-card-icon">📡</div>
+              <div class="ai-card-title">IoT-Based Smart Irrigation</div>
+              <div class="ai-card-desc">
+                Soil moisture and weather sensors feed real-time data to ML
+                models that automate irrigation scheduling and reduce water
+                wastage.
+              </div>
+            </div>
+            <div class="ai-card">
+              <div class="ai-card-icon">🗺️</div>
+              <div class="ai-card-title">Digital Soil Mapping</div>
+              <div class="ai-card-desc">
+                Satellite and ground-sensor data creates detailed district-level
+                soil health maps for customised crop recommendations.
+              </div>
+            </div>
+            <div class="ai-card">
+              <div class="ai-card-icon">⛓️</div>
+              <div class="ai-card-title">Blockchain Market Pricing</div>
+              <div class="ai-card-desc">
+                Immutable distributed ledger records mandi transactions,
+                ensuring transparent and tamper-proof price discovery for
+                farmers.
+              </div>
+            </div>
+            <div class="ai-card">
+              <div class="ai-card-icon">📦</div>
+              <div class="ai-card-title">Blockchain Supply Chain</div>
+              <div class="ai-card-desc">
+                End-to-end traceability of seeds, fertilisers, and produce from
+                source to market using blockchain smart contracts.
+              </div>
+            </div>
+            <div class="ai-card">
+              <div class="ai-card-icon">📚</div>
+              <div class="ai-card-title">AI Training Content Delivery</div>
+              <div class="ai-card-desc">
+                Adaptive learning algorithms personalise digital literacy and
+                agriculture training content based on farmer profile and
+                learning pace.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TECH STACK -->
+      <section class="section tech-bg">
+        <div class="section-inner fade-up">
+          <div class="section-label" style="color: #a8d5b5">Infrastructure</div>
+          <h2 class="section-title" style="color: var(--white)">
+            Technology Infrastructure
+          </h2>
+          <p class="section-sub" style="color: rgba(255, 255, 255, 0.6)">
+            Built on secure, scalable Uttarakhand Government cloud
+            infrastructure with multi-layer protection.
+          </p>
+          <div class="tech-grid">
+            <div class="tech-card">
+              <div class="tech-icon">☁️</div>
+              <div class="tech-name">Cloud Infrastructure</div>
+              <div class="tech-desc">
+                Uttarakhand Gov. cloud hosting with 99.9% uptime SLA,
+                auto-scaling, and disaster recovery.
+              </div>
+            </div>
+            <div class="tech-card">
+              <div class="tech-icon">🗄️</div>
+              <div class="tech-name">Central Data Warehouse</div>
+              <div class="tech-desc">
+                Unified Farmer ID database with Aadhaar API integration and Land
+                Records DB linkage.
+              </div>
+            </div>
+            <div class="tech-card">
+              <div class="tech-icon">⛓️</div>
+              <div class="tech-name">Blockchain Database</div>
+              <div class="tech-desc">
+                Immutable distributed ledger for market and distribution records
+                ensuring full transparency.
+              </div>
+            </div>
+            <div class="tech-card">
+              <div class="tech-icon">🤖</div>
+              <div class="tech-name">AI/ML Models</div>
+              <div class="tech-desc">
+                Continuous learning models for pest detection, yield prediction,
+                and personalised advisories.
+              </div>
+            </div>
+            <div class="tech-card">
+              <div class="tech-icon">📱</div>
+              <div class="tech-name">Web & Mobile App</div>
+              <div class="tech-desc">
+                Responsive PWA accessible via browser, Android, and iOS — works
+                on low-bandwidth networks.
+              </div>
+            </div>
+            <div class="tech-card">
+              <div class="tech-icon">🔌</div>
+              <div class="tech-name">API Integrations</div>
+              <div class="tech-desc">
+                Aadhaar API, Land Records DB, eNAM, Agmarknet, and IMD weather
+                data integrations.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECURITY -->
+      <section class="section" id="security">
+        <div class="section-inner fade-up">
+          <div class="section-label">Cybersecurity</div>
+          <h2 class="section-title">Security Framework</h2>
+          <p class="section-sub">
+            Multi-layer cybersecurity protecting farmer data, financial
+            transactions, and government infrastructure — aligned with the
+            Cybersecurity Layer shown in the portal architecture.
+          </p>
+          <div class="sec-grid">
+            <div class="sec-item">
+              <div class="sec-item-icon">🔥</div>
+              <div>
+                <div class="sec-item-title">Firewall Protection</div>
+                <div class="sec-item-desc">
+                  Enterprise next-gen firewall filtering all inbound and
+                  outbound traffic with deep packet inspection.
+                </div>
+              </div>
+            </div>
+            <div class="sec-item">
+              <div class="sec-item-icon">🔐</div>
+              <div>
+                <div class="sec-item-title">End-to-End Encryption</div>
+                <div class="sec-item-desc">
+                  AES-256 encryption for data at rest and TLS 1.3 for all data
+                  in transit across the platform.
+                </div>
+              </div>
+            </div>
+            <div class="sec-item">
+              <div class="sec-item-icon">🛡️</div>
+              <div>
+                <div class="sec-item-title">Access Controls</div>
+                <div class="sec-item-desc">
+                  Granular role-based permissions ensuring users only access
+                  authorised data based on their role.
+                </div>
+              </div>
+            </div>
+            <div class="sec-item">
+              <div class="sec-item-icon">🪪</div>
+              <div>
+                <div class="sec-item-title">Aadhaar Authentication</div>
+                <div class="sec-item-desc">
+                  Secure biometric and OTP-based Aadhaar e-KYC for verified
+                  farmer identity management.
+                </div>
+              </div>
+            </div>
+            <div class="sec-item">
+              <div class="sec-item-icon">🔍</div>
+              <div>
+                <div class="sec-item-title">Audit Trails</div>
+                <div class="sec-item-desc">
+                  Comprehensive tamper-proof activity logs across all
+                  transactions and data access events.
+                </div>
+              </div>
+            </div>
+            <div class="sec-item">
+              <div class="sec-item-icon">⚡</div>
+              <div>
+                <div class="sec-item-title">24×7 SOC</div>
+                <div class="sec-item-desc">
+                  Security Operations Centre with automated threat detection and
+                  rapid incident response protocols.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA -->
+      <section class="cta-section" id="contact">
+        <h2>Ready to Join BADRI-e-Kisan?</h2>
+        <p>
+          Register today and access all digital services for free — farming made
+          smarter, fairer, and better connected.
+        </p>
+        <div class="cta-buttons">
+          <button class="btn-primary" onclick="openReg('farmer')">
+            👨‍🌾 Farmer Registration
+          </button>
+          <button class="btn-secondary" onclick="openReg('nursery')">
+            🌱 Nursery Registration
+          </button>
+          <a href="tel:18001804211" class="btn-secondary"
+            >📞 Helpline: 1800-180-4211</a
+          >
+        </div>
+      </section>
+
+      <!-- FOOTER -->
+      <footer>
+        <div class="footer-inner">
+          <div class="footer-grid">
+            <div class="footer-brand">
+              <h3>🌿 BADRI-e-Kisan</h3>
+              <p
+                style="
+                  color: rgba(255, 255, 255, 0.4);
+                  font-size: 0.72rem;
+                  text-transform: uppercase;
+                  letter-spacing: 0.08em;
+                  margin-bottom: 0.5rem;
+                "
+              >
+                एकीकृत डिजिटल पोर्टल · Uttarakhand
+              </p>
+              <p>
+                A Government of Uttarakhand initiative to transform agriculture
+                through digital technology, AI-powered insights, and transparent
+                market access for every farmer.
+              </p>
+            </div>
+            <div class="footer-col">
+              <h4>Modules</h4>
+              <a
+                href="javascript:void(0)"
+                onclick="
+                  scrollToSection('modules');
+                  openModuleDetail('frm');
+                "
+                >Farmer Management (FRM)</a
+              >
+              <a
+                href="javascript:void(0)"
+                onclick="
+                  scrollToSection('modules');
+                  openModuleDetail('farmerid');
+                "
+                >Farmer ID System</a
+              >
+              <a
+                href="javascript:void(0)"
+                onclick="
+                  scrollToSection('modules');
+                  openModuleDetail('nursery');
+                "
+                >Nursery Management</a
+              >
+              <a
+                href="javascript:void(0)"
+                onclick="
+                  scrollToSection('modules');
+                  openModuleDetail('distribution');
+                "
+                >Distribution System</a
+              >
+              <a
+                href="javascript:void(0)"
+                onclick="
+                  scrollToSection('modules');
+                  openModuleDetail('market');
+                "
+                >Digital Market</a
+              >
+              <a
+                href="javascript:void(0)"
+                onclick="
+                  scrollToSection('modules');
+                  openModuleDetail('smartag');
+                "
+                >Smart Agriculture</a
+              >
+              <a
+                href="javascript:void(0)"
+                onclick="
+                  scrollToSection('modules');
+                  openModuleDetail('capacity');
+                "
+                >Capacity Building</a
+              >
+            </div>
+            <div class="footer-col">
+              <h4>Quick Links</h4>
+              <a href="javascript:void(0)" onclick="openAuthModal()"
+                >Farmer Login</a
+              >
+              <a href="javascript:void(0)" onclick="openRegSelector()"
+                >New Registration</a
+              >
+              <a href="javascript:void(0)" onclick="openInfoModal('aadhaar')"
+                >Aadhaar Linking</a
+              >
+              <a
+                href="javascript:void(0)"
+                onclick="openInfoModal('marketprices')"
+                >Market Prices</a
+              >
+              <a href="javascript:void(0)" onclick="openInfoModal('training')"
+                >Training Portal</a
+              >
+              <a href="javascript:void(0)" onclick="openInfoModal('app')"
+                >Download App</a
+              >
+              <a href="javascript:void(0)" onclick="openInfoModal('grievance')"
+                >Grievance Redressal</a
+              >
+            </div>
+            <div class="footer-col">
+              <h4>Support</h4>
+              <a href="tel:18001804211">📞 Helpline: 1800-180-4211</a>
+              <a
+                href="/cdn-cgi/l/email-protection#a7d4d2d7d7c8d5d3e7c5c6c3d5ceccced4c6c989d2cc89c0c8d189cec9"
+                >✉
+                <span
+                  class="__cf_email__"
+                  data-cfemail="1f6c6a6f6f706d6b5f7d7e7b6d7674766c7e71316a7431787069317671"
+                  >[email&#160;protected]</span
+                ></a
+              >
+              <a href="javascript:void(0)" onclick="openInfoModal('faq')"
+                >FAQs</a
+              >
+              <a href="javascript:void(0)" onclick="openInfoModal('manual')"
+                >User Manual (PDF)</a
+              >
+              <a href="javascript:void(0)" onclick="openInfoModal('a11y')"
+                >Screen Reader Access</a
+              >
+              <a href="javascript:void(0)" onclick="openInfoModal('privacy')"
+                >Privacy Policy</a
+              >
+              <a href="javascript:void(0)" onclick="openInfoModal('terms')"
+                >Terms of Service</a
+              >
+            </div>
+          </div>
+          <div class="footer-bottom">
+            <span
+              >© 2026 Government of Uttarakhand, Department of Agriculture. All
+              rights reserved.</span
+            >
+            <span>
+              <a
+                onclick="openInfoModal('policy')"
+                style="
+                  color: rgba(255, 255, 255, 0.5);
+                  cursor: pointer;
+                  text-decoration: none;
+                "
+                >Website Policy</a
+              >
+              ·
+              <a
+                onclick="openInfoModal('disclaimer')"
+                style="
+                  color: rgba(255, 255, 255, 0.5);
+                  cursor: pointer;
+                  text-decoration: none;
+                "
+                >Disclaimer</a
+              >
+              ·
+              <a
+                onclick="openInfoModal('a11y')"
+                style="
+                  color: rgba(255, 255, 255, 0.5);
+                  cursor: pointer;
+                  text-decoration: none;
+                "
+                >Accessibility Statement</a
+              >
+            </span>
+          </div>
+        </div>
+      </footer>
+
+      <!-- ACCESSIBILITY TOOLBAR -->
+    </div>
+    <!-- /#page-wrap -->
+
     <div class="a11y-bar">
       <button
         class="a11y-btn"
@@ -2441,21 +2562,35 @@
 
       // Accessibility toolbar
       let fs = 100;
+
+      function updateFontBtns() {
+        const inc = document.getElementById("fontInc");
+        const dec = document.getElementById("fontDec");
+        if (inc) inc.classList.toggle("active", fs > 100);
+        if (dec) dec.classList.toggle("active", fs < 100);
+      }
+
       document.getElementById("fontInc").addEventListener("click", () => {
         fs = Math.min(fs + 10, 130);
-        document.body.style.fontSize = fs + "%";
+        document.documentElement.style.fontSize = fs + "%";
+        updateFontBtns();
+        showToast("🔠 Font size: " + fs + "%");
       });
+
       document.getElementById("fontDec").addEventListener("click", () => {
         fs = Math.max(fs - 10, 80);
-        document.body.style.fontSize = fs + "%";
+        document.documentElement.style.fontSize = fs + "%";
+        updateFontBtns();
+        showToast("🔡 Font size: " + fs + "%");
       });
-      document.getElementById("hiCon").addEventListener(
-        /* hiCon handler was cut off – patch it */
-        "click",
-        () => {
-          document.body.classList.toggle("high-contrast");
-        },
-      );
+
+      document.getElementById("hiCon").addEventListener("click", () => {
+        const on = document
+          .getElementById("page-wrap")
+          .classList.toggle("high-contrast");
+        document.getElementById("hiCon").classList.toggle("active", on);
+        showToast(on ? "◑ High contrast ON" : "◑ High contrast OFF");
+      });
     </script>
 
     <!-- ═══════════════════════════════════════════
@@ -4046,7 +4181,15 @@
           <h2 id="dbTopTitle">Dashboard</h2>
           <div class="db-topbar-right">
             <div class="db-date" id="dbTopDate"></div>
-            <div class="db-notif" title="Notifications">🔔</div>
+            <div
+              class="db-notif"
+              title="Notifications"
+              onclick="openNotifPanel()"
+              id="bellBtn"
+              style="cursor: pointer"
+            >
+              🔔
+            </div>
           </div>
         </div>
         <div class="db-content" id="dbContent"></div>
@@ -4602,12 +4745,12 @@
     <div class="db-card">
       <div class="db-card-title">⚡ Quick Actions</div>
       <div class="db-action-grid">
-        <div class="db-action-btn"><div class="ab-ico">✅</div><div class="ab-lbl">Review Approvals (12)</div></div>
-        <div class="db-action-btn"><div class="ab-ico">📊</div><div class="ab-lbl">Generate Report</div></div>
-        <div class="db-action-btn"><div class="ab-ico">📢</div><div class="ab-lbl">Grievance Queue</div></div>
-        <div class="db-action-btn"><div class="ab-ico">🎓</div><div class="ab-lbl">Schedule Training</div></div>
-        <div class="db-action-btn"><div class="ab-ico">📣</div><div class="ab-lbl">Send Circular</div></div>
-        <div class="db-action-btn"><div class="ab-ico">🔍</div><div class="ab-lbl">Audit Logs</div></div>
+        <div class="db-action-btn" onclick="officialAction('approvals')"><div class="ab-ico">✅</div><div class="ab-lbl">Review Approvals (12)</div></div>
+        <div class="db-action-btn" onclick="officialAction('report')"><div class="ab-ico">📊</div><div class="ab-lbl">Generate Report</div></div>
+        <div class="db-action-btn" onclick="officialAction('grievanceq')"><div class="ab-ico">📢</div><div class="ab-lbl">Grievance Queue</div></div>
+        <div class="db-action-btn" onclick="officialAction('schedtrain')"><div class="ab-ico">🎓</div><div class="ab-lbl">Schedule Training</div></div>
+        <div class="db-action-btn" onclick="officialAction('circular')"><div class="ab-ico">📣</div><div class="ab-lbl">Send Circular</div></div>
+        <div class="db-action-btn" onclick="officialAction('auditlogs')"><div class="ab-ico">🔍</div><div class="ab-lbl">Audit Logs</div></div>
       </div>
     </div>`;
 
@@ -9835,6 +9978,1622 @@
         document.body.appendChild(overlay);
         document.body.style.overflow = "hidden";
         render(1);
+      }
+    </script>
+
+    <script>
+      /* ═══════════════════════════════════════════════════════════════
+   SCREEN READER PANEL
+═══════════════════════════════════════════════════════════════ */
+      function openScreenReaderPanel() {
+        const ov = document.createElement("div");
+        ov.id = "srPanel";
+        ov.style.cssText =
+          "position:fixed;inset:0;z-index:27000;background:rgba(0,0,0,.9);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;padding:20px;animation:authFadeIn .2s ease";
+        ov.innerHTML = `
+    <div style="background:#0d1f0d;border:2px solid #22c55e;border-radius:16px;width:100%;max-width:560px;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,.8);animation:authPop .3s ease">
+      <div style="background:#022c02;padding:18px 22px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #166534">
+        <div>
+          <div style="font-size:20px;font-weight:800;color:#4ade80;font-family:'DM Sans',sans-serif">♿ Screen Reader & Accessibility</div>
+          <div style="font-size:11px;color:#86efac;margin-top:2px">WCAG 2.1 Level AA — BADRI-e-Kisan Portal</div>
+        </div>
+        <button onclick="document.getElementById('srPanel').remove();resetBodyOverflow()" style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.1);border:none;color:#4ade80;font-size:16px;cursor:pointer">✕</button>
+      </div>
+      <div style="padding:20px 22px;max-height:72vh;overflow-y:auto">
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px">
+          ${[
+            ["A+", "Increase Font Size", "fontInc"],
+            ["A−", "Decrease Font Size", "fontDec"],
+            ["◑", "High Contrast Mode", "hiCon"],
+            ["↩", "Reset to Default", "resetA11y"],
+          ]
+            .map(
+              ([ico, label, id]) => `
+            <button onclick="document.getElementById('${id}')?.click();showToast('${label} applied')" style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:#0a2e0a;border:1.5px solid #166534;border-radius:10px;color:#4ade80;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif" onmouseover="this.style.background='#14532d'" onmouseout="this.style.background='#0a2e0a'">
+              <span style="font-size:18px;min-width:24px">${ico}</span><span>${label}</span>
+            </button>`,
+            )
+            .join("")}
+        </div>
+
+        <div style="font-size:12px;font-weight:800;color:#86efac;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px">Keyboard Shortcuts</div>
+        <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:16px">
+          ${[
+            ["Tab", "Move between interactive elements"],
+            ["Enter / Space", "Activate buttons and links"],
+            ["Escape", "Close any open modal or panel"],
+            ["Alt + 1", "Jump to main content"],
+            ["Alt + 2", "Jump to navigation"],
+            ["Alt + 3", "Jump to footer"],
+          ]
+            .map(
+              ([key, desc]) => `
+            <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;background:#0a2e0a;border-radius:8px">
+              <kbd style="background:#166534;color:#4ade80;padding:3px 8px;border-radius:5px;font-size:11px;font-weight:700;white-space:nowrap;font-family:monospace">${key}</kbd>
+              <span style="font-size:12px;color:#a7f3d0">${desc}</span>
+            </div>`,
+            )
+            .join("")}
+        </div>
+
+        <div style="font-size:12px;font-weight:800;color:#86efac;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px">Compatible Screen Readers</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px">
+          ${[
+            ["NVDA", "Windows — Free, open source"],
+            ["JAWS", "Windows — Industry standard"],
+            ["VoiceOver", "macOS & iOS — Built-in"],
+            ["TalkBack", "Android — Built-in"],
+          ]
+            .map(
+              ([name, desc]) => `
+            <div style="padding:10px 12px;background:#0a2e0a;border:1px solid #166534;border-radius:8px">
+              <div style="font-weight:700;font-size:12.5px;color:#4ade80">${name}</div>
+              <div style="font-size:11px;color:#86efac;margin-top:2px">${desc}</div>
+            </div>`,
+            )
+            .join("")}
+        </div>
+
+        <div style="font-size:12px;font-weight:800;color:#86efac;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px">Language Support</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">
+          ${[
+            ["🇬🇧 English", "Full portal"],
+            ["🇮🇳 हिंदी", "Full portal — click हिंदी in top bar"],
+            ["🎙 Garhwali", "Mobile app audio"],
+            ["🎙 Kumaoni", "Mobile app audio"],
+          ]
+            .map(
+              ([lang, note]) => `
+            <div style="padding:8px 12px;background:#0a2e0a;border:1px solid #166534;border-radius:20px;font-size:11.5px;color:#a7f3d0"><strong>${lang}</strong> — ${note}</div>`,
+            )
+            .join("")}
+        </div>
+
+        <div style="background:#022c02;border:1px solid #166534;border-radius:10px;padding:12px 14px;font-size:11.5px;color:#86efac;line-height:1.7">
+          📧 Accessibility issues? Contact <strong style="color:#4ade80">accessibility@badrikisan.uk.gov.in</strong><br>
+          📞 Helpline: <strong style="color:#4ade80">1800-180-4211</strong> (Mon–Sat, 9AM–6PM)
+        </div>
+      </div>
+    </div>`;
+        ov.addEventListener("click", (e) => {
+          if (e.target === ov) {
+            ov.remove();
+            resetBodyOverflow();
+          }
+        });
+        document.body.appendChild(ov);
+        document.body.style.overflow = "hidden";
+      }
+
+      function resetBodyOverflow() {
+        /* Only reset if no other modal is open */
+        if (
+          !document.querySelector(
+            "#dashOverlay,#regOverlay,#authModal,#infoModal[class*=open],#aadhaarOverlay,#trainingRegOverlay,#grievanceOverlay",
+          )
+        ) {
+          document.body.style.overflow = "";
+        }
+      }
+
+      /* ═══════════════════════════════════════════════════════════════
+   SITEMAP
+═══════════════════════════════════════════════════════════════ */
+      function openSitemap() {
+        const sections = [
+          {
+            icon: "🏠",
+            title: "Home & Overview",
+            links: [
+              {
+                label: "Hero — Portal Introduction",
+                action: "scrollToSection('hero');closeSitemap()",
+              },
+              {
+                label: "User Roles Overview",
+                action: "scrollToSection('roles');closeSitemap()",
+              },
+              {
+                label: "Core Modules",
+                action: "scrollToSection('modules');closeSitemap()",
+              },
+              {
+                label: "Live Analytics Dashboard",
+                action: "scrollToSection('dashboard');closeSitemap()",
+              },
+              {
+                label: "AI / Blockchain Technology",
+                action: "scrollToSection('technology');closeSitemap()",
+              },
+              {
+                label: "Security Framework",
+                action: "scrollToSection('security');closeSitemap()",
+              },
+              {
+                label: "Contact & CTA",
+                action: "scrollToSection('contact');closeSitemap()",
+              },
+            ],
+          },
+          {
+            icon: "👤",
+            title: "User Portals",
+            links: [
+              {
+                label: "Farmer Login / Register",
+                action: "closeSitemap();openAuthModal()",
+              },
+              {
+                label: "Nursery Login / Register",
+                action: "closeSitemap();openAuthModal()",
+              },
+              {
+                label: "Official Login / Register",
+                action: "closeSitemap();openAuthModal()",
+              },
+              {
+                label: "Market Stakeholder Login",
+                action: "closeSitemap();openAuthModal()",
+              },
+              {
+                label: "Farmer Registration Wizard",
+                action: "closeSitemap();openReg('farmer')",
+              },
+              {
+                label: "Nursery Registration Wizard",
+                action: "closeSitemap();openReg('nursery')",
+              },
+              {
+                label: "Official Registration Wizard",
+                action: "closeSitemap();openReg('official')",
+              },
+              {
+                label: "Market Stakeholder Registration",
+                action: "closeSitemap();openReg('market')",
+              },
+            ],
+          },
+          {
+            icon: "📊",
+            title: "Dashboards",
+            links: [
+              {
+                label: "Farmer Dashboard",
+                action: "closeSitemap();openDashboard('farmer')",
+              },
+              {
+                label: "Farmer → Crop Management",
+                action:
+                  "closeSitemap();openDashboard('farmer');setTimeout(()=>switchPanel('farmer','crops'),400)",
+              },
+              {
+                label: "Farmer → Market Prices",
+                action:
+                  "closeSitemap();openDashboard('farmer');setTimeout(()=>switchPanel('farmer','market'),400)",
+              },
+              {
+                label: "Farmer → Schemes & Subsidies",
+                action:
+                  "closeSitemap();openDashboard('farmer');setTimeout(()=>switchPanel('farmer','schemes'),400)",
+              },
+              {
+                label: "Farmer → Soil Health",
+                action:
+                  "closeSitemap();openDashboard('farmer');setTimeout(()=>switchPanel('farmer','soil'),400)",
+              },
+              {
+                label: "Farmer → AI Advisory",
+                action:
+                  "closeSitemap();openDashboard('farmer');setTimeout(()=>switchPanel('farmer','advisory'),400)",
+              },
+              {
+                label: "Farmer → Grievances",
+                action:
+                  "closeSitemap();openDashboard('farmer');setTimeout(()=>switchPanel('farmer','complaints'),400)",
+              },
+              {
+                label: "Nursery Dashboard",
+                action: "closeSitemap();openDashboard('nursery')",
+              },
+              {
+                label: "Nursery → Stock & Inventory",
+                action:
+                  "closeSitemap();openDashboard('nursery');setTimeout(()=>switchPanel('nursery','stock'),400)",
+              },
+              {
+                label: "Nursery → Distribution",
+                action:
+                  "closeSitemap();openDashboard('nursery');setTimeout(()=>switchPanel('nursery','distribution'),400)",
+              },
+              {
+                label: "Official Dashboard",
+                action: "closeSitemap();openDashboard('official')",
+              },
+              {
+                label: "Official → Farmer Registry",
+                action:
+                  "closeSitemap();openDashboard('official');setTimeout(()=>switchPanel('official','registry'),400)",
+              },
+              {
+                label: "Official → Analytics",
+                action:
+                  "closeSitemap();openDashboard('official');setTimeout(()=>switchPanel('official','analytics'),400)",
+              },
+              {
+                label: "Official → Training Management",
+                action:
+                  "closeSitemap();openDashboard('official');setTimeout(()=>switchPanel('official','training'),400)",
+              },
+              {
+                label: "Market Dashboard",
+                action: "closeSitemap();openDashboard('market')",
+              },
+              {
+                label: "Market → Live Prices",
+                action:
+                  "closeSitemap();openDashboard('market');setTimeout(()=>switchPanel('market','prices'),400)",
+              },
+              {
+                label: "Market → Blockchain Ledger",
+                action:
+                  "closeSitemap();openDashboard('market');setTimeout(()=>switchPanel('market','blockchain'),400)",
+              },
+            ],
+          },
+          {
+            icon: "🔗",
+            title: "Quick Services",
+            links: [
+              {
+                label: "New Registration (All Roles)",
+                action: "closeSitemap();openRegSelector()",
+              },
+              {
+                label: "Aadhaar Linking Guide",
+                action: "closeSitemap();openAadhaarFlow()",
+              },
+              {
+                label: "Live Market Prices",
+                action: "closeSitemap();openInfoModal('marketprices')",
+              },
+              {
+                label: "Training Portal & Registration",
+                action: "closeSitemap();openInfoModal('training')",
+              },
+              {
+                label: "Grievance Redressal",
+                action: "closeSitemap();openInfoModal('grievance')",
+              },
+              {
+                label: "Download Mobile App",
+                action: "closeSitemap();openInfoModal('app')",
+              },
+              { label: "FAQs", action: "closeSitemap();openInfoModal('faq')" },
+              {
+                label: "User Manual (PDF)",
+                action: "closeSitemap();openInfoModal('manual')",
+              },
+            ],
+          },
+          {
+            icon: "📋",
+            title: "Policies & Legal",
+            links: [
+              {
+                label: "Privacy Policy",
+                action: "closeSitemap();openInfoModal('privacy')",
+              },
+              {
+                label: "Terms of Service",
+                action: "closeSitemap();openInfoModal('terms')",
+              },
+              {
+                label: "Website Policy",
+                action: "closeSitemap();openInfoModal('policy')",
+              },
+              {
+                label: "Disclaimer",
+                action: "closeSitemap();openInfoModal('disclaimer')",
+              },
+              {
+                label: "Accessibility Statement",
+                action: "closeSitemap();openInfoModal('a11y')",
+              },
+              {
+                label: "Screen Reader & Keyboard Guide",
+                action: "closeSitemap();openScreenReaderPanel()",
+              },
+            ],
+          },
+        ];
+
+        const ov = document.createElement("div");
+        ov.id = "sitemapPanel";
+        ov.style.cssText =
+          "position:fixed;inset:0;z-index:27000;background:rgba(8,20,12,.88);backdrop-filter:blur(8px);display:flex;align-items:flex-start;justify-content:center;padding:24px 20px;overflow-y:auto;animation:authFadeIn .25s ease";
+
+        const cols = sections
+          .map(
+            (sec) => `
+    <div style="background:#fff;border-radius:14px;overflow:hidden;break-inside:avoid">
+      <div style="background:linear-gradient(135deg,#1a4a2e,#2d7a4f);padding:12px 16px;display:flex;align-items:center;gap:10px">
+        <span style="font-size:20px">${sec.icon}</span>
+        <span style="font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:700;color:#fff">${sec.title}</span>
+      </div>
+      <div style="padding:8px 4px">
+        ${sec.links
+          .map(
+            (lk) => `
+          <div onclick="${lk.action}" style="padding:9px 14px;font-size:12.5px;color:#1a4a2e;cursor:pointer;border-radius:8px;display:flex;align-items:center;gap:8px;transition:background .15s;font-family:'DM Sans',sans-serif"
+            onmouseover="this.style.background='#f0faf4'" onmouseout="this.style.background='transparent'">
+            <span style="color:#2d7a4f;font-size:11px">→</span> ${lk.label}
+          </div>`,
+          )
+          .join("")}
+      </div>
+    </div>`,
+          )
+          .join("");
+
+        ov.innerHTML = `
+    <div style="width:100%;max-width:960px;margin:auto">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
+        <div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:700;color:#fff">🗺 Portal Sitemap</div>
+          <div style="font-size:12px;color:rgba(255,255,255,.5);margin-top:3px">All sections and features of the BADRI-e-Kisan Unified Digital Portal</div>
+        </div>
+        <button id="sitemapCloseBtn" onclick="closeSitemap()" style="padding:9px 20px;border:1.5px solid rgba(255,255,255,.2);border-radius:20px;background:rgba(255,255,255,.08);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif">✕ Close</button>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px">
+        ${cols}
+      </div>
+      <div style="text-align:center;margin-top:18px;font-size:11px;color:rgba(255,255,255,.3)">
+        © 2026 Government of Uttarakhand — BADRI-e-Kisan Portal &nbsp;|&nbsp; Last Updated: March 2026
+      </div>
+    </div>`;
+
+        ov.addEventListener("click", (e) => {
+          if (e.target === ov) closeSitemap();
+        });
+        document.body.appendChild(ov);
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeSitemap() {
+        const el = document.getElementById("sitemapPanel");
+        if (el) {
+          el.remove();
+          resetBodyOverflow();
+        }
+      }
+
+      /* Keyboard: Escape closes any top-level panel */
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          ["srPanel", "sitemapPanel"].forEach((id) => {
+            const el = document.getElementById(id);
+            if (el) {
+              el.remove();
+              resetBodyOverflow();
+            }
+          });
+        }
+        /* Alt shortcuts */
+        if (e.altKey && e.key === "1") {
+          e.preventDefault();
+          document.querySelector("main,section")?.focus();
+        }
+        if (e.altKey && e.key === "2") {
+          e.preventDefault();
+          document.querySelector("nav")?.focus();
+        }
+        if (e.altKey && e.key === "3") {
+          e.preventDefault();
+          document.querySelector("footer")?.focus();
+        }
+      });
+
+      /* Reset a11y button */
+      document.addEventListener("DOMContentLoaded", () => {
+        const btn = document.createElement("button");
+        btn.id = "resetA11y";
+        btn.style.display = "none";
+        btn.addEventListener("click", () => {
+          fs = 100;
+          document.documentElement.style.fontSize = "";
+          document
+            .getElementById("page-wrap")
+            ?.classList.remove("high-contrast");
+          document.getElementById("fontInc")?.classList.remove("active");
+          document.getElementById("fontDec")?.classList.remove("active");
+          document.getElementById("hiCon")?.classList.remove("active");
+          showToast("♿ Accessibility settings reset");
+        });
+        document.body.appendChild(btn);
+      });
+    </script>
+
+    <script>
+      /* ═══════════════════════════════════════════════════════════════
+   NOTIFICATION PANEL
+═══════════════════════════════════════════════════════════════ */
+      const NOTIF_DATA = {
+        farmer: [
+          {
+            ico: "💰",
+            type: "success",
+            title: "PM Kisan Instalment Credited",
+            body: "₹2,000 has been directly credited to your linked bank account under PM Kisan Samman Nidhi (Kharif 2025–26, Instalment 2).",
+            time: "2 hours ago",
+            unread: true,
+          },
+          {
+            ico: "🌾",
+            type: "info",
+            title: "Kharif Crop Registration Open",
+            body: "Register your Kharif 2026 crop details before 31 March 2026 to be eligible for PMFBY crop insurance and input subsidies.",
+            time: "5 hours ago",
+            unread: true,
+          },
+          {
+            ico: "🧪",
+            type: "info",
+            title: "Soil Health Card Ready",
+            body: "Your Soil Health Card (Plot #UK-ALM-0042) has been generated. Download it from the Soil Health panel in your dashboard.",
+            time: "1 day ago",
+            unread: true,
+          },
+          {
+            ico: "⚠️",
+            type: "warning",
+            title: "Aadhaar Linking Pending",
+            body: "Your Aadhaar is not linked. Link now to receive subsidy payments directly to your bank account via DBT.",
+            time: "2 days ago",
+            unread: false,
+          },
+          {
+            ico: "📋",
+            type: "info",
+            title: "Scheme Application Status Updated",
+            body: 'Your application for PM Fasal Bima Yojana (PMFBY) Rabi 2025 has moved to "Under Verification" stage.',
+            time: "3 days ago",
+            unread: false,
+          },
+          {
+            ico: "🎓",
+            type: "success",
+            title: "Training Registration Confirmed",
+            body: 'Your seat for "Organic Farming (PKVY)" on 18 Mar 2026 at Dehradun is confirmed. Reference: TRN-UK-2026-3841.',
+            time: "4 days ago",
+            unread: false,
+          },
+          {
+            ico: "📈",
+            type: "info",
+            title: "Market Price Alert — Wheat",
+            body: "Wheat prices at Dehradun Mandi have risen to ₹2,380/quintal, ₹60 above MSP. Consider selling your stored produce.",
+            time: "5 days ago",
+            unread: false,
+          },
+        ],
+        nursery: [
+          {
+            ico: "📦",
+            type: "success",
+            title: "Distribution Order Received",
+            body: "New distribution order #ORD-2026-0481 for 1,200 Apple saplings to Almora block. Dispatch deadline: 20 Mar 2026.",
+            time: "1 hour ago",
+            unread: true,
+          },
+          {
+            ico: "✅",
+            type: "success",
+            title: "Quality Inspection Passed",
+            body: "Batch #NRS-2026-B044 (800 Walnut saplings) has passed quality inspection. Certificate available for download.",
+            time: "3 hours ago",
+            unread: true,
+          },
+          {
+            ico: "⚠️",
+            type: "warning",
+            title: "Low Stock Alert — Peach Saplings",
+            body: "Peach sapling stock is below the minimum threshold (current: 120, minimum: 500). Consider raising a replenishment request.",
+            time: "6 hours ago",
+            unread: true,
+          },
+          {
+            ico: "📋",
+            type: "info",
+            title: "Monthly Report Due",
+            body: "Your April 2026 nursery operations report is due by 5 April 2026. Submit it from the Reports panel.",
+            time: "1 day ago",
+            unread: false,
+          },
+          {
+            ico: "💰",
+            type: "success",
+            title: "Payment Received",
+            body: "₹84,000 credited for Order #ORD-2026-0462 (Plum saplings, 600 units). Transaction ID: TXN-2026-18834.",
+            time: "2 days ago",
+            unread: false,
+          },
+        ],
+        official: [
+          {
+            ico: "🆘",
+            type: "warning",
+            title: "3 Grievances Awaiting Action",
+            body: "Grievances GRV-2026-1042, GRV-2026-1038 and GRV-2026-0997 are approaching the 7-day resolution deadline.",
+            time: "30 min ago",
+            unread: true,
+          },
+          {
+            ico: "📊",
+            type: "info",
+            title: "Monthly Analytics Report Ready",
+            body: "District Farmer Registration report for February 2026 is available in the Analytics panel. 2,840 new registrations.",
+            time: "2 hours ago",
+            unread: true,
+          },
+          {
+            ico: "👤",
+            type: "info",
+            title: "12 New Farmer Registrations",
+            body: "12 new farmer registrations are pending verification in Almora district. Review them in the Approvals panel.",
+            time: "4 hours ago",
+            unread: true,
+          },
+          {
+            ico: "🎓",
+            type: "success",
+            title: "Training Camp Report Submitted",
+            body: 'The "Portal Usage & Digital Literacy" camp report (15 Mar 2026, Almora) has been submitted by the organiser.',
+            time: "1 day ago",
+            unread: false,
+          },
+          {
+            ico: "📋",
+            type: "info",
+            title: "Scheme Allocation Released",
+            body: "PM Kisan Q2 2026 allocation for Almora district: ₹1.2 Cr for 6,000 eligible farmers. Initiate disbursal from Schemes panel.",
+            time: "2 days ago",
+            unread: false,
+          },
+          {
+            ico: "⚠️",
+            type: "warning",
+            title: "Data Sync Pending — 4 Blocks",
+            body: "Farmer data from Hawalbagh, Tarikhet, Dwarhat and Lamgara blocks has not synced in 48 hours. Check field coordinator status.",
+            time: "3 days ago",
+            unread: false,
+          },
+        ],
+        market: [
+          {
+            ico: "📈",
+            type: "success",
+            title: "Wheat Price Above MSP",
+            body: "Wheat price at Dehradun Mandi: ₹2,380/quintal (+₹60 above MSP). High trading volume expected this week.",
+            time: "1 hour ago",
+            unread: true,
+          },
+          {
+            ico: "🔗",
+            type: "success",
+            title: "Blockchain Transaction Confirmed",
+            body: "Trade #BLK-2026-00834 for 48 MT Apple consignment has been confirmed on the blockchain. Certificate downloadable.",
+            time: "3 hours ago",
+            unread: true,
+          },
+          {
+            ico: "📋",
+            type: "info",
+            title: "New Listing Awaiting Approval",
+            body: "5 new commodity listings from registered traders are pending your approval in the Orders panel.",
+            time: "5 hours ago",
+            unread: false,
+          },
+          {
+            ico: "💰",
+            type: "info",
+            title: "Weekly Settlement Complete",
+            body: "Weekly settlement for 14–20 Mar 2026 processed. ₹48.2L transferred to 34 registered traders. View ledger for details.",
+            time: "1 day ago",
+            unread: false,
+          },
+          {
+            ico: "⚠️",
+            type: "warning",
+            title: "Price Anomaly Detected — Potato",
+            body: "Potato prices at Nainital Mandi are 22% below district average. AI system has flagged this for manual review.",
+            time: "2 days ago",
+            unread: false,
+          },
+        ],
+      };
+
+      function openNotifPanel() {
+        // Get current role from dashboard context
+        const role = window._currentDashRole || "farmer";
+        const notifs = NOTIF_DATA[role] || NOTIF_DATA.farmer;
+        const unreadCount = notifs.filter((n) => n.unread).length;
+
+        const typeStyle = {
+          success: {
+            bg: "#f0fdf4",
+            border: "#86efac",
+            dot: "#22c55e",
+            badge: "#dcfce7",
+            badgeText: "#15803d",
+          },
+          info: {
+            bg: "#eff6ff",
+            border: "#93c5fd",
+            dot: "#3b82f6",
+            badge: "#dbeafe",
+            badgeText: "#1d4ed8",
+          },
+          warning: {
+            bg: "#fffbeb",
+            border: "#fcd34d",
+            dot: "#f59e0b",
+            badge: "#fef3c7",
+            badgeText: "#b45309",
+          },
+        };
+
+        const items = notifs
+          .map((n, i) => {
+            const s = typeStyle[n.type] || typeStyle.info;
+            return `
+      <div id="notif-${i}" style="background:${n.unread ? s.bg : "#fafafa"};border:1.5px solid ${n.unread ? s.border : "#e5e7eb"};border-radius:12px;padding:12px 14px;cursor:pointer;transition:all .2s;margin-bottom:8px"
+        onmouseover="this.style.transform='translateY(-1px)';this.style.boxShadow='0 4px 14px rgba(0,0,0,.08)'"
+        onmouseout="this.style.transform='';this.style.boxShadow=''"
+        onclick="markRead(${i})">
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <div style="font-size:22px;flex-shrink:0;margin-top:1px">${n.ico}</div>
+          <div style="flex:1;min-width:0">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:3px">
+              <div style="font-size:13px;font-weight:${n.unread ? "700" : "600"};color:#111827;line-height:1.3">${n.title}</div>
+              ${n.unread ? `<span style="flex-shrink:0;background:${s.badge};color:${s.badgeText};font-size:9px;font-weight:800;padding:2px 7px;border-radius:20px;letter-spacing:.04em;text-transform:uppercase">NEW</span>` : ""}
+            </div>
+            <div style="font-size:11.5px;color:#6b7280;line-height:1.55;margin-bottom:5px">${n.body}</div>
+            <div style="font-size:10.5px;color:#9ca3af;display:flex;align-items:center;gap:4px">
+              <span style="width:6px;height:6px;border-radius:50%;background:${s.dot};display:inline-block;flex-shrink:0"></span>
+              ${n.time}
+            </div>
+          </div>
+        </div>
+      </div>`;
+          })
+          .join("");
+
+        const panel = document.createElement("div");
+        panel.id = "notifPanel";
+        panel.style.cssText =
+          "position:fixed;inset:0;z-index:50000;display:flex;align-items:flex-start;justify-content:flex-end;padding:70px 16px 0;pointer-events:none";
+        panel.innerHTML = `
+    <div id="notifBox" style="background:#fff;border-radius:16px;width:100%;max-width:400px;box-shadow:0 20px 60px rgba(0,0,0,.22);border:1px solid #e5e7eb;overflow:hidden;pointer-events:auto;animation:authPop .22s cubic-bezier(.34,1.4,.64,1)">
+      <div style="padding:14px 16px;background:linear-gradient(135deg,#1a4a2e,#2d7a4f);display:flex;align-items:center;justify-content:space-between">
+        <div style="display:flex;align-items:center;gap:10px">
+          <span style="font-size:18px">🔔</span>
+          <div>
+            <div style="font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:700;color:#fff">Notifications</div>
+            <div style="font-size:10.5px;color:rgba(255,255,255,.6);margin-top:1px">${unreadCount} unread · ${notifs.length} total</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          ${unreadCount > 0 ? `<button onclick="markAllRead()" style="background:rgba(255,255,255,.12);border:none;color:#fff;font-size:10.5px;font-weight:700;padding:5px 10px;border-radius:20px;cursor:pointer;font-family:'DM Sans',sans-serif">Mark all read</button>` : ""}
+          <button onclick="closeNotifPanel()" style="width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.12);border:none;color:#fff;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center">✕</button>
+        </div>
+      </div>
+      <div style="max-height:480px;overflow-y:auto;padding:12px">
+        ${items}
+      </div>
+      <div style="padding:10px 16px;border-top:1px solid #f3f4f6;background:#f9fafb;text-align:center">
+        <span style="font-size:11.5px;color:#6b7280;font-family:'DM Sans',sans-serif">Notifications are cleared after 30 days &nbsp;·&nbsp; <span style="color:#2d7a4f;cursor:pointer;font-weight:600" onclick="closeNotifPanel()">Close</span></span>
+      </div>
+    </div>`;
+
+        // Close on outside click
+        panel.addEventListener("click", (e) => {
+          if (e.target === panel) closeNotifPanel();
+        });
+        document.body.appendChild(panel);
+
+        // Update bell badge count to 0 after opening
+        window._notifPanelOpen = true;
+      }
+
+      function closeNotifPanel() {
+        const p = document.getElementById("notifPanel");
+        if (p) p.remove();
+        window._notifPanelOpen = false;
+      }
+
+      function markRead(idx) {
+        const role = window._currentDashRole || "farmer";
+        if (NOTIF_DATA[role] && NOTIF_DATA[role][idx]) {
+          NOTIF_DATA[role][idx].unread = false;
+        }
+        closeNotifPanel();
+        setTimeout(() => openNotifPanel(), 50);
+      }
+
+      function markAllRead() {
+        const role = window._currentDashRole || "farmer";
+        if (NOTIF_DATA[role])
+          NOTIF_DATA[role].forEach((n) => (n.unread = false));
+        closeNotifPanel();
+        setTimeout(() => openNotifPanel(), 50);
+        updateBellBadge(0);
+      }
+
+      function updateBellBadge(count) {
+        // Update the ::after badge — done via data-attr trick
+        const bell = document.getElementById("bellBtn");
+        if (!bell) return;
+        // Override via inline style on a real child element
+        let badge = bell.querySelector(".bell-badge");
+        if (!badge) {
+          badge = document.createElement("span");
+          badge.className = "bell-badge";
+          badge.style.cssText =
+            'position:absolute;top:-4px;right:-4px;background:#ef4444;color:#fff;border-radius:50%;width:17px;height:17px;font-size:9px;font-weight:800;display:flex;align-items:center;justify-content:center;pointer-events:none;font-family:"DM Sans",sans-serif';
+          bell.style.position = "relative";
+          bell.appendChild(badge);
+        }
+        badge.textContent = count > 0 ? count : "";
+        badge.style.display = count > 0 ? "flex" : "none";
+      }
+
+      // Set role badge count when dashboard opens
+      const _origOpenDashboard = window.openDashboard;
+      window.openDashboard = function (role) {
+        window._currentDashRole = role;
+        const count = (NOTIF_DATA[role] || []).filter((n) => n.unread).length;
+        setTimeout(() => updateBellBadge(count), 300);
+        if (_origOpenDashboard) _origOpenDashboard(role);
+      };
+
+      // Close notif panel on Escape
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeNotifPanel();
+      });
+    </script>
+
+    <script>
+      /* ═══════════════════════════════════════════════════════════════
+   OFFICIAL DASHBOARD — QUICK ACTIONS
+═══════════════════════════════════════════════════════════════ */
+
+      function officialAction(type) {
+        const handlers = {
+          approvals: openApprovalsPanel,
+          report: openGenerateReport,
+          grievanceq: openGrievanceQueue,
+          schedtrain: openScheduleTraining,
+          circular: openSendCircular,
+          auditlogs: openAuditLogs,
+        };
+        if (handlers[type]) handlers[type]();
+      }
+
+      /* ── shared overlay factory ── */
+      function officialOverlay(id, title, sub, content, footerHTML) {
+        let ov = document.getElementById(id);
+        if (ov) {
+          ov.remove();
+          return;
+        }
+        ov = document.createElement("div");
+        ov.id = id;
+        ov.style.cssText =
+          "position:fixed;inset:0;z-index:40000;background:rgba(4,12,6,.88);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:20px;overflow-y:auto;animation:authFadeIn .22s ease";
+        ov.innerHTML = `
+    <div style="background:#0b1f10;border:1.5px solid rgba(255,255,255,.1);border-radius:20px;width:100%;max-width:720px;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,.6);animation:authPop .28s cubic-bezier(.34,1.4,.64,1);margin:auto">
+      <div style="background:linear-gradient(135deg,#1a4a2e,#2d7a4f);padding:18px 22px;display:flex;align-items:center;justify-content:space-between">
+        <div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:#fff">${title}</div>
+          <div style="font-size:11px;color:rgba(255,255,255,.55);margin-top:2px">${sub}</div>
+        </div>
+        <button onclick="document.getElementById('${id}').remove()" style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.12);border:none;color:#fff;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center">✕</button>
+      </div>
+      <div style="padding:20px 22px;max-height:70vh;overflow-y:auto;color:rgba(255,255,255,.85)">${content}</div>
+      ${footerHTML ? `<div style="padding:14px 22px;border-top:1px solid rgba(255,255,255,.08);background:rgba(0,0,0,.2)">${footerHTML}</div>` : ""}
+    </div>`;
+        ov.addEventListener("click", (e) => {
+          if (e.target === ov) ov.remove();
+        });
+        document.body.appendChild(ov);
+      }
+
+      /* ─────────────────────────────────────────
+   1. REVIEW APPROVALS
+───────────────────────────────────────── */
+      function openApprovalsPanel() {
+        const farmers = [
+          {
+            id: "FRM-UK-2026-009821",
+            name: "Ramesh Chandra Pant",
+            block: "Almora",
+            land: "1.8 Ha",
+            crops: "Wheat, Mustard",
+            status: "Pending",
+          },
+          {
+            id: "FRM-UK-2026-009822",
+            name: "Sunita Devi Rawat",
+            block: "Hawalbagh",
+            land: "0.9 Ha",
+            crops: "Potato, Pea",
+            status: "Pending",
+          },
+          {
+            id: "FRM-UK-2026-009823",
+            name: "Mohan Singh Bisht",
+            block: "Tarikhet",
+            land: "2.4 Ha",
+            crops: "Apple, Walnut",
+            status: "Pending",
+          },
+          {
+            id: "FRM-UK-2026-009824",
+            name: "Geeta Arya",
+            block: "Dwarahat",
+            land: "1.2 Ha",
+            crops: "Maize, Soybean",
+            status: "Pending",
+          },
+          {
+            id: "FRM-UK-2026-009825",
+            name: "Kishan Lal Verma",
+            block: "Bhikiyasain",
+            land: "3.1 Ha",
+            crops: "Wheat, Paddy",
+            status: "Pending",
+          },
+          {
+            id: "FRM-UK-2026-009826",
+            name: "Asha Negi",
+            block: "Almora",
+            land: "0.6 Ha",
+            crops: "Vegetable Mix",
+            status: "Pending",
+          },
+          {
+            id: "FRM-UK-2026-009827",
+            name: "Devendra Singh Karki",
+            block: "Syaldeh",
+            land: "1.5 Ha",
+            crops: "Mustard, Lentil",
+            status: "Pending",
+          },
+          {
+            id: "FRM-UK-2026-009828",
+            name: "Pushpa Tiwari",
+            block: "Lamgara",
+            land: "1.0 Ha",
+            crops: "Peach, Apricot",
+            status: "Pending",
+          },
+          {
+            id: "FRM-UK-2026-009829",
+            name: "Harish Chandra Joshi",
+            block: "Almora",
+            land: "2.2 Ha",
+            crops: "Wheat, Apple",
+            status: "Pending",
+          },
+          {
+            id: "FRM-UK-2026-009830",
+            name: "Meena Bohra",
+            block: "Hawalbagh",
+            land: "0.8 Ha",
+            crops: "Potato, Onion",
+            status: "Pending",
+          },
+          {
+            id: "FRM-UK-2026-009831",
+            name: "Trilok Singh Mehta",
+            block: "Dwarahat",
+            land: "1.4 Ha",
+            crops: "Soybean, Maize",
+            status: "Pending",
+          },
+          {
+            id: "FRM-UK-2026-009832",
+            name: "Kamla Bisht",
+            block: "Tarikhet",
+            land: "1.7 Ha",
+            crops: "Wheat, Barley",
+            status: "Pending",
+          },
+        ];
+
+        const rows = farmers
+          .map(
+            (f, i) => `
+    <tr style="border-bottom:1px solid rgba(255,255,255,.07)">
+      <td style="padding:9px 10px;font-size:11.5px;color:#4ade80;font-weight:700">${f.id}</td>
+      <td style="padding:9px 10px;font-size:12px">${f.name}</td>
+      <td style="padding:9px 10px;font-size:11.5px;color:rgba(255,255,255,.6)">${f.block}</td>
+      <td style="padding:9px 10px;font-size:11.5px;color:rgba(255,255,255,.6)">${f.land}</td>
+      <td style="padding:9px 10px;font-size:11.5px;color:rgba(255,255,255,.6)">${f.crops}</td>
+      <td style="padding:9px 10px">
+        <button onclick="approveRow(this,'approve',${i})" style="background:#166534;border:none;color:#4ade80;font-size:10.5px;font-weight:700;padding:4px 10px;border-radius:6px;cursor:pointer;margin-right:4px">✅ Approve</button>
+        <button onclick="approveRow(this,'reject',${i})" style="background:#7f1d1d;border:none;color:#fca5a5;font-size:10.5px;font-weight:700;padding:4px 10px;border-radius:6px;cursor:pointer">❌ Reject</button>
+      </td>
+    </tr>`,
+          )
+          .join("");
+
+        const body = `
+    <div style="background:rgba(255,255,255,.05);border-radius:10px;padding:10px 14px;margin-bottom:14px;font-size:12px;color:rgba(255,255,255,.6)">
+      12 new farmer registrations from Almora district are pending verification. Approve or reject each application below.
+    </div>
+    <div style="overflow-x:auto">
+      <table style="width:100%;border-collapse:collapse;font-size:12px">
+        <thead>
+          <tr style="background:rgba(255,255,255,.06);color:rgba(255,255,255,.5);font-size:10.5px;text-transform:uppercase;letter-spacing:.06em">
+            <th style="padding:9px 10px;text-align:left">Farmer ID</th>
+            <th style="padding:9px 10px;text-align:left">Name</th>
+            <th style="padding:9px 10px;text-align:left">Block</th>
+            <th style="padding:9px 10px;text-align:left">Land</th>
+            <th style="padding:9px 10px;text-align:left">Crops</th>
+            <th style="padding:9px 10px;text-align:left">Action</th>
+          </tr>
+        </thead>
+        <tbody id="approvalsTbody">${rows}</tbody>
+      </table>
+    </div>`;
+
+        const footer = `
+    <div style="display:flex;gap:10px;justify-content:flex-end">
+      <button onclick="approveAll()" style="background:#166534;border:none;color:#4ade80;font-size:12.5px;font-weight:700;padding:9px 20px;border-radius:20px;cursor:pointer;font-family:'DM Sans',sans-serif">✅ Approve All</button>
+      <button onclick="document.getElementById('ovApprovals').remove()" style="background:rgba(255,255,255,.08);border:none;color:rgba(255,255,255,.7);font-size:12.5px;font-weight:700;padding:9px 20px;border-radius:20px;cursor:pointer;font-family:'DM Sans',sans-serif">Close</button>
+    </div>`;
+
+        officialOverlay(
+          "ovApprovals",
+          "✅ Review Farmer Registrations",
+          "Pending approvals — Almora District",
+          body,
+          footer,
+        );
+      }
+
+      window.approveRow = function (btn, action, idx) {
+        const row = btn.closest("tr");
+        if (!row) return;
+        const color = action === "approve" ? "#166534" : "#7f1d1d";
+        const label = action === "approve" ? "✅ Approved" : "❌ Rejected";
+        row.style.opacity = ".45";
+        row.querySelector("td:last-child").innerHTML =
+          `<span style="font-size:11px;font-weight:700;color:${action === "approve" ? "#4ade80" : "#fca5a5"}">${label}</span>`;
+        showToast(
+          action === "approve"
+            ? "✅ Registration approved"
+            : "❌ Registration rejected",
+        );
+      };
+
+      window.approveAll = function () {
+        document.querySelectorAll("#approvalsTbody tr").forEach((row) => {
+          row.style.opacity = ".45";
+          row.querySelector("td:last-child").innerHTML =
+            '<span style="font-size:11px;font-weight:700;color:#4ade80">✅ Approved</span>';
+        });
+        showToast("✅ All 12 registrations approved");
+      };
+
+      /* ─────────────────────────────────────────
+   2. GENERATE REPORT
+───────────────────────────────────────── */
+      function openGenerateReport() {
+        const body = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+      <div>
+        <label style="font-size:11px;color:rgba(255,255,255,.5);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:6px">Report Type</label>
+        <select id="rptType" style="width:100%;background:#0f2318;border:1.5px solid rgba(255,255,255,.12);border-radius:10px;padding:10px 13px;color:rgba(255,255,255,.85);font-size:13px;font-family:'DM Sans',sans-serif;outline:none">
+          <option>Farmer Registration Summary</option>
+          <option>Scheme Disbursement Report</option>
+          <option>Crop Coverage Report</option>
+          <option>Training Attendance Report</option>
+          <option>Grievance Resolution Report</option>
+          <option>Nursery Distribution Report</option>
+          <option>Market Transaction Report</option>
+          <option>Aadhaar Linking Status</option>
+        </select>
+      </div>
+      <div>
+        <label style="font-size:11px;color:rgba(255,255,255,.5);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:6px">District</label>
+        <select id="rptDist" style="width:100%;background:#0f2318;border:1.5px solid rgba(255,255,255,.12);border-radius:10px;padding:10px 13px;color:rgba(255,255,255,.85);font-size:13px;font-family:'DM Sans',sans-serif;outline:none">
+          <option>All Districts</option>
+          <option>Almora</option><option>Dehradun</option><option>Nainital</option><option>Pithoragarh</option>
+          <option>Chamoli</option><option>Pauri Garhwal</option><option>Haridwar</option><option>Tehri Garhwal</option>
+          <option>Udham Singh Nagar</option><option>Uttarkashi</option><option>Bageshwar</option>
+          <option>Champawat</option><option>Rudraprayag</option>
+        </select>
+      </div>
+      <div>
+        <label style="font-size:11px;color:rgba(255,255,255,.5);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:6px">From Date</label>
+        <input id="rptFrom" type="date" value="2026-01-01" style="width:100%;background:#0f2318;border:1.5px solid rgba(255,255,255,.12);border-radius:10px;padding:10px 13px;color:rgba(255,255,255,.85);font-size:13px;font-family:'DM Sans',sans-serif;outline:none;box-sizing:border-box;color-scheme:dark">
+      </div>
+      <div>
+        <label style="font-size:11px;color:rgba(255,255,255,.5);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:6px">To Date</label>
+        <input id="rptTo" type="date" value="2026-03-31" style="width:100%;background:#0f2318;border:1.5px solid rgba(255,255,255,.12);border-radius:10px;padding:10px 13px;color:rgba(255,255,255,.85);font-size:13px;font-family:'DM Sans',sans-serif;outline:none;box-sizing:border-box;color-scheme:dark">
+      </div>
+      <div>
+        <label style="font-size:11px;color:rgba(255,255,255,.5);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:6px">Format</label>
+        <div style="display:flex;gap:8px">
+          ${["PDF", "Excel (.xlsx)", "CSV"]
+            .map(
+              (f) => `
+            <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:12.5px;color:rgba(255,255,255,.75);background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.1);border-radius:8px;padding:8px 12px;flex:1;justify-content:center">
+              <input type="radio" name="rptFmt" value="${f}" ${f === "PDF" ? "checked" : ""} style="accent-color:#4ade80"> ${f}
+            </label>`,
+            )
+            .join("")}
+        </div>
+      </div>
+      <div>
+        <label style="font-size:11px;color:rgba(255,255,255,.5);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:6px">Include</label>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          ${[
+            "Charts & Graphs",
+            "Summary Statistics",
+            "Raw Data Table",
+            "Official Seal & Signature",
+          ]
+            .map(
+              (opt) => `
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:12px;color:rgba(255,255,255,.7)">
+              <input type="checkbox" checked style="accent-color:#4ade80"> ${opt}
+            </label>`,
+            )
+            .join("")}
+        </div>
+      </div>
+    </div>
+    <div id="rptPreview" style="display:none;background:rgba(74,222,128,.07);border:1.5px solid #166534;border-radius:10px;padding:14px;margin-top:4px">
+      <div style="font-size:12px;font-weight:700;color:#4ade80;margin-bottom:8px">📄 Report Preview</div>
+      <div id="rptPreviewContent" style="font-size:12px;color:rgba(255,255,255,.7);line-height:1.8"></div>
+    </div>`;
+
+        const footer = `
+    <div style="display:flex;gap:10px;justify-content:flex-end">
+      <button onclick="previewReport()" style="background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.15);color:rgba(255,255,255,.8);font-size:12.5px;font-weight:700;padding:9px 20px;border-radius:20px;cursor:pointer;font-family:'DM Sans',sans-serif">👁 Preview</button>
+      <button onclick="generateReport()" style="background:#e8860a;border:none;color:#fff;font-size:12.5px;font-weight:700;padding:9px 20px;border-radius:20px;cursor:pointer;font-family:'DM Sans',sans-serif">📥 Generate & Download</button>
+    </div>`;
+
+        officialOverlay(
+          "ovReport",
+          "📊 Generate Report",
+          "Official reports — Government of Uttarakhand",
+          body,
+          footer,
+        );
+      }
+
+      window.previewReport = function () {
+        const type = document.getElementById("rptType")?.value || "";
+        const dist = document.getElementById("rptDist")?.value || "";
+        const from = document.getElementById("rptFrom")?.value || "";
+        const to = document.getElementById("rptTo")?.value || "";
+        const wrap = document.getElementById("rptPreview");
+        const cnt = document.getElementById("rptPreviewContent");
+        if (!wrap || !cnt) return;
+        wrap.style.display = "block";
+        cnt.innerHTML = `
+    <strong>Report:</strong> ${type}<br>
+    <strong>District:</strong> ${dist}<br>
+    <strong>Period:</strong> ${from} to ${to}<br>
+    <strong>Est. Records:</strong> ${Math.floor(800 + Math.random() * 4200).toLocaleString()}<br>
+    <strong>Generated by:</strong> OFF-UK-CDO-DEHRADUN — ${new Date().toLocaleDateString("en-IN")}<br>
+    <strong>Status:</strong> <span style="color:#4ade80">Ready to download</span>`;
+      };
+
+      window.generateReport = function () {
+        const type = document.getElementById("rptType")?.value || "Report";
+        const fmt =
+          document.querySelector('input[name="rptFmt"]:checked')?.value ||
+          "PDF";
+        showToast("📥 Generating " + type + " (" + fmt + ")…");
+        setTimeout(() => {
+          showToast("✅ Report downloaded successfully");
+          document.getElementById("ovReport")?.remove();
+        }, 1800);
+      };
+
+      /* ─────────────────────────────────────────
+   3. GRIEVANCE QUEUE
+───────────────────────────────────────── */
+      function openGrievanceQueue() {
+        const items = [
+          {
+            ref: "GRV-2026-1042",
+            farmer: "Ramesh Pant",
+            dist: "Almora",
+            cat: "Subsidy Not Received",
+            days: 6,
+            priority: "high",
+          },
+          {
+            ref: "GRV-2026-1038",
+            farmer: "Sunita Rawat",
+            dist: "Hawalbagh",
+            cat: "Aadhaar Linking Failed",
+            days: 6,
+            priority: "high",
+          },
+          {
+            ref: "GRV-2026-1031",
+            farmer: "Mohan Bisht",
+            dist: "Dwarahat",
+            cat: "KCC Application Rejected",
+            days: 5,
+            priority: "high",
+          },
+          {
+            ref: "GRV-2026-1027",
+            farmer: "Geeta Arya",
+            dist: "Tarikhet",
+            cat: "Soil Health Card Delay",
+            days: 4,
+            priority: "medium",
+          },
+          {
+            ref: "GRV-2026-1019",
+            farmer: "Devendra Karki",
+            dist: "Syaldeh",
+            cat: "Training Registration",
+            days: 3,
+            priority: "medium",
+          },
+          {
+            ref: "GRV-2026-1014",
+            farmer: "Pushpa Tiwari",
+            dist: "Lamgara",
+            cat: "Market Price Dispute",
+            days: 2,
+            priority: "low",
+          },
+          {
+            ref: "GRV-2026-1009",
+            farmer: "Harish Joshi",
+            dist: "Almora",
+            cat: "Seed Kit Not Delivered",
+            days: 1,
+            priority: "low",
+          },
+        ];
+
+        const priorityStyle = {
+          high: "#ef4444",
+          medium: "#f59e0b",
+          low: "#22c55e",
+        };
+
+        const rows = items
+          .map(
+            (g) => `
+    <tr style="border-bottom:1px solid rgba(255,255,255,.07)">
+      <td style="padding:9px 10px;font-size:11.5px;color:#4ade80;font-weight:700">${g.ref}</td>
+      <td style="padding:9px 10px;font-size:12px">${g.farmer}</td>
+      <td style="padding:9px 10px;font-size:11.5px;color:rgba(255,255,255,.6)">${g.dist}</td>
+      <td style="padding:9px 10px;font-size:11.5px">${g.cat}</td>
+      <td style="padding:9px 10px">
+        <span style="background:${g.days >= 5 ? "rgba(239,68,68,.15)" : "rgba(245,158,11,.1)"};color:${g.days >= 5 ? "#fca5a5" : "#fcd34d"};font-size:10.5px;font-weight:700;padding:3px 8px;border-radius:6px">Day ${g.days}/7</span>
+      </td>
+      <td style="padding:9px 10px">
+        <span style="display:inline-flex;align-items:center;gap:4px;font-size:10.5px;font-weight:700;color:${priorityStyle[g.priority]};text-transform:capitalize">● ${g.priority}</span>
+      </td>
+      <td style="padding:9px 10px">
+        <button onclick="resolveGrievance(this,'${g.ref}')" style="background:#1a4a2e;border:1px solid #4ade80;color:#4ade80;font-size:10.5px;font-weight:700;padding:4px 10px;border-radius:6px;cursor:pointer">Resolve</button>
+      </td>
+    </tr>`,
+          )
+          .join("");
+
+        const body = `
+    <div style="display:flex;gap:8px;margin-bottom:14px">
+      <div style="flex:1;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:10px;padding:10px 14px;text-align:center">
+        <div style="font-size:22px;font-weight:800;color:#ef4444">3</div>
+        <div style="font-size:10.5px;color:rgba(255,255,255,.55);margin-top:2px">High Priority</div>
+      </div>
+      <div style="flex:1;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);border-radius:10px;padding:10px 14px;text-align:center">
+        <div style="font-size:22px;font-weight:800;color:#f59e0b">2</div>
+        <div style="font-size:10.5px;color:rgba(255,255,255,.55);margin-top:2px">Medium Priority</div>
+      </div>
+      <div style="flex:1;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);border-radius:10px;padding:10px 14px;text-align:center">
+        <div style="font-size:22px;font-weight:800;color:#22c55e">2</div>
+        <div style="font-size:10.5px;color:rgba(255,255,255,.55);margin-top:2px">Low Priority</div>
+      </div>
+      <div style="flex:1;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:10px 14px;text-align:center">
+        <div style="font-size:22px;font-weight:800;color:#fff">7</div>
+        <div style="font-size:10.5px;color:rgba(255,255,255,.55);margin-top:2px">Total Open</div>
+      </div>
+    </div>
+    <div style="overflow-x:auto">
+      <table style="width:100%;border-collapse:collapse;font-size:12px">
+        <thead>
+          <tr style="background:rgba(255,255,255,.06);color:rgba(255,255,255,.5);font-size:10.5px;text-transform:uppercase;letter-spacing:.06em">
+            <th style="padding:9px 10px;text-align:left">Ref No.</th>
+            <th style="padding:9px 10px;text-align:left">Farmer</th>
+            <th style="padding:9px 10px;text-align:left">District</th>
+            <th style="padding:9px 10px;text-align:left">Category</th>
+            <th style="padding:9px 10px;text-align:left">Timeline</th>
+            <th style="padding:9px 10px;text-align:left">Priority</th>
+            <th style="padding:9px 10px;text-align:left">Action</th>
+          </tr>
+        </thead>
+        <tbody id="grievanceTbody">${rows}</tbody>
+      </table>
+    </div>`;
+
+        officialOverlay(
+          "ovGrievanceQ",
+          "📢 Grievance Queue",
+          "Open grievances — Almora District",
+          body,
+          `<div style="display:flex;justify-content:flex-end"><button onclick="document.getElementById('ovGrievanceQ').remove()" style="background:rgba(255,255,255,.08);border:none;color:rgba(255,255,255,.7);font-size:12.5px;font-weight:700;padding:9px 20px;border-radius:20px;cursor:pointer;font-family:'DM Sans',sans-serif">Close</button></div>`,
+        );
+      }
+
+      window.resolveGrievance = function (btn, ref) {
+        const row = btn.closest("tr");
+        if (!row) return;
+        row.style.opacity = ".4";
+        btn.textContent = "✅ Resolved";
+        btn.style.background = "#166534";
+        btn.onclick = null;
+        showToast("✅ Grievance " + ref + " marked resolved");
+      };
+
+      /* ─────────────────────────────────────────
+   4. SCHEDULE TRAINING
+───────────────────────────────────────── */
+      function openScheduleTraining() {
+        const body = `
+    <div style="display:flex;flex-direction:column;gap:13px">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div>
+          <label style="font-size:11px;color:rgba(255,255,255,.5);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:6px">Programme Title *</label>
+          <select id="stProg" style="width:100%;background:#0f2318;border:1.5px solid rgba(255,255,255,.12);border-radius:10px;padding:10px 13px;color:rgba(255,255,255,.85);font-size:13px;font-family:'DM Sans',sans-serif;outline:none">
+            <option>Portal Usage & Digital Literacy</option>
+            <option>Organic Farming (PKVY)</option>
+            <option>Drip Irrigation & Water Management</option>
+            <option>Soil Health & Nutrient Management</option>
+            <option>AI Crop Advisory — Demo Camp</option>
+            <option>KCC & Financial Literacy</option>
+            <option>PM Fasal Bima Yojana Awareness</option>
+            <option>Post-Harvest Management</option>
+            <option>Natural Farming Methods</option>
+          </select>
+        </div>
+        <div>
+          <label style="font-size:11px;color:rgba(255,255,255,.5);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:6px">District *</label>
+          <select id="stDist" style="width:100%;background:#0f2318;border:1.5px solid rgba(255,255,255,.12);border-radius:10px;padding:10px 13px;color:rgba(255,255,255,.85);font-size:13px;font-family:'DM Sans',sans-serif;outline:none">
+            <option>Almora</option><option>Dehradun</option><option>Nainital</option><option>Pithoragarh</option>
+            <option>Chamoli</option><option>Pauri Garhwal</option><option>Haridwar</option><option>Tehri Garhwal</option>
+            <option>Udham Singh Nagar</option><option>Uttarkashi</option><option>Bageshwar</option><option>Champawat</option><option>Rudraprayag</option>
+          </select>
+        </div>
+        <div>
+          <label style="font-size:11px;color:rgba(255,255,255,.5);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:6px">Date *</label>
+          <input id="stDate" type="date" style="width:100%;background:#0f2318;border:1.5px solid rgba(255,255,255,.12);border-radius:10px;padding:10px 13px;color:rgba(255,255,255,.85);font-size:13px;font-family:'DM Sans',sans-serif;outline:none;box-sizing:border-box;color-scheme:dark">
+        </div>
+        <div>
+          <label style="font-size:11px;color:rgba(255,255,255,.5);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:6px">Seat Capacity *</label>
+          <input id="stSeats" type="number" min="10" max="200" value="50" style="width:100%;background:#0f2318;border:1.5px solid rgba(255,255,255,.12);border-radius:10px;padding:10px 13px;color:rgba(255,255,255,.85);font-size:13px;font-family:'DM Sans',sans-serif;outline:none;box-sizing:border-box">
+        </div>
+        <div>
+          <label style="font-size:11px;color:rgba(255,255,255,.5);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:6px">Venue</label>
+          <input id="stVenue" type="text" placeholder="e.g. District Agriculture Office, Almora" style="width:100%;background:#0f2318;border:1.5px solid rgba(255,255,255,.12);border-radius:10px;padding:10px 13px;color:rgba(255,255,255,.85);font-size:13px;font-family:'DM Sans',sans-serif;outline:none;box-sizing:border-box">
+        </div>
+        <div>
+          <label style="font-size:11px;color:rgba(255,255,255,.5);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:6px">Lead Trainer</label>
+          <input id="stTrainer" type="text" placeholder="Name of Agriculture Extension Officer" style="width:100%;background:#0f2318;border:1.5px solid rgba(255,255,255,.12);border-radius:10px;padding:10px 13px;color:rgba(255,255,255,.85);font-size:13px;font-family:'DM Sans',sans-serif;outline:none;box-sizing:border-box">
+        </div>
+      </div>
+      <div>
+        <label style="font-size:11px;color:rgba(255,255,255,.5);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:6px">SMS Notification to Registered Farmers</label>
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:12.5px;color:rgba(255,255,255,.75)">
+          <input type="checkbox" id="stSms" checked style="accent-color:#4ade80;width:15px;height:15px">
+          Auto-send SMS invitation to all farmers in selected district 48 hours before the camp
+        </label>
+      </div>
+    </div>`;
+
+        const footer = `
+    <div style="display:flex;gap:10px;justify-content:flex-end">
+      <button onclick="document.getElementById('ovSchedTrain').remove()" style="background:rgba(255,255,255,.08);border:none;color:rgba(255,255,255,.7);font-size:12.5px;font-weight:700;padding:9px 20px;border-radius:20px;cursor:pointer;font-family:'DM Sans',sans-serif">Cancel</button>
+      <button onclick="scheduleTrainingSubmit()" style="background:#1a4a2e;border:none;color:#4ade80;font-size:12.5px;font-weight:700;padding:9px 22px;border-radius:20px;cursor:pointer;font-family:'DM Sans',sans-serif">📅 Schedule Training</button>
+    </div>`;
+
+        officialOverlay(
+          "ovSchedTrain",
+          "🎓 Schedule Training Camp",
+          "Create a new farmer training event",
+          body,
+          footer,
+        );
+      }
+
+      window.scheduleTrainingSubmit = function () {
+        const prog = document.getElementById("stProg")?.value;
+        const dist = document.getElementById("stDist")?.value;
+        const date = document.getElementById("stDate")?.value;
+        const seats = document.getElementById("stSeats")?.value;
+        if (!prog || !dist || !date || !seats) {
+          showToast("⚠️ Please fill all required fields");
+          return;
+        }
+        const ref =
+          "TRN-SCHED-" +
+          new Date().getFullYear() +
+          "-" +
+          String(Math.floor(1000 + Math.random() * 9000));
+        document.getElementById("ovSchedTrain")?.remove();
+        showToast("✅ Training scheduled! Ref: " + ref);
+      };
+
+      /* ─────────────────────────────────────────
+   5. SEND CIRCULAR
+───────────────────────────────────────── */
+      function openSendCircular() {
+        const body = `
+    <div style="display:flex;flex-direction:column;gap:13px">
+      <div>
+        <label style="font-size:11px;color:rgba(255,255,255,.5);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:6px">Circular Subject *</label>
+        <input id="circSubject" type="text" placeholder="e.g. PM Kisan Q2 2026 — Instalment Disbursement Notice" style="width:100%;background:#0f2318;border:1.5px solid rgba(255,255,255,.12);border-radius:10px;padding:10px 13px;color:rgba(255,255,255,.85);font-size:13px;font-family:'DM Sans',sans-serif;outline:none;box-sizing:border-box">
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div>
+          <label style="font-size:11px;color:rgba(255,255,255,.5);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:6px">Send To *</label>
+          <select id="circTo" style="width:100%;background:#0f2318;border:1.5px solid rgba(255,255,255,.12);border-radius:10px;padding:10px 13px;color:rgba(255,255,255,.85);font-size:13px;font-family:'DM Sans',sans-serif;outline:none">
+            <option>All Farmers — All Districts</option>
+            <option>All Farmers — Almora District</option>
+            <option>All Farmers — Dehradun District</option>
+            <option>All Nursery Workers</option>
+            <option>All Market Stakeholders</option>
+            <option>Block Agriculture Officers</option>
+            <option>All Registered Users</option>
+          </select>
+        </div>
+        <div>
+          <label style="font-size:11px;color:rgba(255,255,255,.5);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:6px">Delivery Channel</label>
+          <div style="display:flex;flex-direction:column;gap:6px;margin-top:4px">
+            ${["SMS (mobile)", "Portal Notification", "Email (if available)"]
+              .map(
+                (ch) => `
+              <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:12px;color:rgba(255,255,255,.7)">
+                <input type="checkbox" checked style="accent-color:#4ade80"> ${ch}
+              </label>`,
+              )
+              .join("")}
+          </div>
+        </div>
+      </div>
+      <div>
+        <label style="font-size:11px;color:rgba(255,255,255,.5);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:6px">Message Body *</label>
+        <textarea id="circBody" rows="5" placeholder="Write the circular message here. Keep SMS-friendly: 160 characters max for SMS channel." style="width:100%;background:#0f2318;border:1.5px solid rgba(255,255,255,.12);border-radius:10px;padding:10px 13px;color:rgba(255,255,255,.85);font-size:13px;font-family:'DM Sans',sans-serif;outline:none;resize:vertical;box-sizing:border-box"></textarea>
+        <div style="font-size:10.5px;color:rgba(255,255,255,.35);margin-top:4px">Tip: SMS channel supports 160 characters. Portal & email channels support full length.</div>
+      </div>
+      <div>
+        <label style="font-size:11px;color:rgba(255,255,255,.5);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:6px">Schedule</label>
+        <div style="display:flex;gap:10px">
+          <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:12.5px;color:rgba(255,255,255,.75)"><input type="radio" name="circSched" value="now" checked style="accent-color:#4ade80"> Send Now</label>
+          <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:12.5px;color:rgba(255,255,255,.75)"><input type="radio" name="circSched" value="later" style="accent-color:#4ade80"> Schedule Later</label>
+        </div>
+      </div>
+    </div>`;
+
+        const footer = `
+    <div style="display:flex;gap:10px;justify-content:flex-end">
+      <button onclick="document.getElementById('ovCircular').remove()" style="background:rgba(255,255,255,.08);border:none;color:rgba(255,255,255,.7);font-size:12.5px;font-weight:700;padding:9px 20px;border-radius:20px;cursor:pointer;font-family:'DM Sans',sans-serif">Cancel</button>
+      <button onclick="sendCircularSubmit()" style="background:#e8860a;border:none;color:#fff;font-size:12.5px;font-weight:700;padding:9px 22px;border-radius:20px;cursor:pointer;font-family:'DM Sans',sans-serif">📣 Send Circular</button>
+    </div>`;
+
+        officialOverlay(
+          "ovCircular",
+          "📣 Send Circular",
+          "Broadcast official messages to farmers and stakeholders",
+          body,
+          footer,
+        );
+      }
+
+      window.sendCircularSubmit = function () {
+        const sub = document.getElementById("circSubject")?.value.trim();
+        const to = document.getElementById("circTo")?.value;
+        const body = document.getElementById("circBody")?.value.trim();
+        if (!sub || !body) {
+          showToast("⚠️ Subject and message body are required");
+          return;
+        }
+        const ref =
+          "CIRC-" +
+          new Date().getFullYear() +
+          "-" +
+          String(Math.floor(100 + Math.random() * 900));
+        document.getElementById("ovCircular")?.remove();
+        showToast("📣 Circular " + ref + " sent to " + to);
+      };
+
+      /* ─────────────────────────────────────────
+   6. AUDIT LOGS
+───────────────────────────────────────── */
+      function openAuditLogs() {
+        const logs = [
+          {
+            time: "Today 11:42 AM",
+            user: "OFF-UK-CDO-DEHRADUN",
+            action: "Approved farmer registration FRM-UK-2026-009814",
+            ip: "192.168.1.42",
+            type: "approval",
+          },
+          {
+            time: "Today 10:18 AM",
+            user: "OFF-UK-CDO-DEHRADUN",
+            action: "Generated Scheme Disbursement Report — Almora Q1 2026",
+            ip: "192.168.1.42",
+            type: "report",
+          },
+          {
+            time: "Today 09:55 AM",
+            user: "OFF-UK-BLK-HAWALBAGH",
+            action: "Updated distribution order ORD-2026-0481",
+            ip: "10.0.2.14",
+            type: "update",
+          },
+          {
+            time: "Yesterday 4:30 PM",
+            user: "OFF-UK-CDO-DEHRADUN",
+            action: "Resolved grievance GRV-2026-1019",
+            ip: "192.168.1.42",
+            type: "resolve",
+          },
+          {
+            time: "Yesterday 3:12 PM",
+            user: "SYSTEM",
+            action: "Auto-escalated GRV-2026-0997 to Joint Director",
+            ip: "—",
+            type: "system",
+          },
+          {
+            time: "Yesterday 1:45 PM",
+            user: "OFF-UK-BLK-TARIKHET",
+            action: "Scheduled training — Soil Health (25 Mar 2026)",
+            ip: "10.0.3.22",
+            type: "schedule",
+          },
+          {
+            time: "20 Mar 2026",
+            user: "OFF-UK-CDO-DEHRADUN",
+            action: "Sent circular CIRC-2026-041 to All Farmers — Almora",
+            ip: "192.168.1.42",
+            type: "circular",
+          },
+          {
+            time: "20 Mar 2026",
+            user: "OFF-UK-BLK-ALMORA",
+            action:
+              "Bulk approved 8 farmer registrations (FRM-2026-009800–09808)",
+            ip: "10.0.1.8",
+            type: "approval",
+          },
+          {
+            time: "19 Mar 2026",
+            user: "SYSTEM",
+            action: "Auto-generated Monthly Analytics Report — February 2026",
+            ip: "—",
+            type: "system",
+          },
+          {
+            time: "19 Mar 2026",
+            user: "OFF-UK-CDO-DEHRADUN",
+            action: "Login — Session started",
+            ip: "192.168.1.42",
+            type: "login",
+          },
+          {
+            time: "18 Mar 2026",
+            user: "OFF-UK-CDO-DEHRADUN",
+            action:
+              "Rejected farmer registration FRM-UK-2026-009791 (incomplete docs)",
+            ip: "192.168.1.42",
+            type: "reject",
+          },
+          {
+            time: "18 Mar 2026",
+            user: "OFF-UK-BLK-DWARAHAT",
+            action: "Updated crop advisory for Dwarahat block — Rabi 2026",
+            ip: "10.0.4.11",
+            type: "update",
+          },
+        ];
+
+        const typeColor = {
+          approval: "#22c55e",
+          report: "#3b82f6",
+          update: "#8b5cf6",
+          resolve: "#10b981",
+          system: "#94a3b8",
+          schedule: "#f59e0b",
+          circular: "#f97316",
+          login: "#06b6d4",
+          reject: "#ef4444",
+        };
+
+        const rows = logs
+          .map(
+            (l) => `
+    <tr style="border-bottom:1px solid rgba(255,255,255,.06)">
+      <td style="padding:8px 10px;font-size:10.5px;color:rgba(255,255,255,.45);white-space:nowrap">${l.time}</td>
+      <td style="padding:8px 10px;font-size:11px;color:#4ade80;font-weight:600;white-space:nowrap">${l.user}</td>
+      <td style="padding:8px 10px;font-size:11.5px;color:rgba(255,255,255,.8)">${l.action}</td>
+      <td style="padding:8px 10px;font-size:10.5px;color:rgba(255,255,255,.4)">${l.ip}</td>
+      <td style="padding:8px 10px">
+        <span style="background:${typeColor[l.type]}22;color:${typeColor[l.type]};font-size:9.5px;font-weight:700;padding:2px 8px;border-radius:20px;text-transform:capitalize;white-space:nowrap">${l.type}</span>
+      </td>
+    </tr>`,
+          )
+          .join("");
+
+        const body = `
+    <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap">
+      <input placeholder="🔍  Search logs…" style="flex:1;min-width:180px;background:#0f2318;border:1.5px solid rgba(255,255,255,.12);border-radius:8px;padding:8px 12px;color:rgba(255,255,255,.8);font-size:12px;font-family:'DM Sans',sans-serif;outline:none">
+      <select style="background:#0f2318;border:1.5px solid rgba(255,255,255,.12);border-radius:8px;padding:8px 12px;color:rgba(255,255,255,.7);font-size:12px;font-family:'DM Sans',sans-serif;outline:none">
+        <option>All Types</option><option>Approval</option><option>Report</option><option>Resolve</option><option>Circular</option><option>System</option>
+      </select>
+      <button onclick="showToast('📥 Audit log exported as CSV')" style="background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.12);color:rgba(255,255,255,.7);font-size:12px;font-weight:700;padding:8px 16px;border-radius:8px;cursor:pointer;font-family:'DM Sans',sans-serif">⬇ Export CSV</button>
+    </div>
+    <div style="overflow-x:auto">
+      <table style="width:100%;border-collapse:collapse;font-size:12px">
+        <thead>
+          <tr style="background:rgba(255,255,255,.06);color:rgba(255,255,255,.45);font-size:10px;text-transform:uppercase;letter-spacing:.06em">
+            <th style="padding:8px 10px;text-align:left;white-space:nowrap">Timestamp</th>
+            <th style="padding:8px 10px;text-align:left;white-space:nowrap">User</th>
+            <th style="padding:8px 10px;text-align:left">Action</th>
+            <th style="padding:8px 10px;text-align:left">IP Address</th>
+            <th style="padding:8px 10px;text-align:left">Type</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+    <div style="font-size:10.5px;color:rgba(255,255,255,.3);margin-top:10px;text-align:right">Showing last 12 entries · Logs retained for 90 days · All actions are immutably recorded</div>`;
+
+        officialOverlay(
+          "ovAuditLogs",
+          "🔍 Audit Logs",
+          "System activity log — Official Portal",
+          body,
+          `<div style="display:flex;justify-content:flex-end"><button onclick="document.getElementById('ovAuditLogs').remove()" style="background:rgba(255,255,255,.08);border:none;color:rgba(255,255,255,.7);font-size:12.5px;font-weight:700;padding:9px 20px;border-radius:20px;cursor:pointer;font-family:'DM Sans',sans-serif">Close</button></div>`,
+        );
       }
     </script>
   </body>
