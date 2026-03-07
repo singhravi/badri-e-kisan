@@ -1708,39 +1708,106 @@
           </div>
           <div class="footer-col">
             <h4>Modules</h4>
-            <a href="#">Farmer Management (FRM)</a>
-            <a href="#">Farmer ID System</a>
-            <a href="#">Nursery Management</a>
-            <a href="#">Distribution System</a>
-            <a href="#">Digital Market</a>
-            <a href="#">Smart Agriculture</a>
-            <a href="#">Capacity Building</a>
+            <a
+              href="javascript:void(0)"
+              onclick="
+                scrollToSection('modules');
+                openModuleDetail('frm');
+              "
+              >Farmer Management (FRM)</a
+            >
+            <a
+              href="javascript:void(0)"
+              onclick="
+                scrollToSection('modules');
+                openModuleDetail('farmerid');
+              "
+              >Farmer ID System</a
+            >
+            <a
+              href="javascript:void(0)"
+              onclick="
+                scrollToSection('modules');
+                openModuleDetail('nursery');
+              "
+              >Nursery Management</a
+            >
+            <a
+              href="javascript:void(0)"
+              onclick="
+                scrollToSection('modules');
+                openModuleDetail('distribution');
+              "
+              >Distribution System</a
+            >
+            <a
+              href="javascript:void(0)"
+              onclick="
+                scrollToSection('modules');
+                openModuleDetail('market');
+              "
+              >Digital Market</a
+            >
+            <a
+              href="javascript:void(0)"
+              onclick="
+                scrollToSection('modules');
+                openModuleDetail('smartag');
+              "
+              >Smart Agriculture</a
+            >
+            <a
+              href="javascript:void(0)"
+              onclick="
+                scrollToSection('modules');
+                openModuleDetail('capacity');
+              "
+              >Capacity Building</a
+            >
           </div>
           <div class="footer-col">
             <h4>Quick Links</h4>
-            <a href="#">Farmer Login</a>
-            <a href="#">New Registration</a>
-            <a href="#">Aadhaar Linking</a>
-            <a href="#">Market Prices</a>
-            <a href="#">Training Portal</a>
-            <a href="#">Download App</a>
-            <a href="#">Grievance Redressal</a>
+            <a href="javascript:void(0)" onclick="openAuthModal()"
+              >Farmer Login</a
+            >
+            <a href="javascript:void(0)" onclick="openRegSelector()"
+              >New Registration</a
+            >
+            <a href="javascript:void(0)" onclick="openInfoModal('aadhaar')"
+              >Aadhaar Linking</a
+            >
+            <a href="javascript:void(0)" onclick="openInfoModal('marketprices')"
+              >Market Prices</a
+            >
+            <a href="javascript:void(0)" onclick="openInfoModal('training')"
+              >Training Portal</a
+            >
+            <a href="javascript:void(0)" onclick="openInfoModal('app')"
+              >Download App</a
+            >
+            <a href="javascript:void(0)" onclick="openInfoModal('grievance')"
+              >Grievance Redressal</a
+            >
           </div>
           <div class="footer-col">
             <h4>Support</h4>
-            <a href="#">Helpline: 1800-XXX-XXXX</a>
-            <a href="#"
-              ><span
-                class="__cf_email__"
-                data-cfemail="cba0a2b8aaa58bbea0e5aca4bde5a2a5"
-                >[email&#160;protected]</span
-              ></a
+            <a href="tel:18001804211">📞 Helpline: 1800-180-4211</a>
+            <a href="mailto:support@badrikisan.uk.gov.in"
+              >✉ support@badrikisan.uk.gov.in</a
             >
-            <a href="#">FAQs</a>
-            <a href="#">User Manual (PDF)</a>
-            <a href="#">Screen Reader Access</a>
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms of Service</a>
+            <a href="javascript:void(0)" onclick="openInfoModal('faq')">FAQs</a>
+            <a href="javascript:void(0)" onclick="openInfoModal('manual')"
+              >User Manual (PDF)</a
+            >
+            <a href="javascript:void(0)" onclick="openInfoModal('a11y')"
+              >Screen Reader Access</a
+            >
+            <a href="javascript:void(0)" onclick="openInfoModal('privacy')"
+              >Privacy Policy</a
+            >
+            <a href="javascript:void(0)" onclick="openInfoModal('terms')"
+              >Terms of Service</a
+            >
           </div>
         </div>
         <div class="footer-bottom">
@@ -1748,10 +1815,37 @@
             >© 2026 Government of Uttarakhand, Department of Agriculture. All
             rights reserved.</span
           >
-          <span
-            >Last Updated: March 2026 · Website Policy · Disclaimer ·
-            Accessibility Statement</span
-          >
+          <span>
+            <a
+              onclick="openInfoModal('policy')"
+              style="
+                color: rgba(255, 255, 255, 0.5);
+                cursor: pointer;
+                text-decoration: none;
+              "
+              >Website Policy</a
+            >
+            ·
+            <a
+              onclick="openInfoModal('disclaimer')"
+              style="
+                color: rgba(255, 255, 255, 0.5);
+                cursor: pointer;
+                text-decoration: none;
+              "
+              >Disclaimer</a
+            >
+            ·
+            <a
+              onclick="openInfoModal('a11y')"
+              style="
+                color: rgba(255, 255, 255, 0.5);
+                cursor: pointer;
+                text-decoration: none;
+              "
+              >Accessibility Statement</a
+            >
+          </span>
         </div>
       </div>
     </footer>
@@ -1784,6 +1878,10 @@
       </button>
     </div>
 
+    <script
+      data-cfasync="false"
+      src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"
+    ></script>
     <script
       data-cfasync="false"
       src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"
@@ -7731,6 +7829,1446 @@
         <button class="auth-action-btn ghost" onclick="closeAuthModal()">Close</button>
       </div>
     </div>`;
+      }
+    </script>
+
+    <!-- ═══════════════════════════════════════════
+     INFO MODAL — FAQs, Privacy, Terms, etc.
+═══════════════════════════════════════════ -->
+    <style>
+      #infoModal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 25000;
+        background: rgba(8, 20, 12, 0.82);
+        backdrop-filter: blur(8px);
+        align-items: center;
+        justify-content: center;
+        padding: 20px 16px;
+        overflow-y: auto;
+      }
+      #infoModal.open {
+        display: flex;
+        animation: authFadeIn 0.25s ease;
+      }
+      .info-box {
+        background: #fff;
+        border-radius: 20px;
+        width: 100%;
+        max-width: 680px;
+        box-shadow: 0 32px 80px rgba(0, 0, 0, 0.4);
+        overflow: hidden;
+        margin: auto;
+        animation: authPop 0.3s cubic-bezier(0.34, 1.4, 0.64, 1);
+      }
+      .info-hdr {
+        background: linear-gradient(135deg, #1a4a2e, #2d7a4f);
+        padding: 20px 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .info-hdr-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .info-hdr-ico {
+        font-size: 26px;
+      }
+      .info-hdr-title {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 20px;
+        font-weight: 700;
+        color: #fff;
+      }
+      .info-hdr-sub {
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.6);
+        margin-top: 2px;
+      }
+      .info-close {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.12);
+        border: none;
+        color: #fff;
+        font-size: 16px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.2s;
+      }
+      .info-close:hover {
+        background: rgba(255, 255, 255, 0.25);
+      }
+      .info-body {
+        padding: 24px 26px;
+        max-height: 72vh;
+        overflow-y: auto;
+        font-size: 13.5px;
+        color: #2a3a2a;
+        line-height: 1.75;
+      }
+      .info-body h3 {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 17px;
+        font-weight: 700;
+        color: #1a4a2e;
+        margin: 18px 0 6px;
+        border-bottom: 1.5px solid #e0ece5;
+        padding-bottom: 6px;
+      }
+      .info-body h3:first-child {
+        margin-top: 0;
+      }
+      .info-body p {
+        margin: 0 0 10px;
+      }
+      .info-body ul {
+        margin: 4px 0 12px 18px;
+      }
+      .info-body li {
+        margin-bottom: 5px;
+      }
+      .info-body strong {
+        color: #1a4a2e;
+      }
+      .info-ftr {
+        padding: 14px 26px;
+        background: #f8fdf9;
+        border-top: 1px solid #e0ece5;
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+      }
+      .info-ftr-btn {
+        padding: 10px 22px;
+        border-radius: 20px;
+        font-family: "DM Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        cursor: pointer;
+        border: none;
+        transition: all 0.2s;
+      }
+      .info-ftr-btn.primary {
+        background: #e8860a;
+        color: #fff;
+      }
+      .info-ftr-btn.primary:hover {
+        background: #ff6f00;
+      }
+      .info-ftr-btn.ghost {
+        background: #f0f5f0;
+        color: #1a4a2e;
+        border: 1.5px solid #cde3d4;
+      }
+
+      /* App download card */
+      .app-stores {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin: 14px 0;
+      }
+      .app-store-btn {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 20px;
+        border: 1.5px solid #cde3d4;
+        border-radius: 12px;
+        background: #f5faf7;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-decoration: none;
+      }
+      .app-store-btn:hover {
+        border-color: #2d7a4f;
+        background: #eaf5ee;
+        transform: translateY(-2px);
+      }
+      .app-store-ico {
+        font-size: 28px;
+      }
+      .app-store-text div:first-child {
+        font-size: 10px;
+        color: #6b8f6b;
+      }
+      .app-store-text div:last-child {
+        font-size: 14px;
+        font-weight: 700;
+        color: #1a4a2e;
+      }
+
+      /* FAQ accordion */
+      .faq-item {
+        border: 1.5px solid #e0ece5;
+        border-radius: 10px;
+        margin-bottom: 8px;
+        overflow: hidden;
+      }
+      .faq-q {
+        padding: 12px 16px;
+        font-weight: 700;
+        font-size: 13px;
+        color: #1a4a2e;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #fff;
+        transition: background 0.2s;
+      }
+      .faq-q:hover {
+        background: #f5faf7;
+      }
+      .faq-q .faq-arrow {
+        font-size: 12px;
+        color: #6b8f6b;
+        transition: transform 0.25s;
+      }
+      .faq-q.open .faq-arrow {
+        transform: rotate(180deg);
+      }
+      .faq-a {
+        display: none;
+        padding: 0 16px 12px;
+        font-size: 12.5px;
+        color: #3d5a3d;
+        line-height: 1.7;
+        background: #fafcfa;
+      }
+      .faq-a.open {
+        display: block;
+      }
+
+      /* Aadhaar linking steps */
+      .steps-list {
+        counter-reset: steps;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      .steps-list li {
+        counter-increment: steps;
+        display: flex;
+        gap: 14px;
+        margin-bottom: 14px;
+        align-items: flex-start;
+      }
+      .steps-list li::before {
+        content: counter(steps);
+        min-width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: #1a4a2e;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        font-weight: 700;
+        flex-shrink: 0;
+        margin-top: 2px;
+      }
+    </style>
+
+    <div id="infoModal">
+      <div class="info-box">
+        <div class="info-hdr">
+          <div class="info-hdr-left">
+            <div class="info-hdr-ico" id="infoModalIco">📄</div>
+            <div>
+              <div class="info-hdr-title" id="infoModalTitle">Information</div>
+              <div class="info-hdr-sub" id="infoModalSub">
+                BADRI-e-Kisan Portal
+              </div>
+            </div>
+          </div>
+          <button class="info-close" onclick="closeInfoModal()">✕</button>
+        </div>
+        <div class="info-body" id="infoModalBody"></div>
+        <div class="info-ftr">
+          <button class="info-ftr-btn ghost" onclick="closeInfoModal()">
+            Close
+          </button>
+          <button
+            class="info-ftr-btn primary"
+            id="infoModalAction"
+            onclick="closeInfoModal()"
+          >
+            Got it
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      /* ═══════════════════════════════════
+   FOOTER LINK HELPERS
+═══════════════════════════════════ */
+
+      /* Smooth scroll to section */
+      function scrollToSection(id) {
+        const el = document.getElementById(id);
+        if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+
+      /* Pre-select a role in auth modal without opening (called after open) */
+      function authSelectRoleByKey(key) {
+        AUTH_ROLE = key;
+        document.querySelectorAll(".auth-role-card").forEach((c) => {
+          c.classList.toggle("selected", c.dataset.role === key);
+        });
+        const btn = document.getElementById("authRoleNext");
+        if (btn) {
+          btn.disabled = false;
+          btn.style.opacity = "1";
+        }
+      }
+
+      /* ═══════════════════════════════════
+   INFO MODAL ENGINE
+═══════════════════════════════════ */
+      const INFO_CONTENT = {
+        faq: {
+          ico: "❓",
+          title: "Frequently Asked Questions",
+          sub: "BADRI-e-Kisan Help Centre",
+          actionLabel: "Visit Helpline",
+          action: () => {
+            closeInfoModal();
+            window.open("tel:18001804211");
+          },
+          body: () => {
+            const faqs = [
+              {
+                q: "How do I register as a farmer on BADRI-e-Kisan?",
+                a: 'Click "Get Started" or "Farmer Registration" on the home page. You will need your Aadhaar number (linked to your mobile), land records (Khasra/Khatauni), bank passbook, and a mobile number. The 6-step registration takes approximately 10–15 minutes.',
+              },
+              {
+                q: "What is a Farmer ID and how is it issued?",
+                a: "A Farmer ID (e.g. FRM-UK-2026-XXXXXX) is a unique digital identity assigned to every registered farmer on the portal. It is generated instantly upon successful registration and Aadhaar OTP verification.",
+              },
+              {
+                q: "Which government schemes can I apply for through the portal?",
+                a: "You can apply for PM Kisan Samman Nidhi, PM Fasal Bima Yojana (PMFBY), Kisan Credit Card (KCC), PM Krishi Sinchai Yojana, PKVY (Organic Farming), and Soil Health Card schemes directly through the portal's Schemes panel in your dashboard.",
+              },
+              {
+                q: "How does Aadhaar linking work?",
+                a: 'Navigate to your Farmer Dashboard → Schemes panel and click "Link Aadhaar". Enter your 12-digit Aadhaar number. An OTP will be sent to your Aadhaar-registered mobile. Verify the OTP to complete linking. This enables direct benefit transfers to your bank account.',
+              },
+              {
+                q: "Is my data safe on the portal?",
+                a: "Yes. All data is protected by AES-256 encryption at rest, TLS 1.3 in transit, and stored on Government of Uttarakhand data servers. Aadhaar data is processed via the official UIDAI API and is never stored on portal servers.",
+              },
+              {
+                q: "How can nurseries register on the platform?",
+                a: 'Click "Nursery Registration" on the home page. You will need the owner\'s Aadhaar, nursery land documents, photos of nursery premises, and Horticulture Department registration (if any). A physical site inspection by department officials will be scheduled within 15 working days of submission.',
+              },
+              {
+                q: "How do market stakeholders connect with farmers?",
+                a: "Registered market stakeholders can access the Market Dashboard → Connect Farmers panel, search by crop and district, and initiate a connection request. All transactions are recorded on the blockchain for transparency.",
+              },
+              {
+                q: "What do I do if my grievance is not resolved?",
+                a: "If your grievance is not resolved within 7 working days, it is automatically escalated to the District Agriculture Officer. You can also contact the helpline at 1800-180-4211 (toll-free, 9am–6pm, Mon–Sat) or email support@badrikisan.uk.gov.in.",
+              },
+              {
+                q: "Can I use the portal in Hindi?",
+                a: 'Yes. Click the "हिंदी" button at the top of the page. The portal supports both English and Hindi. All government forms and notifications are available in bilingual format.',
+              },
+              {
+                q: "Is there a mobile app for BADRI-e-Kisan?",
+                a: 'Yes. The BADRI-e-Kisan app is available for Android (Play Store) and iOS (App Store). Search "BADRI-e-Kisan" or scan the QR code in the Download App section. The app works in low-bandwidth areas and supports offline data entry.',
+              },
+            ];
+            return faqs
+              .map(
+                (f, i) => `
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this,${i})"><span>${f.q}</span><span class="faq-arrow">▼</span></div>
+          <div class="faq-a" id="faqA${i}">${f.a}</div>
+        </div>`,
+              )
+              .join("");
+          },
+        },
+
+        manual: {
+          ico: "📖",
+          title: "User Manual",
+          sub: "BADRI-e-Kisan Portal Documentation",
+          actionLabel: "Download PDF",
+          action: () => {
+            closeInfoModal();
+            showToast("📥 Downloading User Manual PDF…");
+          },
+          body: () => `
+      <h3>📘 Portal User Manual — Version 2.1 (March 2026)</h3>
+      <p>This manual covers all features of the BADRI-e-Kisan Unified Digital Portal for Uttarakhand's agricultural ecosystem.</p>
+      <h3>1. Getting Started</h3>
+      <ul>
+        <li><strong>Registration:</strong> Click "Get Started" and select your role (Farmer / Nursery / Official / Market Stakeholder). Complete all steps with valid documents.</li>
+        <li><strong>Login:</strong> Use your assigned ID (e.g. FRM-UK-XXXX) and password, or use OTP-based login with your registered mobile number.</li>
+        <li><strong>Dashboard Access:</strong> After login, your role-specific dashboard loads automatically with relevant modules, data, and quick actions.</li>
+      </ul>
+      <h3>2. Farmer Module (FRM)</h3>
+      <ul>
+        <li>View and update crop registrations, plot details, and land records</li>
+        <li>Apply for subsidies and government schemes</li>
+        <li>Access AI-powered crop advisory, pest alerts, and weather forecasts</li>
+        <li>View live market prices and sell recommendations</li>
+        <li>File and track grievances against officials or services</li>
+        <li>Soil Health Card — view pH, N/P/K levels, and AI recommendations per plot</li>
+      </ul>
+      <h3>3. Nursery Module</h3>
+      <ul>
+        <li>Manage species inventory, batch production, and dispatch records</li>
+        <li>Quality inspection reports and pass/fail tracking per batch</li>
+        <li>View and manage incoming distribution orders from officials</li>
+        <li>Upload certification documents and renewal applications</li>
+      </ul>
+      <h3>4. Official Module</h3>
+      <ul>
+        <li>Access district-level farmer registry with search and filter</li>
+        <li>Approve pending scheme applications and subsidy disbursements</li>
+        <li>View analytics, reports, and block-wise coverage data</li>
+        <li>Schedule and manage farmer training camps</li>
+        <li>Resolve and escalate farmer grievances</li>
+      </ul>
+      <h3>5. Market Stakeholder Module</h3>
+      <ul>
+        <li>View real-time mandi prices across districts</li>
+        <li>Connect directly with farmers by crop and location</li>
+        <li>All transactions recorded on immutable blockchain ledger</li>
+        <li>Download transaction reports and supply chain tracking</li>
+      </ul>
+      <h3>6. Technical Support</h3>
+      <p>For technical issues, contact the helpline at <strong>1800-180-4211</strong> (toll-free) or email <strong>support@badrikisan.uk.gov.in</strong>. Support hours: Mon–Sat, 9:00 AM – 6:00 PM IST.</p>`,
+        },
+
+        aadhaar: {
+          ico: "🪪",
+          title: "Aadhaar Linking Guide",
+          sub: "Link your Aadhaar for Direct Benefit Transfer",
+          actionLabel: "Link Now",
+          action: () => {
+            closeInfoModal();
+            openDashboard("farmer");
+          },
+          body: () => `
+      <h3>Why Link Aadhaar?</h3>
+      <p>Aadhaar linking is mandatory for receiving government subsidies and scheme benefits through Direct Benefit Transfer (DBT). It ensures transparency and eliminates middlemen.</p>
+      <h3>Step-by-Step Guide</h3>
+      <ol class="steps-list">
+        <li><strong>Login to your Dashboard</strong> — Use your Farmer ID and password, or OTP login.</li>
+        <li><strong>Go to Schemes Panel</strong> — Click "Schemes & Subsidies" in the left sidebar of your Farmer Dashboard.</li>
+        <li><strong>Click "Link Aadhaar"</strong> — You will find this button at the top of the Schemes panel.</li>
+        <li><strong>Enter 12-digit Aadhaar Number</strong> — Ensure the number matches your physical Aadhaar card exactly.</li>
+        <li><strong>OTP Verification</strong> — An OTP will be sent to the mobile number registered with your Aadhaar. Enter it within 5 minutes.</li>
+        <li><strong>Bank Account Seeding</strong> — After Aadhaar linking, your bank account will be automatically seeded for DBT. This takes 1–2 working days.</li>
+        <li><strong>Confirmation</strong> — You will receive an SMS confirmation once Aadhaar is successfully linked.</li>
+      </ol>
+      <h3>Documents Required</h3>
+      <ul>
+        <li>Aadhaar Card (12-digit number)</li>
+        <li>Mobile number registered with Aadhaar (for OTP)</li>
+        <li>Bank account linked to your registered mobile</li>
+      </ul>
+      <h3>Common Issues</h3>
+      <ul>
+        <li><strong>OTP not received:</strong> Ensure your Aadhaar-linked mobile has network. Wait 2 minutes and use "Resend OTP".</li>
+        <li><strong>Aadhaar mismatch:</strong> Contact nearest Common Service Centre (CSC) or Aadhaar enrolment centre for corrections.</li>
+        <li><strong>Bank seeding failed:</strong> Verify IFSC code and account number in your profile. Contact helpline 1800-180-4211.</li>
+      </ul>`,
+        },
+
+        app: {
+          ico: "📱",
+          title: "Download BADRI-e-Kisan App",
+          sub: "Available on Android & iOS",
+          actionLabel: "Open Play Store",
+          action: () => {
+            closeInfoModal();
+            showToast("🔗 Opening Play Store…");
+          },
+          body: () => `
+      <h3>📱 Mobile App for Farmers & Stakeholders</h3>
+      <p>The BADRI-e-Kisan mobile app brings all portal features to your smartphone. Works in low-bandwidth areas and supports offline data entry with background sync.</p>
+      <div class="app-stores">
+        <a class="app-store-btn" onclick="showToast('Opening Google Play Store…')">
+          <div class="app-store-ico">🤖</div>
+          <div class="app-store-text"><div>Get it on</div><div>Google Play</div></div>
+        </a>
+        <a class="app-store-btn" onclick="showToast('Opening Apple App Store…')">
+          <div class="app-store-ico">🍎</div>
+          <div class="app-store-text"><div>Download on the</div><div>App Store</div></div>
+        </a>
+      </div>
+      <h3>App Features</h3>
+      <ul>
+        <li>📊 Full dashboard access for all 4 user roles</li>
+        <li>📷 AI crop disease detection via camera (take a photo of your crop)</li>
+        <li>🌦️ Offline weather alerts and 7-day forecasts</li>
+        <li>💬 Audio advisory in Hindi (voice-guided navigation for low-literacy users)</li>
+        <li>📍 GPS-based field mapping and soil health card download</li>
+        <li>🔔 Push notifications for scheme approvals and market price alerts</li>
+        <li>📤 Offline data entry synced automatically when connectivity is restored</li>
+      </ul>
+      <h3>System Requirements</h3>
+      <ul>
+        <li><strong>Android:</strong> Version 8.0 or above, 50MB free storage</li>
+        <li><strong>iOS:</strong> Version 13.0 or above, 60MB free storage</li>
+        <li><strong>Internet:</strong> 2G minimum for sync; full features on 4G</li>
+      </ul>
+      <h3>QR Code</h3>
+      <div style="background:#f5faf7;border:1.5px solid #d0eadb;border-radius:12px;padding:16px;text-align:center;font-size:13px;color:#3d5a3d">
+        <div style="font-size:48px;margin-bottom:8px">▣</div>
+        <strong>Scan to download</strong><br>
+        <span style="font-size:11px;color:#6b8f6b">Point your camera at this QR code to open the app store listing</span>
+      </div>`,
+        },
+
+        privacy: {
+          ico: "🔒",
+          title: "Privacy Policy",
+          sub: "Last Updated: March 2026",
+          actionLabel: "Accept & Close",
+          action: () => closeInfoModal(),
+          body: () => `
+      <h3>1. Introduction</h3>
+      <p>The Government of Uttarakhand, Department of Agriculture ("we", "the Department") is committed to protecting the personal data of all users of the BADRI-e-Kisan Unified Digital Portal ("the Portal") in accordance with the <strong>Digital Personal Data Protection Act, 2023</strong> and applicable Government of India guidelines.</p>
+      <h3>2. Data We Collect</h3>
+      <ul>
+        <li><strong>Identity Data:</strong> Name, date of birth, gender, Aadhaar number (tokenised), PAN card number</li>
+        <li><strong>Contact Data:</strong> Mobile number, email address, village/district address</li>
+        <li><strong>Land & Farm Data:</strong> Land area, khasra number, crop details, soil health data</li>
+        <li><strong>Financial Data:</strong> Bank account number (masked), IFSC code, KCC and loan information</li>
+        <li><strong>Technical Data:</strong> IP address, browser type, device ID, session logs (for security auditing only)</li>
+      </ul>
+      <h3>3. How We Use Your Data</h3>
+      <ul>
+        <li>Delivery of government scheme benefits and subsidies via DBT</li>
+        <li>Issuance and management of Farmer ID and other portal IDs</li>
+        <li>AI-powered crop advisory and soil health recommendations</li>
+        <li>Grievance tracking and resolution</li>
+        <li>Statistical reporting and policy planning by the Department</li>
+      </ul>
+      <h3>4. Data Sharing</h3>
+      <p>Your data is shared <strong>only</strong> with: (a) authorised Government of Uttarakhand departments, (b) Central Government for DBT and scheme delivery (e.g. PFMS, PM-Kisan), and (c) UIDAI for Aadhaar verification. We do not sell or share data with private entities for commercial purposes.</p>
+      <h3>5. Data Security</h3>
+      <p>All data is encrypted using <strong>AES-256</strong> at rest and <strong>TLS 1.3</strong> in transit. Aadhaar numbers are tokenised through UIDAI APIs and are never stored on portal servers. The portal is monitored 24×7 by a Security Operations Centre (SOC).</p>
+      <h3>6. Your Rights</h3>
+      <ul>
+        <li>Right to access your personal data stored on the portal</li>
+        <li>Right to correction of inaccurate data</li>
+        <li>Right to erasure (subject to legal retention requirements)</li>
+        <li>Right to grievance redressal — contact the Data Protection Officer at dpo@badrikisan.uk.gov.in</li>
+      </ul>
+      <h3>7. Contact</h3>
+      <p><strong>Data Protection Officer:</strong> Department of Agriculture, Government of Uttarakhand, Subhash Road, Dehradun – 248001. Email: dpo@badrikisan.uk.gov.in. Phone: 1800-180-4211.</p>`,
+        },
+
+        terms: {
+          ico: "📜",
+          title: "Terms of Service",
+          sub: "BADRI-e-Kisan Portal — Effective March 2026",
+          actionLabel: "Accept Terms",
+          action: () => closeInfoModal(),
+          body: () => `
+      <h3>1. Acceptance of Terms</h3>
+      <p>By accessing and using the BADRI-e-Kisan Unified Digital Portal, you agree to be bound by these Terms of Service. If you do not agree to these terms, you must not use the Portal.</p>
+      <h3>2. Eligibility</h3>
+      <ul>
+        <li><strong>Farmers:</strong> Must be a resident of Uttarakhand with valid land records and Aadhaar card</li>
+        <li><strong>Nursery Workers:</strong> Must hold or be applying for a nursery registration in Uttarakhand</li>
+        <li><strong>Officials:</strong> Must be a serving employee of the Government of Uttarakhand with a valid employee ID</li>
+        <li><strong>Market Stakeholders:</strong> Must hold a valid trade licence or business registration in Uttarakhand</li>
+      </ul>
+      <h3>3. User Responsibilities</h3>
+      <ul>
+        <li>Provide accurate and complete information during registration</li>
+        <li>Keep your login credentials confidential and secure</li>
+        <li>Not share your Farmer ID or Official ID with any third party</li>
+        <li>Not attempt to misuse, tamper with, or gain unauthorised access to the Portal</li>
+        <li>Not upload false or misleading documents</li>
+      </ul>
+      <h3>4. Government Official Responsibilities</h3>
+      <p>Officials registered on the portal must use portal access only for official duties. Any misuse of data access privileges will be subject to disciplinary action under the Government Servants Conduct Rules and relevant provisions of the IT Act, 2000.</p>
+      <h3>5. Intellectual Property</h3>
+      <p>All content, design, software, and data on the Portal are the property of the Government of Uttarakhand and are protected under the Copyright Act, 1957. Unauthorised reproduction or distribution is prohibited.</p>
+      <h3>6. Limitation of Liability</h3>
+      <p>The Department shall not be liable for losses arising from: (a) system downtime or technical failures, (b) incorrect information provided by the user, (c) actions of third-party service providers, or (d) force majeure events.</p>
+      <h3>7. Governing Law</h3>
+      <p>These Terms are governed by the laws of India. Any disputes shall be subject to the exclusive jurisdiction of courts in Dehradun, Uttarakhand.</p>
+      <h3>8. Amendments</h3>
+      <p>The Department reserves the right to amend these Terms at any time. Continued use of the Portal after amendments constitutes acceptance of the updated Terms.</p>`,
+        },
+
+        policy: {
+          ico: "🏛️",
+          title: "Website Policy",
+          sub: "Government of Uttarakhand Digital Guidelines",
+          actionLabel: "Understood",
+          action: () => closeInfoModal(),
+          body: () => `
+      <h3>Official Government Website</h3>
+      <p>This is the official portal of the <strong>Government of Uttarakhand, Department of Agriculture</strong>. Content published on this site is approved by the Department and is subject to the National Web Policy of the Government of India.</p>
+      <h3>Content Accuracy</h3>
+      <p>While every effort is made to ensure that information is accurate and up-to-date, the Department makes no warranty — expressed or implied — regarding the accuracy, completeness, or suitability of any information on this website. Users are advised to verify critical information with the concerned government office.</p>
+      <h3>External Links</h3>
+      <p>This portal may contain links to external websites for user convenience. The Department is not responsible for the content, accuracy, or availability of such external sites.</p>
+      <h3>Copyright</h3>
+      <p>© 2026 Government of Uttarakhand. All content, data, and software are the property of the Government of Uttarakhand unless otherwise stated.</p>
+      <h3>Technical Standards</h3>
+      <p>This website complies with: GIGW (Guidelines for Indian Government Websites) 2.0, WCAG 2.1 (Level AA) accessibility standards, and the National Open Standards Policy.</p>`,
+        },
+
+        disclaimer: {
+          ico: "⚠️",
+          title: "Disclaimer",
+          sub: "BADRI-e-Kisan Portal",
+          actionLabel: "Acknowledged",
+          action: () => closeInfoModal(),
+          body: () => `
+      <h3>General Disclaimer</h3>
+      <p>The information provided on the BADRI-e-Kisan portal is for general informational and administrative purposes only. The Government of Uttarakhand makes no representations or warranties of any kind, express or implied, about the completeness, accuracy, reliability, or suitability of the information for any purpose.</p>
+      <h3>Scheme Information</h3>
+      <p>Scheme eligibility, benefit amounts, and application procedures are subject to change based on Government of India and Government of Uttarakhand notifications. Users should verify the latest scheme guidelines from the respective ministry websites or their nearest Agriculture Extension Officer.</p>
+      <h3>AI Advisory</h3>
+      <p>The AI-powered crop advisory, pest detection, and soil health recommendations are indicative tools to assist farmers. They do not replace the advice of qualified agricultural scientists or field officers. The Department is not liable for crop losses or financial decisions made solely based on AI recommendations.</p>
+      <h3>Market Prices</h3>
+      <p>Market prices displayed on the portal are sourced from APMC mandi systems and are updated periodically. They are indicative and may differ from actual transaction prices. Users should verify current prices at their local mandi before making selling decisions.</p>
+      <h3>Blockchain Records</h3>
+      <p>Blockchain transaction records are immutable and final. Users are advised to review all transaction details carefully before confirmation. The Department is not liable for errors made by users during blockchain transactions.</p>`,
+        },
+
+        a11y: {
+          ico: "♿",
+          title: "Accessibility Statement",
+          sub: "BADRI-e-Kisan Portal — WCAG 2.1 Level AA",
+          actionLabel: "Close",
+          action: () => closeInfoModal(),
+          body: () => `
+      <h3>Our Commitment to Accessibility</h3>
+      <p>The Government of Uttarakhand is committed to ensuring digital accessibility for people with disabilities. We continually improve the user experience for everyone and apply the relevant accessibility standards.</p>
+      <h3>Conformance Status</h3>
+      <p>The BADRI-e-Kisan Portal aims to conform to the <strong>Web Content Accessibility Guidelines (WCAG) 2.1, Level AA</strong>. These guidelines explain how to make web content more accessible to people with disabilities.</p>
+      <h3>Accessibility Features</h3>
+      <ul>
+        <li><strong>Font Resizing:</strong> Use the A+ / A− buttons (bottom-right of screen) to increase or decrease font size</li>
+        <li><strong>High Contrast Mode:</strong> Click the ◑ button (bottom-right) to toggle high-contrast view for visually impaired users</li>
+        <li><strong>Keyboard Navigation:</strong> All interactive elements are keyboard accessible (Tab, Enter, Escape)</li>
+        <li><strong>Screen Reader:</strong> ARIA labels and semantic HTML are used throughout the portal. Compatible with NVDA, JAWS, and TalkBack</li>
+        <li><strong>Hindi Language Support:</strong> Full portal available in Hindi. Click "हिंदी" in the top bar</li>
+        <li><strong>Mobile App Audio Mode:</strong> The mobile app supports voice-guided navigation for low-literacy and visually impaired users</li>
+      </ul>
+      <h3>Known Limitations</h3>
+      <p>Some older PDF documents linked from this portal may not be fully accessible. We are working to remediate these. If you need an accessible version of any document, please contact support@badrikisan.uk.gov.in.</p>
+      <h3>Feedback</h3>
+      <p>We welcome your feedback on the accessibility of this portal. Please contact: <strong>Accessibility Coordinator</strong>, Department of Agriculture, Dehradun. Email: accessibility@badrikisan.uk.gov.in. Response within 5 working days.</p>`,
+        },
+      };
+
+      function openInfoModal(key) {
+        const content = INFO_CONTENT[key];
+        if (!content) return;
+        document.getElementById("infoModalIco").textContent = content.ico;
+        document.getElementById("infoModalTitle").textContent = content.title;
+        document.getElementById("infoModalSub").textContent = content.sub;
+        document.getElementById("infoModalBody").innerHTML = content.body();
+        const actionBtn = document.getElementById("infoModalAction");
+        actionBtn.textContent = content.actionLabel;
+        actionBtn.onclick = content.action || closeInfoModal;
+        document.getElementById("infoModal").classList.add("open");
+        document.body.style.overflow = "hidden";
+      }
+      function closeInfoModal() {
+        document.getElementById("infoModal").classList.remove("open");
+        document.body.style.overflow = "";
+      }
+      document.getElementById("infoModal").addEventListener("click", (e) => {
+        if (e.target === e.currentTarget) closeInfoModal();
+      });
+
+      /* ── FAQ accordion ── */
+      function toggleFaq(el, idx) {
+        const ans = document.getElementById("faqA" + idx);
+        if (!ans) return;
+        const isOpen = ans.classList.contains("open");
+        document
+          .querySelectorAll(".faq-a")
+          .forEach((a) => a.classList.remove("open"));
+        document
+          .querySelectorAll(".faq-q")
+          .forEach((q) => q.classList.remove("open"));
+        if (!isOpen) {
+          ans.classList.add("open");
+          el.classList.add("open");
+        }
+      }
+
+      /* ═══════════════════════════════════════════════════════
+   NEW REGISTRATION SELECTOR — shows all 4 role options
+═══════════════════════════════════════════════════════ */
+      function openRegSelector() {
+        const roles = [
+          {
+            key: "farmer",
+            ico: "👨‍🌾",
+            name: "Farmer",
+            nameHi: "किसान",
+            desc: "Register as a farmer to access subsidies, crop advisory, market prices and government schemes.",
+            color: "#22c55e",
+          },
+          {
+            key: "nursery",
+            ico: "🌱",
+            name: "Nursery Worker",
+            nameHi: "नर्सरी कर्मी",
+            desc: "Register your nursery to manage sapling stock, quality inspection and government distribution orders.",
+            color: "#4ade80",
+          },
+          {
+            key: "official",
+            ico: "🏛️",
+            name: "Government Official",
+            nameHi: "सरकारी अधिकारी",
+            desc: "Register as a state or district government official to manage farmer registrations, approvals and analytics.",
+            color: "#60a5fa",
+          },
+          {
+            key: "market",
+            ico: "🏪",
+            name: "Market Stakeholder",
+            nameHi: "बाजार हितधारक",
+            desc: "Register as a trader, FPO or mandi participant to connect with farmers and access blockchain market features.",
+            color: "#fbbf24",
+          },
+        ];
+
+        // Build a simple overlay
+        const overlay = document.createElement("div");
+        overlay.id = "regSelectorOverlay";
+        overlay.style.cssText =
+          "position:fixed;inset:0;z-index:26000;background:rgba(8,20,12,.85);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:20px;animation:authFadeIn .25s ease";
+        overlay.innerHTML = `
+    <div style="background:#fff;border-radius:20px;width:100%;max-width:640px;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,.4);animation:authPop .3s cubic-bezier(.34,1.4,.64,1)">
+      <div style="background:linear-gradient(135deg,#1a4a2e,#2d7a4f);padding:22px 24px;display:flex;align-items:center;justify-content:space-between">
+        <div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:#fff">✏️ New Registration</div>
+          <div style="font-size:11px;color:rgba(255,255,255,.6);margin-top:3px">Select your role to begin registration — नई पंजीकरण</div>
+        </div>
+        <button onclick="document.getElementById('regSelectorOverlay').remove();document.body.style.overflow=''" style="width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.12);border:none;color:#fff;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center">✕</button>
+      </div>
+      <div style="padding:22px 22px 18px">
+        <div style="font-size:12.5px;color:#6b8f6b;margin-bottom:16px">Choose the role that best describes you. You will be guided through a step-by-step registration process.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          ${roles
+            .map(
+              (r) => `
+            <div onclick="document.getElementById('regSelectorOverlay').remove();document.body.style.overflow='';openReg('${r.key}')"
+              style="border:2px solid #e0ece5;border-radius:14px;padding:16px 14px;cursor:pointer;transition:all .2s;background:#fff"
+              onmouseover="this.style.borderColor='${r.color}';this.style.background='#f8fffe';this.style.transform='translateY(-2px)'"
+              onmouseout="this.style.borderColor='#e0ece5';this.style.background='#fff';this.style.transform='translateY(0)'">
+              <div style="font-size:30px;margin-bottom:8px">${r.ico}</div>
+              <div style="font-size:13.5px;font-weight:700;color:#1a2e1a">${r.name}</div>
+              <div style="font-size:11px;color:#6b8f6b;font-family:'Tiro Devanagari Hindi',serif;margin-top:2px">${r.nameHi}</div>
+              <div style="font-size:11.5px;color:#3d5a3d;margin-top:8px;line-height:1.5">${r.desc}</div>
+            </div>`,
+            )
+            .join("")}
+        </div>
+        <div style="text-align:center;margin-top:14px;font-size:12px;color:#6b8f6b">Already registered? <a onclick="document.getElementById('regSelectorOverlay').remove();document.body.style.overflow='';openAuthModal()" style="color:#2d7a4f;font-weight:700;cursor:pointer">Login here →</a></div>
+      </div>
+    </div>`;
+        overlay.addEventListener("click", (e) => {
+          if (e.target === overlay) {
+            overlay.remove();
+            document.body.style.overflow = "";
+          }
+        });
+        document.body.appendChild(overlay);
+        document.body.style.overflow = "hidden";
+      }
+
+      /* ═══════════════════════════════════════════════════════
+   MODULE DETAIL MODAL
+═══════════════════════════════════════════════════════ */
+      const MODULE_DETAILS = {
+        frm: {
+          ico: "👥",
+          title: "Farmer Relationship Management (FRM)",
+          sub: "Comprehensive farmer lifecycle management",
+          color: "#22c55e",
+          sections: [
+            {
+              h: "Overview",
+              p: "The FRM module is the core of BADRI-e-Kisan — a centralised system that manages the complete digital lifecycle of every registered farmer in Uttarakhand, from onboarding to scheme delivery and grievance resolution.",
+            },
+            {
+              h: "Key Features",
+              list: [
+                "Unique Farmer ID generation with Aadhaar-linked verification",
+                "Complete farmer profile management (land, crops, family, bank)",
+                "Crop registration and plot-level data management",
+                "Real-time crop advisory and AI-powered recommendations",
+                "Integrated soil health card management",
+                "Historical transaction and scheme benefit records",
+                "Multi-language support: English and Hindi",
+              ],
+            },
+            {
+              h: "Who Uses This",
+              p: "Farmers register through this module using their Aadhaar and land records. District Agriculture Officers use it to manage their jurisdiction's farmer database. State-level officials use aggregated FRM data for policy planning.",
+            },
+            {
+              h: "Integration",
+              p: "FRM integrates with the Aadhaar e-KYC system (UIDAI), PFMS for DBT subsidy transfers, the Soil Health Card national portal, and the AI Advisory engine for personalised crop recommendations.",
+            },
+            {
+              h: "Get Started",
+              p: "Click Register as Farmer to enrol in the FRM module. You will need your Aadhaar number, land records (Khasra/Khatauni), and a bank passbook.",
+            },
+          ],
+          primaryBtn: "Register as Farmer",
+          primaryAction: () => {
+            closeInfoModal();
+            openReg("farmer");
+          },
+        },
+        farmerid: {
+          ico: "🪪",
+          title: "Farmer ID System",
+          sub: "Unique digital identity for every farmer",
+          color: "#f5a623",
+          sections: [
+            {
+              h: "What is a Farmer ID?",
+              p: "The Farmer ID (e.g. FRM-UK-2026-XXXXXX) is a unique, permanent digital identity assigned to every registered farmer on the BADRI-e-Kisan portal. It serves as a single reference number across all government schemes, subsidies, and agricultural services.",
+            },
+            {
+              h: "How It Is Generated",
+              list: [
+                "Farmer submits registration with valid Aadhaar and land records",
+                "Aadhaar OTP verification confirms the farmer's identity",
+                "System cross-checks against existing records to prevent duplicates",
+                "A unique 12-digit Farmer ID is generated and SMS'd to the farmer",
+                "A printable ID card is generated for offline use",
+              ],
+            },
+            {
+              h: "Uses of Farmer ID",
+              list: [
+                "Applying for PM Kisan, PMFBY and other central schemes",
+                "Accessing bank credit and Kisan Credit Card (KCC)",
+                "Tracking subsidy disbursements via Direct Benefit Transfer",
+                "Authenticating at Common Service Centres (CSCs)",
+                "Using the BADRI-e-Kisan mobile app",
+                "Receiving personalised SMS and voice advisory alerts",
+              ],
+            },
+            {
+              h: "Lost or Forgotten ID?",
+              p: 'Visit the nearest Common Service Centre (CSC) or Agriculture Extension Office with your Aadhaar card. Alternatively, use the "Forgot ID" feature on the login page — your ID will be sent to your registered mobile number.',
+            },
+          ],
+          primaryBtn: "Get My Farmer ID",
+          primaryAction: () => {
+            closeInfoModal();
+            openReg("farmer");
+          },
+        },
+        nursery: {
+          ico: "🌿",
+          title: "Nursery Management System",
+          sub: "End-to-end nursery lifecycle management",
+          color: "#4ade80",
+          sections: [
+            {
+              h: "Overview",
+              p: "The Nursery Management module provides a comprehensive digital platform for registered nurseries across Uttarakhand to manage their sapling stock, quality inspections, distribution orders, and certification processes.",
+            },
+            {
+              h: "Key Features",
+              list: [
+                "Real-time sapling inventory management by species and batch",
+                "Production tracking with batch-level quality inspection records",
+                "Digital dispatch management with farmer delivery confirmation",
+                "Horticulture Department certification and renewal management",
+                "Live dashboard showing stock availability for district planners",
+                "Species registry with over 280 varieties tracked on the platform",
+              ],
+            },
+            {
+              h: "Registration Process",
+              list: [
+                "Submit nursery registration with owner Aadhaar and land documents",
+                "Provide GPS location and upload nursery photos",
+                "Horticulture Department schedules physical site inspection (within 15 days)",
+                "Upon passing inspection, Nursery ID is issued",
+                "Access full Nursery Dashboard for operations management",
+              ],
+            },
+            {
+              h: "Government Integration",
+              p: "Registered nurseries receive distribution orders directly from district Agriculture and Forest departments. All dispatches are tracked digitally, and payment is processed via the portal's integrated payment system.",
+            },
+          ],
+          primaryBtn: "Register Nursery",
+          primaryAction: () => {
+            closeInfoModal();
+            openReg("nursery");
+          },
+        },
+        distribution: {
+          ico: "📦",
+          title: "Distribution Management System",
+          sub: "Tracking sapling and input distribution across Uttarakhand",
+          color: "#26a69a",
+          sections: [
+            {
+              h: "Overview",
+              p: "The Distribution Management System handles the end-to-end movement of agricultural inputs — saplings, seeds, fertilisers, and equipment — from government stores and nurseries to registered farmers across all 13 districts of Uttarakhand.",
+            },
+            {
+              h: "How It Works",
+              list: [
+                "District officials generate distribution orders based on scheme allocations and farmer demand",
+                "Nurseries and government depots receive orders digitally and prepare dispatch batches",
+                "Drivers and field workers confirm delivery using OTP-based digital receipts",
+                "Farmers receive SMS notifications and confirm receipt on the portal or mobile app",
+                "All distribution records are immutably logged for audit and transparency",
+              ],
+            },
+            {
+              h: "Key Metrics (Kharif 2025–26)",
+              list: [
+                "12,400 saplings dispatched to date across 13 districts",
+                "284 species varieties covered in distribution plans",
+                "Average delivery time: 3.2 days from order to confirmation",
+                "98.4% delivery confirmation rate among registered farmers",
+              ],
+            },
+            {
+              h: "For Officials",
+              p: "District Agriculture Officers can log in to the Official Dashboard and navigate to Distribution Tracking to create orders, monitor pending dispatches, and download delivery reports for audit.",
+            },
+            {
+              h: "For Farmers",
+              p: "Track incoming sapling and input deliveries from your Farmer Dashboard. Confirm receipts with a single tap on the mobile app.",
+            },
+          ],
+          primaryBtn: "Track Distribution",
+          primaryAction: () => {
+            closeInfoModal();
+            openDashboard("nursery");
+            setTimeout(() => switchPanel("nursery", "distribution"), 400);
+          },
+        },
+        market: {
+          ico: "🏪",
+          title: "Digital Market Integration",
+          sub: "Transparent, blockchain-powered agricultural trade",
+          color: "#fbbf24",
+          sections: [
+            {
+              h: "Overview",
+              p: "The Digital Market Integration module connects Uttarakhand's farmers directly with verified traders, FPOs, and market stakeholders — eliminating middlemen and ensuring fair, transparent pricing for agricultural produce.",
+            },
+            {
+              h: "Key Features",
+              list: [
+                "Real-time mandi prices from 7 major APMCs across Uttarakhand",
+                "MSP vs market price comparison with sell recommendations",
+                "Blockchain-recorded transaction ledger for immutable transparency",
+                "Direct farmer-to-trader connection with verified profiles",
+                "Digital payment processing via NEFT, UPI and portal escrow",
+                "Supply chain tracking from harvest to final destination",
+              ],
+            },
+            {
+              h: "Blockchain Architecture",
+              p: "Every market transaction is hashed and recorded on an immutable blockchain ledger. Transaction confirmation averages 2.4 seconds. Over 1,842 transactions have been blockchain-verified to date, representing ₹480 Crore in market volume.",
+            },
+            {
+              h: "For Farmers",
+              p: "View live prices, compare against MSP, and sell directly to verified traders without commission agents. Access your Market panel from the Farmer Dashboard.",
+            },
+            {
+              h: "For Traders",
+              p: "Register as a Market Stakeholder to get verified access, connect with 2,50,000+ registered farmers, and manage your transaction history with full blockchain audit trails.",
+            },
+          ],
+          primaryBtn: "View Market Prices",
+          primaryAction: () => {
+            closeInfoModal();
+            openDashboard("market");
+            setTimeout(() => switchPanel("market", "prices"), 400);
+          },
+        },
+        smartag: {
+          ico: "🤖",
+          title: "Smart Agriculture Technology",
+          sub: "AI, IoT and Blockchain for precision farming",
+          color: "#a78bfa",
+          sections: [
+            {
+              h: "Overview",
+              p: "The Smart Agriculture module embeds cutting-edge AI/ML, IoT sensor networks, and satellite imagery analysis across all farming operations — making BADRI-e-Kisan one of India's most technologically advanced state agricultural portals.",
+            },
+            {
+              h: "AI & Machine Learning",
+              list: [
+                "Pest & Disease Detection: Computer vision models analyse crop photos with 94.2% accuracy",
+                "Yield Prediction: ML models forecast yield based on soil, weather and input data",
+                "Price Forecasting: Time-series models predict mandi price trends 7 days in advance",
+                "Advisory Personalisation: Farmer-specific crop recommendations based on land, crop history and soil data",
+              ],
+            },
+            {
+              h: "IoT & Sensors",
+              list: [
+                "400+ soil moisture and weather sensors deployed across pilot districts",
+                "Real-time irrigation automation recommendations",
+                "Micro-climate data collection for altitude-specific Himalayan farming zones",
+              ],
+            },
+            {
+              h: "Satellite Integration",
+              list: [
+                "ISRO Bhuvan satellite imagery for district-level crop mapping",
+                "NDVI (vegetation index) monitoring to detect crop stress early",
+                "Digital soil maps updated seasonally with ground sensor validation",
+              ],
+            },
+            {
+              h: "How to Access",
+              p: "AI Advisory is available inside the Farmer Dashboard → Advisory panel. The 7-day weather forecast, pest alerts, and AI-generated crop recommendations are updated daily.",
+            },
+          ],
+          primaryBtn: "Explore AI Advisory",
+          primaryAction: () => {
+            closeInfoModal();
+            openDashboard("farmer");
+            setTimeout(() => switchPanel("farmer", "advisory"), 400);
+          },
+        },
+        capacity: {
+          ico: "🎓",
+          title: "Capacity Building Module",
+          sub: "Digital literacy and agricultural skill development",
+          color: "#f5a623",
+          sections: [
+            {
+              h: "Overview",
+              p: "The Capacity Building module trains farmers, nursery workers, and field officials across Uttarakhand in digital literacy, modern agricultural practices, and portal usage — ensuring no one is left behind in the digital transformation of agriculture.",
+            },
+            {
+              h: "Training Programme Types",
+              list: [
+                "Portal Usage Training: How to register, use dashboards and access schemes",
+                "Digital Literacy: Basic smartphone and internet skills for first-time users",
+                "Modern Farming Techniques: Organic farming, drip irrigation, soil management",
+                "Nursery Certification: Professional skills for nursery workers to meet quality standards",
+                "Official Training: Portal administration and data analytics for government officials",
+              ],
+            },
+            {
+              h: "Delivery Methods",
+              list: [
+                "Physical camps at block and district level (100+ conducted this year)",
+                "Video tutorials in Hindi on the portal and mobile app",
+                "AI-adaptive e-learning modules on the mobile app",
+                "Door-to-door CSC-assisted training in remote areas",
+              ],
+            },
+            {
+              h: "2025–26 Statistics",
+              list: [
+                "18,400 training sessions conducted this year",
+                "↑ 19% YoY growth in trained farmers",
+                "Coverage: All 13 districts, 95 blocks",
+                "Mobile app audio guidance available in Hindi, Garhwali and Kumaoni",
+              ],
+            },
+            {
+              h: "Register for Training",
+              p: "District Agriculture Officers schedule upcoming camps. Check the Training Management panel in the Official Dashboard, or contact your nearest Block Development Officer.",
+            },
+          ],
+          primaryBtn: "View Training Schedule",
+          primaryAction: () => {
+            closeInfoModal();
+            openDashboard("official");
+            setTimeout(() => switchPanel("official", "training"), 400);
+          },
+        },
+      };
+
+      function openModuleDetail(key) {
+        const m = MODULE_DETAILS[key];
+        if (!m) return;
+        const body = m.sections
+          .map(
+            (s) => `
+    <h3 style="font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:700;color:#1a4a2e;margin:16px 0 6px;border-bottom:1.5px solid #e0ece5;padding-bottom:5px">${s.h}</h3>
+    ${s.p ? `<p style="margin:0 0 8px;font-size:13px;color:#2a3a2a;line-height:1.75">${s.p}</p>` : ""}
+    ${s.list ? `<ul style="margin:4px 0 8px 18px">${s.list.map((i) => `<li style="margin-bottom:5px;font-size:13px;color:#3d5a3d;line-height:1.6">${i}</li>`).join("")}</ul>` : ""}
+  `,
+          )
+          .join("");
+
+        document.getElementById("infoModalIco").textContent = m.ico;
+        document.getElementById("infoModalTitle").textContent = m.title;
+        document.getElementById("infoModalSub").textContent = m.sub;
+        document.getElementById("infoModalBody").innerHTML =
+          `<div style="background:linear-gradient(135deg,${m.color}18,${m.color}08);border:1.5px solid ${m.color}40;border-radius:12px;padding:14px 16px;margin-bottom:16px;font-size:12.5px;color:#1a4a2e;font-weight:600">Module — BADRI-e-Kisan Unified Digital Portal · उत्तराखंड कृषि विभाग</div>${body}`;
+        const btn = document.getElementById("infoModalAction");
+        btn.textContent = m.primaryBtn;
+        btn.onclick = m.primaryAction;
+        document.getElementById("infoModal").classList.add("open");
+        document.body.style.overflow = "hidden";
+      }
+
+      /* ═══════════════════════════════════════════════════════
+   NEW INFO MODAL CONTENT: Market Prices, Training, Grievance
+═══════════════════════════════════════════════════════ */
+      const EXTRA_CONTENT = {
+        marketprices: {
+          ico: "📈",
+          title: "Live Market Prices",
+          sub: "Real-time mandi rates across Uttarakhand",
+          actionLabel: "Open Market Dashboard",
+          action: () => {
+            closeInfoModal();
+            openDashboard("market");
+            setTimeout(() => switchPanel("market", "prices"), 400);
+          },
+          body: () => `
+      <h3>Current Mandi Rates (March 2026)</h3>
+      <table style="width:100%;border-collapse:collapse;font-size:12.5px">
+        <thead><tr style="background:#f0f9f4;color:#1a4a2e">
+          <th style="padding:8px 10px;text-align:left;border-bottom:2px solid #d0eadb">Commodity</th>
+          <th style="padding:8px 10px;text-align:right;border-bottom:2px solid #d0eadb">MSP (₹/q)</th>
+          <th style="padding:8px 10px;text-align:right;border-bottom:2px solid #d0eadb">Haridwar</th>
+          <th style="padding:8px 10px;text-align:right;border-bottom:2px solid #d0eadb">Dehradun</th>
+          <th style="padding:8px 10px;text-align:right;border-bottom:2px solid #d0eadb">Haldwani</th>
+          <th style="padding:8px 10px;text-align:left;border-bottom:2px solid #d0eadb">Trend</th>
+        </tr></thead>
+        <tbody>
+          ${[
+            ["🌾 Wheat", "2,275", "2,320", "2,340", "2,310", "↑ +65"],
+            ["🌾 Rice", "2,183", "2,210", "2,190", "2,240", "↑ +27"],
+            ["🌽 Maize", "1,962", "1,980", "2,010", "1,970", "↑ +18"],
+            ["🌻 Mustard", "5,650", "5,720", "5,680", "5,740", "↑ +70"],
+            ["🥔 Potato", "—", "580", "560", "570", "↓ −10"],
+            ["🍎 Apple", "—", "9,400", "9,200", "9,600", "↑ +200"],
+            ["🧅 Onion", "—", "1,200", "1,180", "1,220", "↑ +40"],
+          ]
+            .map(
+              (r) => `<tr style="border-bottom:1px solid #e8f3ec">
+            <td style="padding:8px 10px;font-weight:600;color:#1a2e1a">${r[0]}</td>
+            <td style="padding:8px 10px;text-align:right;color:#6b8f6b">${r[1]}</td>
+            <td style="padding:8px 10px;text-align:right">${r[2]}</td>
+            <td style="padding:8px 10px;text-align:right">${r[3]}</td>
+            <td style="padding:8px 10px;text-align:right">${r[4]}</td>
+            <td style="padding:8px 10px;color:${r[5].startsWith("↑") ? "#22c55e" : "#ef4444"};font-weight:700">${r[5]}</td>
+          </tr>`,
+            )
+            .join("")}
+        </tbody>
+      </table>
+      <div style="background:#fff8e1;border:1px solid #fbbf24;border-radius:8px;padding:10px 14px;margin-top:14px;font-size:12px;color:#7a4a00">
+        ⚠️ Prices updated daily from APMC Mandi systems. Verify at your local mandi before selling. Last updated: Today, 8:00 AM IST.
+      </div>
+      <h3>Price Alerts</h3>
+      <p style="font-size:13px;color:#3d5a3d;line-height:1.6">Register as a Farmer to receive <strong>free SMS price alerts</strong> when any commodity you grow crosses your target price. Set alerts from your Farmer Dashboard → Market panel.</p>
+      <h3>Nearest Mandis</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        ${[
+          ["Haridwar Mandi", "Roshnabad, Haridwar", "Mon–Sat 6AM–2PM"],
+          ["Dehradun Mandi", "Saharanpur Rd, Dehradun", "Daily 5AM–1PM"],
+          ["Haldwani Mandi", "Kathgodam Rd, Haldwani", "Daily 5AM–12PM"],
+          ["Rudrapur Mandi", "SIDCUL Area, Rudrapur", "Mon–Sat 6AM–2PM"],
+        ]
+          .map(
+            (
+              m,
+            ) => `<div style="background:#f5faf7;border:1px solid #d0eadb;border-radius:8px;padding:10px 12px">
+          <div style="font-weight:700;font-size:12.5px;color:#1a4a2e">🏪 ${m[0]}</div>
+          <div style="font-size:11px;color:#6b8f6b;margin-top:2px">${m[1]}</div>
+          <div style="font-size:11px;color:#2d7a4f;margin-top:2px">⏰ ${m[2]}</div>
+        </div>`,
+          )
+          .join("")}
+      </div>`,
+        },
+
+        training: {
+          ico: "🎓",
+          title: "Farmer Training Portal",
+          sub: "Upcoming camps and digital learning resources",
+          actionLabel: "Register for Training",
+          action: () => {
+            closeInfoModal();
+            openInfoModal("app");
+          },
+          body: () => `
+      <h3>Upcoming Training Camps (March–April 2026)</h3>
+      <table style="width:100%;border-collapse:collapse;font-size:12.5px">
+        <thead><tr style="background:#f0f9f4;color:#1a4a2e">
+          <th style="padding:8px 10px;text-align:left;border-bottom:2px solid #d0eadb">Programme</th>
+          <th style="padding:8px 10px;text-align:left;border-bottom:2px solid #d0eadb">District</th>
+          <th style="padding:8px 10px;text-align:left;border-bottom:2px solid #d0eadb">Date</th>
+          <th style="padding:8px 10px;text-align:right;border-bottom:2px solid #d0eadb">Seats</th>
+        </tr></thead>
+        <tbody>
+          ${[
+            [
+              "Portal Usage & Digital Literacy",
+              "Almora",
+              "15 Mar 2026",
+              "42 / 60",
+            ],
+            ["Organic Farming (PKVY)", "Dehradun", "18 Mar 2026", "28 / 50"],
+            ["Drip Irrigation Training", "Nainital", "22 Mar 2026", "15 / 40"],
+            [
+              "Soil Health & Nutrient Management",
+              "Chamoli",
+              "25 Mar 2026",
+              "35 / 60",
+            ],
+            [
+              "Nursery Certification Course",
+              "Pauri Garhwal",
+              "1 Apr 2026",
+              "20 / 30",
+            ],
+            [
+              "AI Crop Advisory — Demo Camp",
+              "Haridwar",
+              "5 Apr 2026",
+              "50 / 80",
+            ],
+            [
+              "KCC & Financial Literacy",
+              "Pithoragarh",
+              "8 Apr 2026",
+              "30 / 50",
+            ],
+          ]
+            .map(
+              (r) => `<tr style="border-bottom:1px solid #e8f3ec">
+            <td style="padding:8px 10px;font-weight:600;color:#1a2e1a">${r[0]}</td>
+            <td style="padding:8px 10px;color:#3d5a3d">${r[1]}</td>
+            <td style="padding:8px 10px;color:#2d7a4f">${r[2]}</td>
+            <td style="padding:8px 10px;text-align:right;color:#e8860a;font-weight:700">${r[3]}</td>
+          </tr>`,
+            )
+            .join("")}
+        </tbody>
+      </table>
+      <h3>Online Training Resources</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px">
+        ${[
+          ["📹", "Portal Usage Video Guide", "Hindi · 22 min"],
+          ["📄", "Organic Farming Manual", "PDF · 48 pages"],
+          ["🎧", "Audio Advisory (Garhwali)", "MP3 · 15 episodes"],
+          ["📱", "Mobile App Tutorial", "Hindi · 8 min"],
+          ["📊", "Soil Health Card Guide", "PDF · 12 pages"],
+          ["🌾", "Kharif Crop Calendar 2026", "PDF · 6 pages"],
+        ]
+          .map(
+            (
+              r,
+            ) => `<div style="background:#f5faf7;border:1px solid #d0eadb;border-radius:8px;padding:10px 12px;cursor:pointer" onclick="showToast('📥 Opening ${r[1]}…')">
+          <div style="font-size:20px;margin-bottom:4px">${r[0]}</div>
+          <div style="font-weight:700;font-size:12px;color:#1a4a2e">${r[1]}</div>
+          <div style="font-size:10.5px;color:#6b8f6b;margin-top:2px">${r[2]}</div>
+        </div>`,
+          )
+          .join("")}
+      </div>
+      <h3>How to Register for a Camp</h3>
+      <ol style="margin:4px 0 0 18px;font-size:13px;color:#3d5a3d;line-height:1.8">
+        <li>Login to your <strong>Farmer Dashboard</strong> using your Farmer ID</li>
+        <li>Go to your district's Agriculture Extension Officer via the Training portal</li>
+        <li>Or call the helpline <strong>1800-180-4211</strong> with your Farmer ID to reserve a seat</li>
+        <li>You will receive an SMS confirmation with venue details 2 days before the camp</li>
+      </ol>`,
+        },
+
+        grievance: {
+          ico: "📢",
+          title: "Grievance Redressal Portal",
+          sub: "File and track your complaints",
+          actionLabel: "File Grievance Online",
+          action: () => {
+            closeInfoModal();
+            openGrievanceForm();
+          },
+          body: () => `
+      <h3>Public Grievance System</h3>
+      <p style="font-size:13px;color:#3d5a3d;line-height:1.6">BADRI-e-Kisan provides a transparent, time-bound grievance redressal system. All complaints are tracked digitally and escalated automatically if not resolved within the prescribed timeline.</p>
+      <h3>Resolution Timelines</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:4px">
+        ${[
+          ["Subsidy Not Received", "7 working days"],
+          ["Farmer Registration Issue", "3 working days"],
+          ["Market Price Dispute", "5 working days"],
+          ["Nursery Complaint", "7 working days"],
+          ["Aadhaar Linking Problem", "3 working days"],
+          ["Technical / Portal Issue", "24 hours"],
+        ]
+          .map(
+            (
+              r,
+            ) => `<div style="background:#f5faf7;border:1px solid #d0eadb;border-radius:8px;padding:10px 12px">
+          <div style="font-weight:600;font-size:12px;color:#1a4a2e">${r[0]}</div>
+          <div style="font-size:11px;color:#2d7a4f;margin-top:3px">⏱ Resolved within: <strong>${r[1]}</strong></div>
+        </div>`,
+          )
+          .join("")}
+      </div>
+      <h3>How to File a Grievance</h3>
+      <ol style="margin:4px 0 8px 18px;font-size:13px;color:#3d5a3d;line-height:1.8">
+        <li>Click <strong>"File Grievance Online"</strong> below (login required) or use the Complaints panel in your Farmer Dashboard</li>
+        <li>Select the grievance category and describe the issue in detail</li>
+        <li>Attach any supporting documents (optional)</li>
+        <li>Submit — you will receive a <strong>Grievance Reference Number</strong> via SMS</li>
+        <li>Track your complaint status using the reference number on this portal</li>
+      </ol>
+      <h3>Offline Options</h3>
+      <ul style="margin:4px 0 8px 18px;font-size:13px;color:#3d5a3d;line-height:1.8">
+        <li>📞 Call Helpline: <strong>1800-180-4211</strong> (Toll-free, Mon–Sat, 9AM–6PM)</li>
+        <li>✉ Email: <strong>grievance@badrikisan.uk.gov.in</strong></li>
+        <li>🏢 Visit your nearest <strong>District Agriculture Office</strong> in person</li>
+        <li>📬 Post written complaint to: Director Agriculture, Subhash Road, Dehradun – 248001</li>
+      </ul>
+      <h3>Escalation Policy</h3>
+      <p style="font-size:13px;color:#3d5a3d;line-height:1.6">If your grievance is not resolved within the prescribed timeline, it is <strong>automatically escalated</strong> to the District Agriculture Officer (Day 8), then to the Joint Director (Day 12), and finally to the Director of Agriculture (Day 15). All escalations are SMS-notified to the farmer.</p>`,
+        },
+      };
+
+      // Merge EXTRA_CONTENT into INFO_CONTENT at runtime
+      Object.assign(INFO_CONTENT, EXTRA_CONTENT);
+
+      /* ═══════════════════════════════════════════════════════
+   INLINE GRIEVANCE FORM (for non-logged-in users)
+═══════════════════════════════════════════════════════ */
+      function openGrievanceForm() {
+        const overlay = document.createElement("div");
+        overlay.id = "grievanceOverlay";
+        overlay.style.cssText =
+          "position:fixed;inset:0;z-index:26000;background:rgba(8,20,12,.85);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:20px;animation:authFadeIn .25s ease;overflow-y:auto";
+        overlay.innerHTML = `
+    <div style="background:#fff;border-radius:20px;width:100%;max-width:540px;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,.4);animation:authPop .3s ease;margin:auto">
+      <div style="background:linear-gradient(135deg,#1a4a2e,#2d7a4f);padding:22px 24px;display:flex;align-items:center;justify-content:space-between">
+        <div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:700;color:#fff">📢 File a Grievance</div>
+          <div style="font-size:11px;color:rgba(255,255,255,.6);margin-top:3px">BADRI-e-Kisan Public Grievance Portal</div>
+        </div>
+        <button onclick="document.getElementById('grievanceOverlay').remove();document.body.style.overflow=''" style="width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.12);border:none;color:#fff;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center">✕</button>
+      </div>
+      <div style="padding:22px 22px 16px">
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div>
+            <label style="font-size:11.5px;font-weight:700;color:#3d5a3d;display:block;margin-bottom:5px">Farmer / Portal ID <span style="color:#e8860a">*</span></label>
+            <input id="grvId" style="width:100%;padding:10px 13px;border:1.5px solid #cde3d4;border-radius:10px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;box-sizing:border-box" placeholder="Your Farmer ID, Nursery ID or mobile number">
+          </div>
+          <div>
+            <label style="font-size:11.5px;font-weight:700;color:#3d5a3d;display:block;margin-bottom:5px">Grievance Category <span style="color:#e8860a">*</span></label>
+            <select id="grvCat" style="width:100%;padding:10px 13px;border:1.5px solid #cde3d4;border-radius:10px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;background:#fff;box-sizing:border-box">
+              <option value="">-- Select Category --</option>
+              <option>Subsidy Not Received</option>
+              <option>Farmer Registration Issue</option>
+              <option>Market Price Dispute</option>
+              <option>Aadhaar Linking Problem</option>
+              <option>Nursery / Distribution Complaint</option>
+              <option>Official Misconduct</option>
+              <option>Technical / Portal Issue</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size:11.5px;font-weight:700;color:#3d5a3d;display:block;margin-bottom:5px">District <span style="color:#e8860a">*</span></label>
+            <select id="grvDist" style="width:100%;padding:10px 13px;border:1.5px solid #cde3d4;border-radius:10px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;background:#fff;box-sizing:border-box">
+              <option value="">-- Select District --</option>
+              ${Object.keys(UK_DISTRICTS)
+                .map((d) => `<option>${d}</option>`)
+                .join("")}
+            </select>
+          </div>
+          <div>
+            <label style="font-size:11.5px;font-weight:700;color:#3d5a3d;display:block;margin-bottom:5px">Describe Your Grievance <span style="color:#e8860a">*</span></label>
+            <textarea id="grvDesc" rows="4" style="width:100%;padding:10px 13px;border:1.5px solid #cde3d4;border-radius:10px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;resize:vertical;box-sizing:border-box" placeholder="Describe the issue clearly — include dates, amounts and relevant details…"></textarea>
+          </div>
+          <div>
+            <label style="font-size:11.5px;font-weight:700;color:#3d5a3d;display:block;margin-bottom:5px">Mobile Number <span style="color:#e8860a">*</span></label>
+            <input id="grvMobile" type="tel" maxlength="10" style="width:100%;padding:10px 13px;border:1.5px solid #cde3d4;border-radius:10px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;box-sizing:border-box" placeholder="For SMS updates on your complaint">
+          </div>
+          <button onclick="submitGrievance()" style="width:100%;padding:13px;border:none;border-radius:25px;background:#e8860a;color:#fff;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:background .2s" onmouseover="this.style.background='#ff6f00'" onmouseout="this.style.background='#e8860a'">Submit Grievance →</button>
+        </div>
+      </div>
+    </div>`;
+        overlay.addEventListener("click", (e) => {
+          if (e.target === overlay) {
+            overlay.remove();
+            document.body.style.overflow = "";
+          }
+        });
+        document.body.appendChild(overlay);
+        document.body.style.overflow = "hidden";
+      }
+
+      function submitGrievance() {
+        const id = document.getElementById("grvId")?.value?.trim();
+        const cat = document.getElementById("grvCat")?.value;
+        const dist = document.getElementById("grvDist")?.value;
+        const desc = document.getElementById("grvDesc")?.value?.trim();
+        const mob = document.getElementById("grvMobile")?.value?.trim();
+        if (!id || !cat || !dist || !desc || !mob) {
+          showToast("⚠️ Please fill all required fields");
+          return;
+        }
+        const refNo =
+          "GRV-" +
+          new Date().getFullYear() +
+          "-" +
+          String(Math.floor(1000 + Math.random() * 9000));
+        document.getElementById("grievanceOverlay").remove();
+        document.body.style.overflow = "";
+        // Show confirmation
+        const overlay = document.createElement("div");
+        overlay.style.cssText =
+          "position:fixed;inset:0;z-index:26000;background:rgba(8,20,12,.85);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:20px;animation:authFadeIn .25s ease";
+        overlay.innerHTML = `
+    <div style="background:#fff;border-radius:20px;width:100%;max-width:440px;padding:36px 28px;text-align:center;box-shadow:0 32px 80px rgba(0,0,0,.4);animation:authPop .3s ease">
+      <div style="font-size:52px;margin-bottom:12px;animation:bounce .5s ease">✅</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:#1a4a2e;margin-bottom:6px">Grievance Filed Successfully</div>
+      <p style="font-size:13px;color:#6b8f6b;line-height:1.6;margin-bottom:16px">Your complaint has been registered and assigned to the <strong>${dist}</strong> District Agriculture Officer. You will receive SMS updates on <strong>${mob.slice(0, 2)}••••••${mob.slice(-2)}</strong>.</p>
+      <div style="background:linear-gradient(135deg,#1a4a2e,#2d7a4f);color:#fff;border-radius:12px;padding:14px 20px;margin:0 auto 20px;display:inline-block">
+        <div style="font-size:10px;opacity:.7;letter-spacing:.1em;text-transform:uppercase">Reference Number</div>
+        <div style="font-size:22px;font-weight:800;letter-spacing:2px;margin-top:4px">${refNo}</div>
+      </div>
+      <p style="font-size:12px;color:#6b8f6b;margin-bottom:16px">Resolution expected within <strong>7 working days</strong>. If unresolved, escalation is automatic.</p>
+      <button onclick="this.closest('div[style]').remove();document.body.style.overflow=''" style="padding:11px 28px;border:none;border-radius:20px;background:#e8860a;color:#fff;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer">Close</button>
+    </div>`;
+        overlay.addEventListener("click", (e) => {
+          if (e.target === overlay) {
+            overlay.remove();
+            document.body.style.overflow = "";
+          }
+        });
+        document.body.appendChild(overlay);
+        document.body.style.overflow = "hidden";
       }
     </script>
   </body>
