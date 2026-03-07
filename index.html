@@ -1098,7 +1098,9 @@
           <a href="#dashboard">Dashboard</a>
           <a href="#technology">Technology</a>
           <a href="#security">Security</a>
-          <a href="#" class="btn-login">🔐 Login / Register</a>
+          <button onclick="openAuthModal()" class="btn-login">
+            🔐 Login / Register
+          </button>
         </nav>
         <button class="hamburger" id="menuToggle" aria-label="Toggle menu">
           <span></span><span></span><span></span>
@@ -1110,7 +1112,9 @@
         <a href="#dashboard">📊 Dashboard</a>
         <a href="#technology">⚙️ Technology</a>
         <a href="#security">🔒 Security</a>
-        <a href="#" style="color: var(--amber); font-weight: 600"
+        <a
+          onclick="openAuthModal()"
+          style="color: var(--amber); font-weight: 600; cursor: pointer"
           >🔐 Login / Register</a
         >
       </div>
@@ -6236,6 +6240,1262 @@
             `ipt></body></html>`,
         );
         w.document.close();
+      }
+    </script>
+
+    <!-- ════════════════════════════════════════════════════
+     OFFICIAL + MARKET REGISTRATION + AUTH MODAL
+════════════════════════════════════════════════════ -->
+    <script>
+      /* ── extend REG_CONFIG for official + market ── */
+      Object.assign(REG_CONFIG, {
+        official: {
+          ico: "🏛️",
+          icoBg: "rgba(96,165,250,.2)",
+          title: "Official Registration · अधिकारी पंजीकरण",
+          sub: "Complete 5 steps to register as a verified Government Official",
+          steps: [
+            "Personal",
+            "Employment",
+            "Identity",
+            "Jurisdiction",
+            "Review & Submit",
+          ],
+          stepIcos: ["👤", "🏛️", "🪪", "📍", "✅"],
+          idPrefix: "OFF-UK",
+          idLabel: "Official ID",
+        },
+        market: {
+          ico: "🏪",
+          icoBg: "rgba(251,191,36,.2)",
+          title: "Market Stakeholder Registration · बाजार पंजीकरण",
+          sub: "Complete 5 steps to register as a verified Market Stakeholder",
+          steps: [
+            "Profile",
+            "Business",
+            "Identity",
+            "Banking",
+            "Review & Submit",
+          ],
+          stepIcos: ["👤", "🏢", "🪪", "🏦", "✅"],
+          idPrefix: "MKT-UK",
+          idLabel: "Market ID",
+        },
+      });
+
+      const DEPTS = [
+        "Department of Agriculture",
+        "Department of Horticulture",
+        "Department of Animal Husbandry",
+        "Department of Irrigation",
+        "Department of Revenue",
+        "Department of Rural Development",
+        "Department of Forest",
+        "NABARD / Banking",
+        "Agricultural Marketing Board",
+        "Other",
+      ];
+      const DESIGS = [
+        "District Agriculture Officer (DAO)",
+        "District Horticulture Officer (DHO)",
+        "Agriculture Development Officer (ADO)",
+        "Block Development Officer (BDO)",
+        "Chief Development Officer (CDO)",
+        "District Magistrate (DM)",
+        "Assistant Director",
+        "Deputy Director",
+        "Joint Director",
+        "Director",
+      ];
+      const RANKS = [
+        "Group A (IAS/IFS)",
+        "Group A (State Service)",
+        "Group B (Gazetted)",
+        "Group B (Non-Gazetted)",
+        "Group C",
+        "Contractual",
+      ];
+      const ENTITY_TYPES = [
+        "Individual Trader / Merchant",
+        "Private Limited Company",
+        "Partnership Firm",
+        "Sole Proprietorship",
+        "Cooperative Society",
+        "Farmer Producer Organisation (FPO)",
+        "APMC / Mandi Committee",
+        "Exporter",
+        "Processor / Agro-Industry",
+        "NGO / Self-Help Group",
+      ];
+      const COMMODITIES = [
+        "Wheat (गेहूं)",
+        "Rice (धान)",
+        "Maize (मक्का)",
+        "Mustard / Oilseeds",
+        "Potato (आलू)",
+        "Onion & Garlic",
+        "Tomato & Vegetables",
+        "Apple & Fruits",
+        "Spices (Ginger, Turmeric)",
+        "Pulses (Dal)",
+        "Organic Produce",
+        "Nursery Saplings",
+        "Medicinal Herbs",
+        "Timber / Bamboo",
+      ];
+
+      /* ──────── OFFICIAL STEPS ──────── */
+      function officialStep(step) {
+        if (step === 0)
+          return `
+    <div class="reg-panel-title">👤 Personal Details</div>
+    <div class="reg-panel-sub">Enter your personal information as per service records.</div>
+    <div class="reg-section-head">🧑 Identity</div>
+    <div class="reg-grid-3">
+      <div class="reg-field"><label class="reg-label">First Name <span class="req">*</span></label><input class="reg-input" id="o_fname" placeholder="First name"><div class="reg-error-msg">Required</div></div>
+      <div class="reg-field"><label class="reg-label">Middle Name</label><input class="reg-input" id="o_mname" placeholder="Middle name"></div>
+      <div class="reg-field"><label class="reg-label">Last Name <span class="req">*</span></label><input class="reg-input" id="o_lname" placeholder="Last name"><div class="reg-error-msg">Required</div></div>
+    </div>
+    <div class="reg-grid-3">
+      <div class="reg-field"><label class="reg-label">Date of Birth <span class="req">*</span></label><input class="reg-input" id="o_dob" type="date"><div class="reg-error-msg">Required</div></div>
+      <div class="reg-field"><label class="reg-label">Gender <span class="req">*</span></label><select class="reg-select" id="o_gender"><option value="">--</option><option>Male</option><option>Female</option><option>Transgender</option></select><div class="reg-error-msg">Required</div></div>
+      <div class="reg-field"><label class="reg-label">Category</label><select class="reg-select" id="o_category"><option value="">--</option><option>General</option><option>OBC</option><option>SC</option><option>ST</option></select></div>
+    </div>
+    <div class="reg-section-head">📞 Contact</div>
+    <div class="reg-grid-2">
+      <div class="reg-field"><label class="reg-label">Official Mobile <span class="req">*</span></label><input class="reg-input" id="o_mobile" type="tel" maxlength="10" placeholder="Official mobile number"><div class="reg-error-msg">Required</div></div>
+      <div class="reg-field"><label class="reg-label">Official Email <span class="req">*</span></label><input class="reg-input" id="o_email" type="email" placeholder="Official govt. email"><div class="reg-error-msg">Required</div></div>
+    </div>
+    <div class="reg-grid-2">
+      <div class="reg-field"><label class="reg-label">Personal Mobile</label><input class="reg-input" id="o_mobile2" type="tel" maxlength="10" placeholder="Personal contact"></div>
+      <div class="reg-field"><label class="reg-label">Qualification <span class="req">*</span></label><select class="reg-select" id="o_qual"><option value="">--</option><option>Graduate (BSc/BA)</option><option>Post-Graduate (MSc/MA)</option><option>Engineering (BE/BTech)</option><option>PhD / Doctorate</option><option>IAS / IFS (Competitive)</option><option>Other</option></select><div class="reg-error-msg">Required</div></div>
+    </div>`;
+
+        if (step === 1)
+          return `
+    <div class="reg-panel-title">🏛️ Employment Details</div>
+    <div class="reg-panel-sub">Provide your current posting and department information.</div>
+    <div class="reg-section-head">🏢 Department & Designation</div>
+    <div class="reg-grid-2">
+      <div class="reg-field"><label class="reg-label">Department <span class="req">*</span></label><select class="reg-select" id="o_dept"><option value="">-- Select --</option>${DEPTS.map((d) => `<option>${d}</option>`).join("")}</select><div class="reg-error-msg">Required</div></div>
+      <div class="reg-field"><label class="reg-label">Designation <span class="req">*</span></label><select class="reg-select" id="o_desig"><option value="">-- Select --</option>${DESIGS.map((d) => `<option>${d}</option>`).join("")}</select><div class="reg-error-msg">Required</div></div>
+    </div>
+    <div class="reg-grid-3">
+      <div class="reg-field"><label class="reg-label">Employee ID / Service No. <span class="req">*</span></label><input class="reg-input" id="o_empid" placeholder="e.g. UK/AG/2018/1042"><div class="reg-error-msg">Required</div></div>
+      <div class="reg-field"><label class="reg-label">Service Group <span class="req">*</span></label><select class="reg-select" id="o_rank"><option value="">--</option>${RANKS.map((r) => `<option>${r}</option>`).join("")}</select><div class="reg-error-msg">Required</div></div>
+      <div class="reg-field"><label class="reg-label">Date of Joining <span class="req">*</span></label><input class="reg-input" id="o_doj" type="date"><div class="reg-error-msg">Required</div></div>
+    </div>
+    <div class="reg-section-head">🗺️ Current Posting</div>
+    <div class="reg-grid-2">
+      <div class="reg-field"><label class="reg-label">Posting District <span class="req">*</span></label><select class="reg-select" id="o_district"><option value="">-- District --</option>${Object.keys(
+        UK_DISTRICTS,
+      )
+        .map((d) => `<option>${d}</option>`)
+        .join("")}</select><div class="reg-error-msg">Required</div></div>
+      <div class="reg-field"><label class="reg-label">Office Name <span class="req">*</span></label><input class="reg-input" id="o_office" placeholder="e.g. District Agriculture Office, Dehradun"><div class="reg-error-msg">Required</div></div>
+    </div>
+    <div class="reg-field"><label class="reg-label">Office Address <span class="req">*</span></label><textarea class="reg-textarea" id="o_offaddr" placeholder="Full office address…"></textarea><div class="reg-error-msg">Required</div></div>
+    <div class="reg-section-head">📄 Documents</div>
+    <div class="reg-grid-2">
+      <div class="reg-field"><label class="reg-label">Appointment / Posting Letter <span class="req">*</span></label><div class="reg-file-upload"><input type="file" accept="image/*,.pdf" onchange="fileChosen(this,'o_appt_lbl')"><div class="upl-ico">📄</div><div class="upl-text">Upload posting order</div><div class="upl-sub">PDF/Image · Max 5MB</div><div class="file-chosen" id="o_appt_lbl"></div></div></div>
+      <div class="reg-field"><label class="reg-label">Employee ID Card <span class="req">*</span></label><div class="reg-file-upload"><input type="file" accept="image/*,.pdf" onchange="fileChosen(this,'o_idcard_lbl')"><div class="upl-ico">🪪</div><div class="upl-text">Government Employee ID</div><div class="upl-sub">PDF/Image · Max 2MB</div><div class="file-chosen" id="o_idcard_lbl"></div></div></div>
+    </div>`;
+
+        if (step === 2)
+          return `
+    <div class="reg-panel-title">🪪 Identity Verification</div>
+    <div class="reg-panel-sub">Verify your identity using Aadhaar OTP authentication.</div>
+    <div class="reg-section-head">🆔 Aadhaar</div>
+    <div class="aadhaar-verify-row">
+      <div class="reg-field"><label class="reg-label">Aadhaar Number <span class="req">*</span></label><input class="reg-input" id="o_aadhaar" maxlength="14" placeholder="XXXX XXXX XXXX" oninput="fmtAadhaar(this)"><div class="reg-error-msg">Enter valid 12-digit Aadhaar</div></div>
+      <button class="aadhaar-send-btn" id="o_sendOtp" onclick="sendRegOtpUnified('official')">Send OTP</button>
+    </div>
+    <div id="o_otpWrap" style="display:none" class="otp-verify-wrap">
+      <div class="otp-verify-label">Enter 6-digit OTP sent to Aadhaar-linked mobile</div>
+      <div class="otp-boxes-reg">${[0, 1, 2, 3, 4, 5].map((i) => `<input class="otp-box-reg" id="ootpb${i}" maxlength="1" type="text" inputmode="numeric" oninput="regOtpAdvanceUnified(this,${i},'o')">`).join("")}</div>
+      <div class="otp-status" id="o_otpStatus"></div><div class="otp-resend" id="o_otpResend"></div>
+    </div>
+    <div class="reg-section-head">📋 Additional IDs</div>
+    <div class="reg-grid-2">
+      <div class="reg-field"><label class="reg-label">PAN Card <span class="req">*</span></label><input class="reg-input" id="o_pan" maxlength="10" placeholder="ABCDE1234F" oninput="this.value=this.value.toUpperCase()"><div class="reg-error-msg">Required</div></div>
+      <div class="reg-field"><label class="reg-label">GPF / NPS Account</label><input class="reg-input" id="o_gpf" placeholder="Provident fund no."></div>
+    </div>
+    <div class="reg-field" style="margin-top:4px"><label class="reg-label">Upload Aadhaar (Front) <span class="req">*</span></label><div class="reg-file-upload"><input type="file" accept="image/*,.pdf" onchange="fileChosen(this,'o_aadh_lbl')"><div class="upl-ico">📎</div><div class="upl-text">Upload Aadhaar card front</div><div class="upl-sub">JPG/PNG/PDF · Max 2MB</div><div class="file-chosen" id="o_aadh_lbl"></div></div></div>`;
+
+        if (step === 3)
+          return `
+    <div class="reg-panel-title">📍 Jurisdiction & Access</div>
+    <div class="reg-panel-sub">Define your area of jurisdiction and required portal access levels.</div>
+    <div class="reg-section-head">🗺️ Jurisdiction</div>
+    <div class="reg-grid-2">
+      <div class="reg-field"><label class="reg-label">Jurisdiction Level <span class="req">*</span></label><select class="reg-select" id="o_jlevel"><option value="">--</option><option>State Level</option><option>Division Level</option><option>District Level</option><option>Block Level</option><option>Village Level</option></select><div class="reg-error-msg">Required</div></div>
+      <div class="reg-field"><label class="reg-label">No. of Districts Under Jurisdiction</label><input class="reg-input" id="o_jcount" type="number" min="0" placeholder="0 if block level"></div>
+    </div>
+    <div class="reg-label" style="margin-bottom:8px">Select Districts / Blocks Under Jurisdiction</div>
+    <div class="reg-checkbox-group" style="max-height:140px;overflow-y:auto;border:1.5px solid #cde3d4;border-radius:10px;padding:10px">
+      ${Object.keys(UK_DISTRICTS)
+        .map(
+          (d) =>
+            `<label class="reg-check-item"><input type="checkbox" data-key="o_jdists" value="${d}" onchange="saveCheckbox('o_jdists',this)"><span>${d}</span></label>`,
+        )
+        .join("")}
+    </div>
+    <div class="reg-section-head" style="margin-top:14px">🔑 Portal Access Modules <span class="req">*</span></div>
+    <div class="reg-checkbox-group">
+      ${["Farmer Registry (Read)", "Farmer Registry (Read/Write)", "Nursery Management", "Distribution Tracking", "Market Prices", "AI Advisory Dashboard", "Budget & Schemes Management", "Training Management", "Grievance Resolution", "Audit & Reports", "System Administration"].map((m) => `<label class="reg-check-item"><input type="checkbox" data-key="o_access" value="${m}" onchange="saveCheckbox('o_access',this)"><span>${m}</span></label>`).join("")}
+    </div>
+    <div class="reg-section-head" style="margin-top:14px">☑️ Declaration</div>
+    <label class="reg-check-item"><input type="checkbox" id="o_declare" onchange="saveField('o_declare')"><span style="font-size:12px;color:#3d5a3d;line-height:1.5">I declare that I am a serving Government Official. I understand that misuse of portal access will be subject to disciplinary and legal action.</span></label>`;
+
+        if (step === 4) {
+          const d = REG_DATA;
+          return `
+    <div class="reg-panel-title">✅ Review & Submit</div>
+    <div class="reg-panel-sub">Please review carefully before submitting.</div>
+    <div class="review-section"><div class="review-section-title">👤 Personal <a class="review-edit" onclick="regGoTo(0)">Edit</a></div>
+      ${rv("Full Name", ((d.o_fname || "") + (d.o_mname ? " " + d.o_mname : "") + (d.o_lname ? " " + d.o_lname : "")).trim() || "—")}
+      ${rv("DOB", d.o_dob || "—")} ${rv("Gender", d.o_gender || "—")} ${rv("Mobile", d.o_mobile || "—")} ${rv("Email", d.o_email || "—")}</div>
+    <div class="review-section"><div class="review-section-title">🏛️ Employment <a class="review-edit" onclick="regGoTo(1)">Edit</a></div>
+      ${rv("Department", d.o_dept || "—")} ${rv("Designation", d.o_desig || "—")} ${rv("Employee ID", d.o_empid || "—")}
+      ${rv("Service Group", d.o_rank || "—")} ${rv("District", d.o_district || "—")} ${rv("Office", d.o_office || "—")}</div>
+    <div class="review-section"><div class="review-section-title">🪪 Identity <a class="review-edit" onclick="regGoTo(2)">Edit</a></div>
+      ${rv("Aadhaar", "XXXX XXXX " + (d.o_aadhaar || "????").replace(/\s/g, "").slice(-4))} ${rv("Verified", REG_OTP_VERIFIED ? "✅ Yes" : "⚠️ No")} ${rv("PAN", d.o_pan || "—")}</div>
+    <div class="review-section"><div class="review-section-title">📍 Jurisdiction <a class="review-edit" onclick="regGoTo(3)">Edit</a></div>
+      ${rv("Level", d.o_jlevel || "—")} ${rv("Districts", (d.o_jdists || []).join(", ") || "—")} ${rv("Access Modules", (d.o_access || []).slice(0, 3).join(", ") + ((d.o_access || []).length > 3 ? " +more" : "") || "—")}</div>
+    <div style="background:#e8f4ff;border:1px solid #93c5fd;border-radius:10px;padding:12px 16px;font-size:12.5px;color:#1e3a5f;margin-top:4px">ℹ️ Application will be reviewed by State Nodal Officer. Login credentials sent to official email within <strong>3 working days</strong>.</div>`;
+        }
+        return "";
+      }
+
+      /* ──────── MARKET STEPS ──────── */
+      function marketStep(step) {
+        if (step === 0)
+          return `
+    <div class="reg-panel-title">👤 Stakeholder Profile</div>
+    <div class="reg-panel-sub">Tell us about yourself or your organisation.</div>
+    <div class="reg-section-head">🏢 Entity Type</div>
+    <div class="reg-field"><label class="reg-label">Type of Stakeholder <span class="req">*</span></label><select class="reg-select" id="m_entitytype" onchange="toggleMarketFields()"><option value="">-- Select --</option>${ENTITY_TYPES.map((e) => `<option>${e}</option>`).join("")}</select><div class="reg-error-msg">Required</div></div>
+    <div id="m_indiv_fields">
+      <div class="reg-section-head" style="margin-top:14px">🧑 Personal Details</div>
+      <div class="reg-grid-3">
+        <div class="reg-field"><label class="reg-label">First Name <span class="req">*</span></label><input class="reg-input" id="m_fname" placeholder="First name"><div class="reg-error-msg">Required</div></div>
+        <div class="reg-field"><label class="reg-label">Middle Name</label><input class="reg-input" id="m_mname" placeholder="Middle name"></div>
+        <div class="reg-field"><label class="reg-label">Last Name <span class="req">*</span></label><input class="reg-input" id="m_lname" placeholder="Last name"><div class="reg-error-msg">Required</div></div>
+      </div>
+      <div class="reg-grid-2">
+        <div class="reg-field"><label class="reg-label">Date of Birth</label><input class="reg-input" id="m_dob" type="date"></div>
+        <div class="reg-field"><label class="reg-label">Gender</label><select class="reg-select" id="m_gender"><option value="">--</option><option>Male</option><option>Female</option><option>Transgender</option></select></div>
+      </div>
+    </div>
+    <div id="m_org_fields" style="display:none">
+      <div class="reg-section-head" style="margin-top:14px">🏢 Organisation Details</div>
+      <div class="reg-grid-2">
+        <div class="reg-field"><label class="reg-label">Organisation Name <span class="req">*</span></label><input class="reg-input" id="m_orgname" placeholder="Legal registered name"><div class="reg-error-msg">Required</div></div>
+        <div class="reg-field"><label class="reg-label">Contact Person <span class="req">*</span></label><input class="reg-input" id="m_contactname" placeholder="Authorised signatory"><div class="reg-error-msg">Required</div></div>
+      </div>
+      <div class="reg-grid-2">
+        <div class="reg-field"><label class="reg-label">Incorporation Date</label><input class="reg-input" id="m_incdate" type="date"></div>
+        <div class="reg-field"><label class="reg-label">CIN / Registration No.</label><input class="reg-input" id="m_cin" placeholder="Company/Society reg. no."></div>
+      </div>
+    </div>
+    <div class="reg-section-head" style="margin-top:14px">📞 Contact</div>
+    <div class="reg-grid-2">
+      <div class="reg-field"><label class="reg-label">Primary Mobile <span class="req">*</span></label><input class="reg-input" id="m_mobile" type="tel" maxlength="10" placeholder="Primary mobile"><div class="reg-error-msg">Required</div></div>
+      <div class="reg-field"><label class="reg-label">Email Address <span class="req">*</span></label><input class="reg-input" id="m_email" type="email" placeholder="Business email"><div class="reg-error-msg">Required</div></div>
+    </div>
+    <div class="reg-grid-2">
+      <div class="reg-field"><label class="reg-label">Alternate Mobile</label><input class="reg-input" id="m_mobile2" type="tel" maxlength="10"></div>
+      <div class="reg-field"><label class="reg-label">Website</label><input class="reg-input" id="m_website" placeholder="https://... (optional)"></div>
+    </div>`;
+
+        if (step === 1)
+          return `
+    <div class="reg-panel-title">🏢 Business & Trade Details</div>
+    <div class="reg-panel-sub">Provide business registration, location and commodities information.</div>
+    <div class="reg-section-head">📋 Business Registration</div>
+    <div class="reg-grid-2">
+      <div class="reg-field"><label class="reg-label">GST Number</label><input class="reg-input" id="m_gst" maxlength="15" placeholder="15-char GSTIN" oninput="this.value=this.value.toUpperCase()"></div>
+      <div class="reg-field"><label class="reg-label">Trade License No.</label><input class="reg-input" id="m_trade" placeholder="Municipal / GP license"></div>
+    </div>
+    <div class="reg-grid-2">
+      <div class="reg-field"><label class="reg-label">FSSAI License</label><input class="reg-input" id="m_fssai" placeholder="Food safety license"></div>
+      <div class="reg-field"><label class="reg-label">APMC License</label><input class="reg-input" id="m_apmc" placeholder="Mandi/APMC license no."></div>
+    </div>
+    <div class="reg-section-head">📍 Business Address</div>
+    <div class="reg-grid-2">
+      <div class="reg-field"><label class="reg-label">District <span class="req">*</span></label><select class="reg-select" id="m_district"><option value="">-- District --</option>${Object.keys(
+        UK_DISTRICTS,
+      )
+        .map((d) => `<option>${d}</option>`)
+        .join("")}</select><div class="reg-error-msg">Required</div></div>
+      <div class="reg-field"><label class="reg-label">City / Town <span class="req">*</span></label><input class="reg-input" id="m_city" placeholder="City name"><div class="reg-error-msg">Required</div></div>
+    </div>
+    <div class="reg-grid-2">
+      <div class="reg-field"><label class="reg-label">Pin Code <span class="req">*</span></label><input class="reg-input" id="m_pincode" type="tel" maxlength="6" placeholder="6-digit PIN"><div class="reg-error-msg">Required</div></div>
+      <div class="reg-field"><label class="reg-label">Mandi Affiliation</label><select class="reg-select" id="m_mandi"><option value="">-- Mandi --</option><option>Haridwar Mandi</option><option>Dehradun Mandi</option><option>Roorkee Mandi</option><option>Rudrapur Mandi</option><option>Haldwani Mandi</option><option>Not affiliated</option></select></div>
+    </div>
+    <div class="reg-field"><label class="reg-label">Full Business Address <span class="req">*</span></label><textarea class="reg-textarea" id="m_address" placeholder="Shop No., Street, Market/Colony…"></textarea><div class="reg-error-msg">Required</div></div>
+    <div class="reg-section-head">🌾 Commodities Traded</div>
+    <div class="reg-label" style="margin-bottom:8px">Select all commodities <span class="req">*</span></div>
+    <div class="reg-checkbox-group">${COMMODITIES.map((c) => `<label class="reg-check-item"><input type="checkbox" data-key="m_commodities" value="${c}" onchange="saveCheckbox('m_commodities',this)"><span>${c}</span></label>`).join("")}</div>
+    <div class="reg-grid-2" style="margin-top:14px">
+      <div class="reg-field"><label class="reg-label">Annual Turnover</label><select class="reg-select" id="m_turnover"><option value="">--</option><option>Below ₹5 Lakh</option><option>₹5–20 Lakh</option><option>₹20–50 Lakh</option><option>₹50L–1 Crore</option><option>₹1–5 Crore</option><option>Above ₹5 Crore</option></select></div>
+      <div class="reg-field"><label class="reg-label">Years in Business</label><input class="reg-input" id="m_years" type="number" min="0" placeholder="e.g. 8"></div>
+    </div>`;
+
+        if (step === 2)
+          return `
+    <div class="reg-panel-title">🪪 Identity Verification</div>
+    <div class="reg-panel-sub">Verify identity via Aadhaar OTP. Companies must verify authorised signatory.</div>
+    <div class="reg-section-head">🆔 Aadhaar Verification</div>
+    <div class="aadhaar-verify-row">
+      <div class="reg-field"><label class="reg-label">Aadhaar Number <span class="req">*</span></label><input class="reg-input" id="m_aadhaar" maxlength="14" placeholder="XXXX XXXX XXXX" oninput="fmtAadhaar(this)"><div class="reg-error-msg">Enter valid 12-digit Aadhaar</div></div>
+      <button class="aadhaar-send-btn" id="m_sendOtp" onclick="sendRegOtpUnified('market')">Send OTP</button>
+    </div>
+    <div id="m_otpWrap" style="display:none" class="otp-verify-wrap">
+      <div class="otp-verify-label">Enter 6-digit OTP sent to Aadhaar-linked mobile</div>
+      <div class="otp-boxes-reg">${[0, 1, 2, 3, 4, 5].map((i) => `<input class="otp-box-reg" id="motpb${i}" maxlength="1" type="text" inputmode="numeric" oninput="regOtpAdvanceUnified(this,${i},'m')">`).join("")}</div>
+      <div class="otp-status" id="m_otpStatus"></div><div class="otp-resend" id="m_otpResend"></div>
+    </div>
+    <div class="reg-section-head">📋 Additional Identity</div>
+    <div class="reg-grid-2">
+      <div class="reg-field"><label class="reg-label">PAN Card <span class="req">*</span></label><input class="reg-input" id="m_pan" maxlength="10" placeholder="ABCDE1234F" oninput="this.value=this.value.toUpperCase()"><div class="reg-error-msg">Required</div></div>
+      <div class="reg-field"><label class="reg-label">Udyam / MSME Registration</label><input class="reg-input" id="m_udyam" placeholder="UDYAM-UK-XXXXXXX"></div>
+    </div>
+    <div class="reg-section-head" style="margin-top:4px">📎 Documents</div>
+    <div class="reg-grid-2">
+      <div class="reg-field"><label class="reg-label">Aadhaar Card <span class="req">*</span></label><div class="reg-file-upload"><input type="file" accept="image/*,.pdf" onchange="fileChosen(this,'m_aadh_lbl')"><div class="upl-ico">📎</div><div class="upl-text">Upload Aadhaar</div><div class="upl-sub">JPG/PNG/PDF · Max 2MB</div><div class="file-chosen" id="m_aadh_lbl"></div></div></div>
+      <div class="reg-field"><label class="reg-label">PAN Card <span class="req">*</span></label><div class="reg-file-upload"><input type="file" accept="image/*,.pdf" onchange="fileChosen(this,'m_pan_lbl')"><div class="upl-ico">💳</div><div class="upl-text">Upload PAN</div><div class="upl-sub">JPG/PNG/PDF · Max 2MB</div><div class="file-chosen" id="m_pan_lbl"></div></div></div>
+    </div>
+    <div class="reg-field" style="margin-top:4px"><label class="reg-label">Trade / Business Certificate</label><div class="reg-file-upload"><input type="file" accept="image/*,.pdf" onchange="fileChosen(this,'m_biz_lbl')"><div class="upl-ico">🏢</div><div class="upl-text">Trade licence / GST cert / Society reg.</div><div class="upl-sub">PDF/Image · Max 5MB</div><div class="file-chosen" id="m_biz_lbl"></div></div></div>`;
+
+        if (step === 3)
+          return `
+    <div class="reg-panel-title">🏦 Banking Details</div>
+    <div class="reg-panel-sub">Bank details for digital payments and market transactions.</div>
+    <div class="reg-section-head">🏛️ Bank Account</div>
+    <div class="reg-grid-2">
+      <div class="reg-field"><label class="reg-label">Bank Name <span class="req">*</span></label><select class="reg-select" id="m_bank"><option value="">-- Select --</option>${BANKS.map((b) => `<option>${b}</option>`).join("")}</select><div class="reg-error-msg">Required</div></div>
+      <div class="reg-field"><label class="reg-label">Branch Name <span class="req">*</span></label><input class="reg-input" id="m_branch" placeholder="Branch name"><div class="reg-error-msg">Required</div></div>
+    </div>
+    <div class="reg-grid-2">
+      <div class="reg-field"><label class="reg-label">Account Number <span class="req">*</span></label><input class="reg-input" id="m_accno" type="tel" maxlength="18" placeholder="Account number"><div class="reg-error-msg">Required</div></div>
+      <div class="reg-field"><label class="reg-label">Confirm Account No. <span class="req">*</span></label><input class="reg-input" id="m_accno2" type="tel" maxlength="18" placeholder="Re-enter account number"><div class="reg-error-msg">Numbers do not match</div></div>
+    </div>
+    <div class="reg-grid-2">
+      <div class="reg-field"><label class="reg-label">IFSC Code <span class="req">*</span></label><input class="reg-input" id="m_ifsc" maxlength="11" placeholder="e.g. SBIN0001234" oninput="this.value=this.value.toUpperCase()"><div class="reg-error-msg">Required</div></div>
+      <div class="reg-field"><label class="reg-label">Account Type <span class="req">*</span></label><select class="reg-select" id="m_acctype"><option value="">--</option><option>Current Account</option><option>Savings Account</option><option>OD / CC Account</option></select><div class="reg-error-msg">Required</div></div>
+    </div>
+    <div class="reg-section-head">💳 Digital Payment</div>
+    <div class="reg-grid-2">
+      <div class="reg-field"><label class="reg-label">UPI ID</label><input class="reg-input" id="m_upi" placeholder="yourname@upi"></div>
+      <div class="reg-field"><label class="reg-label">Preferred Payment Mode</label><select class="reg-select" id="m_paymode"><option value="">--</option><option>NEFT / RTGS</option><option>UPI</option><option>Cheque</option><option>Digital Escrow via Portal</option></select></div>
+    </div>
+    <div class="reg-field" style="margin-top:4px"><label class="reg-label">Passbook / Cancelled Cheque <span class="req">*</span></label><div class="reg-file-upload"><input type="file" accept="image/*,.pdf" onchange="fileChosen(this,'m_bank_lbl')"><div class="upl-ico">🏦</div><div class="upl-text">Passbook front or cancelled cheque</div><div class="upl-sub">JPG/PNG/PDF · Max 2MB</div><div class="file-chosen" id="m_bank_lbl"></div></div></div>
+    <div class="reg-section-head">☑️ Declaration</div>
+    <label class="reg-check-item"><input type="checkbox" id="m_declare" onchange="saveField('m_declare')"><span style="font-size:12px;color:#3d5a3d;line-height:1.5">I declare all information is true. I agree to the BADRI-e-Kisan Portal terms, blockchain transaction transparency, and consent to verification by the Market Regulation Authority.</span></label>`;
+
+        if (step === 4) {
+          const d = REG_DATA;
+          const isOrg =
+            d.m_entitytype && d.m_entitytype !== "Individual Trader / Merchant";
+          return `
+    <div class="reg-panel-title">✅ Review & Submit</div>
+    <div class="reg-panel-sub">Please review all information before submitting.</div>
+    <div class="review-section"><div class="review-section-title">👤 Profile <a class="review-edit" onclick="regGoTo(0)">Edit</a></div>
+      ${rv("Entity Type", d.m_entitytype || "—")} ${isOrg ? rv("Organisation", d.m_orgname || "—") : rv("Name", ((d.m_fname || "") + (d.m_lname ? " " + d.m_lname : "")).trim() || "—")}
+      ${rv("Mobile", d.m_mobile || "—")} ${rv("Email", d.m_email || "—")}</div>
+    <div class="review-section"><div class="review-section-title">🏢 Business <a class="review-edit" onclick="regGoTo(1)">Edit</a></div>
+      ${rv("District", d.m_district || "—")} ${rv("City", d.m_city || "—")} ${rv("GST", d.m_gst || "Not provided")}
+      ${rv("Commodities", (d.m_commodities || []).slice(0, 4).join(", ") + ((d.m_commodities || []).length > 4 ? " +more" : "") || "None")}</div>
+    <div class="review-section"><div class="review-section-title">🪪 Identity <a class="review-edit" onclick="regGoTo(2)">Edit</a></div>
+      ${rv("Aadhaar", "XXXX XXXX " + (d.m_aadhaar || "????").replace(/\s/g, "").slice(-4))} ${rv("Verified", REG_OTP_VERIFIED ? "✅ Yes" : "⚠️ No")} ${rv("PAN", d.m_pan || "—")}</div>
+    <div class="review-section"><div class="review-section-title">🏦 Banking <a class="review-edit" onclick="regGoTo(3)">Edit</a></div>
+      ${rv("Bank", d.m_bank || "—")} ${rv("Branch", d.m_branch || "—")} ${rv("Account", "XXXX" + (d.m_accno || "").slice(-4))} ${rv("IFSC", d.m_ifsc || "—")}</div>
+    <div style="background:#fff8e1;border:1px solid #fbbf24;border-radius:10px;padding:12px 16px;font-size:12.5px;color:#713f12;margin-top:4px">⚠️ Application reviewed by Agricultural Marketing Board within <strong>5 working days</strong>. Blockchain wallet issued on approval.</div>`;
+        }
+        return "";
+      }
+
+      function toggleMarketFields() {
+        const t = document.getElementById("m_entitytype")?.value || "";
+        const isOrg = t && t !== "Individual Trader / Merchant";
+        const ind = document.getElementById("m_indiv_fields");
+        const org = document.getElementById("m_org_fields");
+        if (ind) ind.style.display = isOrg ? "none" : "";
+        if (org) org.style.display = isOrg ? "" : "none";
+      }
+
+      /* ── Extend renderPanel for official/market ── */
+      const _baseRenderPanel = renderPanel;
+      function renderPanel(type, step) {
+        const body = document.getElementById("regBody");
+        if (type === "official") body.innerHTML = officialStep(step);
+        else if (type === "market") body.innerHTML = marketStep(step);
+        else if (type === "farmer") body.innerHTML = farmerStep(step);
+        else body.innerHTML = nurseryStep(step);
+        updateStepUI();
+        ["r_district", "n_district"].forEach((id) => {
+          const el = document.getElementById(id);
+          if (el) {
+            populateDistricts(el);
+            const blockId = id === "r_district" ? "r_block" : "n_block";
+            el.addEventListener("change", () =>
+              populateBlocks(el.value, blockId),
+            );
+          }
+        });
+        restoreValues();
+      }
+
+      /* ── Fix showSuccessScreen for all 4 types ── */
+      const _baseShowSuccess = showSuccessScreen;
+      function showSuccessScreen(id, cfg) {
+        const body = document.getElementById("regBody");
+        const d = REG_DATA;
+        let name, nextSteps;
+        if (REG_TYPE === "farmer") {
+          name =
+            ((d.r_fname || "") + " " + (d.r_lname || "")).trim() || "Applicant";
+          nextSteps =
+            "1. Save your Farmer ID<br>2. Link bank account for subsidies<br>3. Complete Soil Health Card application<br>4. Explore eligible schemes in your dashboard";
+        } else if (REG_TYPE === "nursery") {
+          name = d.n_name || "Your Nursery";
+          nextSteps =
+            "1. Save your Nursery ID<br>2. Await site inspection (within 15 days)<br>3. Upload additional certification documents<br>4. Access Nursery Dashboard after approval";
+        } else if (REG_TYPE === "official") {
+          name =
+            ((d.o_fname || "") + " " + (d.o_lname || "")).trim() || "Official";
+          nextSteps =
+            "1. Save your Official ID<br>2. Await Nodal Officer verification (3 days)<br>3. Login credentials sent to official email<br>4. Access Official Dashboard with assigned permissions";
+        } else {
+          const isOrg =
+            d.m_entitytype && d.m_entitytype !== "Individual Trader / Merchant";
+          name = isOrg
+            ? d.m_orgname || "Organisation"
+            : ((d.m_fname || "") + " " + (d.m_lname || "")).trim() ||
+              "Stakeholder";
+          nextSteps =
+            "1. Save your Market ID<br>2. Await Agricultural Marketing Board review (5 days)<br>3. Blockchain wallet assigned on approval<br>4. Access Market Dashboard to connect with farmers";
+        }
+        body.innerHTML = `<div id="regSuccessWrap" class="reg-success">
+    <div class="reg-success-anim">🎉</div>
+    <h2>Registration Successful!</h2>
+    <p>Congratulations, <strong>${name}</strong>! Your ${cfg.idLabel.toLowerCase()} has been generated.<br>An SMS confirmation has been sent to your registered mobile.</p>
+    <div class="reg-id-card">
+      <div class="reg-id-label">Your ${cfg.idLabel}</div>
+      <div class="reg-id-value">${id}</div>
+      <div class="reg-id-sub">Issued: ${new Date().toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })}</div>
+    </div>
+    <div style="background:#f0fff4;border:1px solid #bbf7d0;border-radius:10px;padding:12px 16px;font-size:12.5px;color:#166534;margin-bottom:16px;text-align:left;max-width:420px;margin-left:auto;margin-right:auto"><strong>Next Steps:</strong><br>${nextSteps}</div>
+    <div class="reg-success-actions">
+      <button class="reg-success-btn primary" onclick="closeReg();openDashboard('${REG_TYPE}')">Go to My Dashboard →</button>
+      <button class="reg-success-btn ghost" onclick="printID('${id}','${cfg.idLabel}','${name}')">🖨️ Print ID Card</button>
+      <button class="reg-success-btn ghost" onclick="closeReg()">Close</button>
+    </div>
+  </div>`;
+        updateStepUI();
+        document.getElementById("regFooterNote").textContent = "";
+      }
+
+      /* ── Unified OTP functions for all 4 types ── */
+      function sendRegOtpUnified(type) {
+        const prefixMap = {
+          farmer: "r",
+          nursery: "n",
+          official: "o",
+          market: "m",
+        };
+        const prefix = prefixMap[type] || "r";
+        const aadhaarEl = document.getElementById(prefix + "_aadhaar");
+        const raw = (aadhaarEl?.value || "").replace(/\s/g, "");
+        if (raw.length !== 12) {
+          aadhaarEl?.closest(".reg-field").classList.add("has-error");
+          showToast("⚠️ Enter a valid 12-digit Aadhaar");
+          return;
+        }
+        REG_OTP_VERIFIED = false;
+        const btn = document.getElementById(prefix + "_sendOtp");
+        btn.disabled = true;
+        btn.textContent = "Sending…";
+        setTimeout(() => {
+          btn.textContent = "Resend OTP";
+          btn.disabled = false;
+          const wrap = document.getElementById(prefix + "_otpWrap");
+          if (wrap) wrap.style.display = "block";
+          startOtpCountdown(prefix);
+          showToast(`📱 OTP sent to ••••••${raw.slice(-4)}`);
+        }, 1200);
+      }
+      function regOtpAdvanceUnified(inp, idx, prefix) {
+        inp.value = inp.value.replace(/\D/g, "").slice(-1);
+        const boxes = document.querySelectorAll(".otp-box-reg");
+        if (inp.value && idx < 5) boxes[idx + 1]?.focus();
+        const all = Array.from(boxes).every((b) => b.value.length === 1);
+        if (all) verifyRegOtpUnified(prefix);
+      }
+      function verifyRegOtpUnified(prefix) {
+        const statusEl = document.getElementById(prefix + "_otpStatus");
+        if (statusEl) statusEl.textContent = "Verifying…";
+        setTimeout(() => {
+          REG_OTP_VERIFIED = true;
+          if (statusEl) {
+            statusEl.className = "otp-status success";
+            statusEl.textContent = "✅ Aadhaar Verified Successfully!";
+          }
+          showToast("✅ Identity verified!");
+        }, 900);
+      }
+    </script>
+
+    <!-- ═══════════════════════════════════════════
+     UNIFIED AUTH MODAL — LOGIN / REGISTER
+═══════════════════════════════════════════ -->
+    <style>
+      #authModal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 19000;
+        background: rgba(8, 20, 12, 0.85);
+        backdrop-filter: blur(8px);
+        align-items: center;
+        justify-content: center;
+        padding: 16px;
+      }
+      #authModal.open {
+        display: flex;
+        animation: authFadeIn 0.28s ease;
+      }
+      @keyframes authFadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      .auth-box {
+        background: #fff;
+        border-radius: 22px;
+        width: 100%;
+        max-width: 560px;
+        box-shadow: 0 32px 80px rgba(0, 0, 0, 0.45);
+        overflow: hidden;
+        animation: authPop 0.32s cubic-bezier(0.34, 1.4, 0.64, 1);
+      }
+      @keyframes authPop {
+        from {
+          opacity: 0;
+          transform: scale(0.9) translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1) translateY(0);
+        }
+      }
+      .auth-hdr {
+        background: linear-gradient(
+          135deg,
+          #1a4a2e 0%,
+          #2d7a4f 50%,
+          #1a6e48 100%
+        );
+        padding: 22px 24px 18px;
+        position: relative;
+        overflow: hidden;
+      }
+      .auth-hdr::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: url("data:image/svg+xml,%3Csvg width='32' height='32' viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='16' cy='16' r='8' fill='%234caf7d' fill-opacity='0.07'/%3E%3C/svg%3E");
+        pointer-events: none;
+      }
+      .auth-hdr-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: relative;
+      }
+      .auth-hdr-brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .auth-hdr-ico {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.15);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+      }
+      .auth-hdr-title {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 20px;
+        font-weight: 700;
+        color: #fff;
+      }
+      .auth-hdr-sub {
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.6);
+        margin-top: 2px;
+      }
+      .auth-x {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.12);
+        border: none;
+        color: #fff;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .auth-x:hover {
+        background: rgba(255, 255, 255, 0.25);
+      }
+      .auth-body {
+        padding: 22px 22px 18px;
+      }
+      .auth-step-title {
+        font-size: 15px;
+        font-weight: 700;
+        color: #1a2e1a;
+        margin-bottom: 4px;
+      }
+      .auth-step-sub {
+        font-size: 12px;
+        color: #6b8f6b;
+        margin-bottom: 16px;
+      }
+      .auth-role-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-bottom: 18px;
+      }
+      .auth-role-card {
+        border: 2px solid #e0ece5;
+        border-radius: 14px;
+        padding: 14px 12px;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-align: center;
+        background: #fff;
+        position: relative;
+      }
+      .auth-role-card:hover {
+        border-color: #2d7a4f;
+        background: #f2fbf5;
+        transform: translateY(-2px);
+      }
+      .auth-role-card.selected {
+        border-color: #1a4a2e;
+        background: #eaf5ee;
+      }
+      .auth-role-card.selected::after {
+        content: "✓";
+        position: absolute;
+        top: 8px;
+        right: 10px;
+        color: #1a4a2e;
+        font-weight: 800;
+        font-size: 12px;
+      }
+      .auth-role-card[data-role="official"]:hover,
+      .auth-role-card[data-role="official"].selected {
+        border-color: #3b82f6;
+        background: #eff6ff;
+      }
+      .auth-role-card[data-role="official"].selected::after {
+        color: #1d4ed8;
+      }
+      .auth-role-card[data-role="market"]:hover,
+      .auth-role-card[data-role="market"].selected {
+        border-color: #d97706;
+        background: #fffbeb;
+      }
+      .auth-role-card[data-role="market"].selected::after {
+        color: #d97706;
+      }
+      .auth-role-ico {
+        font-size: 26px;
+        margin-bottom: 7px;
+      }
+      .auth-role-name {
+        font-size: 12.5px;
+        font-weight: 700;
+        color: #1a2e1a;
+      }
+      .auth-role-name-hi {
+        font-size: 10.5px;
+        color: #6b8f6b;
+        margin-top: 2px;
+        font-family: "Tiro Devanagari Hindi", serif;
+      }
+      .auth-role-tag {
+        display: inline-block;
+        margin-top: 5px;
+        font-size: 10px;
+        font-weight: 600;
+        padding: 2px 8px;
+        border-radius: 10px;
+        background: #e8f5e9;
+        color: #2d7a4f;
+      }
+      .auth-tabs {
+        display: flex;
+        border: 1.5px solid #e0ece5;
+        border-radius: 12px;
+        overflow: hidden;
+        margin-bottom: 18px;
+      }
+      .auth-tab {
+        flex: 1;
+        padding: 10px;
+        border: none;
+        background: #fff;
+        font-family: "DM Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        color: #6b8f6b;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .auth-tab.active {
+        background: #1a4a2e;
+        color: #fff;
+      }
+      .auth-form {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .auth-label {
+        font-size: 11.5px;
+        font-weight: 700;
+        color: #3d5a3d;
+        margin-bottom: 4px;
+        display: block;
+      }
+      .auth-input {
+        width: 100%;
+        padding: 10px 13px;
+        border: 1.5px solid #cde3d4;
+        border-radius: 10px;
+        font-family: "DM Sans", sans-serif;
+        font-size: 13px;
+        color: #1a2e1a;
+        outline: none;
+        transition: border-color 0.2s;
+      }
+      .auth-input:focus {
+        border-color: #2d7a4f;
+        box-shadow: 0 0 0 3px rgba(45, 122, 79, 0.1);
+      }
+      .auth-forgot {
+        font-size: 11px;
+        color: #2d7a4f;
+        font-weight: 600;
+        text-align: right;
+        display: block;
+        margin-top: -6px;
+        cursor: pointer;
+      }
+      .auth-divider {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 10px 0;
+      }
+      .auth-divider::before,
+      .auth-divider::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: #e0ece5;
+      }
+      .auth-divider span {
+        font-size: 11px;
+        color: #6b8f6b;
+        white-space: nowrap;
+      }
+      .auth-submit-btn {
+        width: 100%;
+        padding: 12px;
+        border: none;
+        border-radius: 25px;
+        background: #e8860a;
+        color: #fff;
+        font-family: "DM Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.22s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+      .auth-submit-btn:hover {
+        background: #ff6f00;
+        transform: translateY(-1px);
+        box-shadow: 0 6px 20px rgba(232, 134, 10, 0.35);
+      }
+      .auth-submit-btn:disabled {
+        background: #c0bfbd;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+      }
+      .auth-or-reg {
+        text-align: center;
+        font-size: 12px;
+        color: #6b8f6b;
+        margin-top: 10px;
+      }
+      .auth-or-reg a {
+        color: #2d7a4f;
+        font-weight: 700;
+        text-decoration: none;
+        cursor: pointer;
+      }
+      .auth-or-reg a:hover {
+        text-decoration: underline;
+      }
+      .auth-otp-note {
+        font-size: 12px;
+        color: #3d5a3d;
+        margin-bottom: 12px;
+        background: #f0f9f4;
+        border-radius: 8px;
+        padding: 10px 12px;
+      }
+      .auth-otp-row {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+        margin: 10px 0;
+      }
+      .auth-otp-b {
+        width: 44px;
+        height: 50px;
+        text-align: center;
+        border: 1.5px solid #cde3d4;
+        border-radius: 10px;
+        font-size: 20px;
+        font-weight: 700;
+        color: #1a4a2e;
+        font-family: "DM Sans", sans-serif;
+        outline: none;
+        transition: border-color 0.2s;
+      }
+      .auth-otp-b:focus {
+        border-color: #2d7a4f;
+        box-shadow: 0 0 0 3px rgba(45, 122, 79, 0.1);
+      }
+      .auth-timer {
+        text-align: center;
+        font-size: 11px;
+        color: #6b8f6b;
+        margin-top: 6px;
+      }
+      .auth-timer a {
+        color: #2d7a4f;
+        font-weight: 700;
+        cursor: pointer;
+      }
+      .auth-login-success {
+        text-align: center;
+        padding: 8px 0;
+      }
+      .auth-login-success .sico {
+        font-size: 48px;
+        margin-bottom: 10px;
+        animation: bounce 0.5s ease;
+      }
+      .auth-login-success h3 {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 20px;
+        font-weight: 700;
+        color: #1a4a2e;
+        margin-bottom: 6px;
+      }
+      .auth-login-success p {
+        font-size: 12.5px;
+        color: #6b8f6b;
+        line-height: 1.6;
+      }
+      .auth-login-actions {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-top: 16px;
+      }
+      .auth-action-btn {
+        padding: 10px 20px;
+        border-radius: 20px;
+        font-family: "DM Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.2s;
+        border: none;
+      }
+      .auth-action-btn.primary {
+        background: #e8860a;
+        color: #fff;
+      }
+      .auth-action-btn.primary:hover {
+        background: #ff6f00;
+      }
+      .auth-action-btn.ghost {
+        background: #f0f5f0;
+        color: #1a4a2e;
+        border: 1.5px solid #cde3d4;
+      }
+      .auth-back-lnk {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 12px;
+        color: #2d7a4f;
+        font-weight: 700;
+        cursor: pointer;
+        margin-bottom: 14px;
+      }
+      .auth-back-lnk:hover {
+        text-decoration: underline;
+      }
+      @media (max-width: 480px) {
+        .auth-role-grid {
+          grid-template-columns: 1fr 1fr;
+          gap: 8px;
+        }
+        .auth-body {
+          padding: 16px 14px;
+        }
+      }
+    </style>
+
+    <div id="authModal">
+      <div class="auth-box">
+        <div class="auth-hdr">
+          <div class="auth-hdr-row">
+            <div class="auth-hdr-brand">
+              <div class="auth-hdr-ico">🔐</div>
+              <div>
+                <div class="auth-hdr-title">Login / Register</div>
+                <div class="auth-hdr-sub">BADRI-e-Kisan Portal · उत्तराखंड</div>
+              </div>
+            </div>
+            <button class="auth-x" onclick="closeAuthModal()">✕</button>
+          </div>
+        </div>
+        <div class="auth-body" id="authBody"></div>
+      </div>
+    </div>
+
+    <script>
+      let AUTH_ROLE = null,
+        AUTH_MODE = "login",
+        AUTH_STEP = "role",
+        AUTH_OTP_TIMER = null;
+      const AUTH_ROLES = [
+        {
+          key: "farmer",
+          ico: "👨‍🌾",
+          name: "Farmer",
+          nameHi: "किसान",
+          tag: "FRM Portal",
+        },
+        {
+          key: "nursery",
+          ico: "🌱",
+          name: "Nursery Worker",
+          nameHi: "नर्सरी कर्मी",
+          tag: "Nursery Portal",
+        },
+        {
+          key: "official",
+          ico: "🏛️",
+          name: "Official",
+          nameHi: "अधिकारी",
+          tag: "Admin Portal",
+        },
+        {
+          key: "market",
+          ico: "🏪",
+          name: "Market Stakeholder",
+          nameHi: "बाजार हितधारक",
+          tag: "Market Portal",
+        },
+      ];
+
+      function openAuthModal() {
+        AUTH_ROLE = null;
+        AUTH_MODE = "login";
+        AUTH_STEP = "role";
+        document.getElementById("authModal").classList.add("open");
+        document.body.style.overflow = "hidden";
+        renderAuthStep();
+      }
+      function closeAuthModal() {
+        document.getElementById("authModal").classList.remove("open");
+        document.body.style.overflow = "";
+        clearInterval(AUTH_OTP_TIMER);
+      }
+      document.getElementById("authModal").addEventListener("click", (e) => {
+        if (e.target === e.currentTarget) closeAuthModal();
+      });
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          closeAuthModal();
+        }
+      });
+
+      function renderAuthStep() {
+        const body = document.getElementById("authBody");
+        if (AUTH_STEP === "role") {
+          body.innerHTML = `
+      <div class="auth-step-title">Welcome to BADRI-e-Kisan 🌾</div>
+      <div class="auth-step-sub">Select your role to login or create a new account.</div>
+      <div class="auth-role-grid">
+        ${AUTH_ROLES.map(
+          (
+            r,
+          ) => `<div class="auth-role-card" data-role="${r.key}" onclick="authSelectRole('${r.key}',this)">
+          <div class="auth-role-ico">${r.ico}</div>
+          <div class="auth-role-name">${r.name}</div>
+          <div class="auth-role-name-hi">${r.nameHi}</div>
+          <div class="auth-role-tag">${r.tag}</div>
+        </div>`,
+        ).join("")}
+      </div>
+      <button class="auth-submit-btn" id="authRoleNext" onclick="authRoleNext()" disabled style="opacity:.5">Continue →</button>`;
+        } else if (AUTH_STEP === "form") {
+          const r = AUTH_ROLES.find((x) => x.key === AUTH_ROLE);
+          body.innerHTML = `
+      <span class="auth-back-lnk" onclick="AUTH_STEP='role';renderAuthStep()">← Back</span>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+        <div style="width:40px;height:40px;border-radius:10px;background:#eaf5ee;display:flex;align-items:center;justify-content:center;font-size:20px">${r.ico}</div>
+        <div><div style="font-size:14px;font-weight:700;color:#1a2e1a">${r.name} · ${r.nameHi}</div><div style="font-size:11px;color:#6b8f6b">${r.tag}</div></div>
+      </div>
+      <div class="auth-tabs">
+        <button class="auth-tab ${AUTH_MODE === "login" ? "active" : ""}" onclick="switchAuthMode('login')">🔐 Login</button>
+        <button class="auth-tab ${AUTH_MODE === "register" ? "active" : ""}" onclick="switchAuthMode('register')">✏️ New Registration</button>
+      </div>
+      <div id="authFormPanel">${renderAuthForm()}</div>`;
+        } else if (AUTH_STEP === "otp") {
+          renderAuthOTP();
+        } else if (AUTH_STEP === "success") {
+          renderAuthSuccess();
+        }
+      }
+
+      function authSelectRole(role, el) {
+        document
+          .querySelectorAll(".auth-role-card")
+          .forEach((c) => c.classList.remove("selected"));
+        el.classList.add("selected");
+        AUTH_ROLE = role;
+        const btn = document.getElementById("authRoleNext");
+        if (btn) {
+          btn.disabled = false;
+          btn.style.opacity = "1";
+        }
+      }
+      function authRoleNext() {
+        if (!AUTH_ROLE) return;
+        AUTH_STEP = "form";
+        renderAuthStep();
+      }
+
+      function switchAuthMode(mode) {
+        AUTH_MODE = mode;
+        document
+          .querySelectorAll(".auth-tab")
+          .forEach((t, i) =>
+            t.classList.toggle("active", i === (mode === "login" ? 0 : 1)),
+          );
+        const panel = document.getElementById("authFormPanel");
+        if (panel) panel.innerHTML = renderAuthForm();
+      }
+
+      function renderAuthForm() {
+        const r = AUTH_ROLES.find((x) => x.key === AUTH_ROLE);
+        if (AUTH_MODE === "login") {
+          const idLabel =
+            AUTH_ROLE === "farmer"
+              ? "Farmer ID / Mobile Number"
+              : AUTH_ROLE === "nursery"
+                ? "Nursery ID / Mobile Number"
+                : AUTH_ROLE === "official"
+                  ? "Employee ID / Official Email"
+                  : "Market ID / Mobile / GST Number";
+          const idPlaceholder =
+            AUTH_ROLE === "official"
+              ? "Employee ID or official email"
+              : "Your ID or mobile number";
+          return `
+      <div class="auth-form">
+        <div><label class="auth-label">${idLabel} <span style="color:#e8860a">*</span></label>
+          <input class="auth-input" id="authLoginId" placeholder="${idPlaceholder}"></div>
+        <div><label class="auth-label">Password <span style="color:#e8860a">*</span></label>
+          <input class="auth-input" id="authLoginPwd" type="password" placeholder="Enter your password">
+          <a class="auth-forgot" onclick="showToast('📱 Password reset link sent to your registered mobile / email')">Forgot Password?</a></div>
+        <button class="auth-submit-btn" onclick="doLogin()">Login to ${r.name} Portal →</button>
+        <div class="auth-divider"><span>or</span></div>
+        <button class="auth-submit-btn" style="background:#1a4a2e" onclick="doOtpLogin()">📱 Login with Mobile OTP</button>
+      </div>
+      <div class="auth-or-reg" style="margin-top:12px">Don't have an account? <a onclick="switchAuthMode('register')">Register here →</a></div>`;
+        } else {
+          const reqMap = {
+            farmer:
+              "• Aadhaar card · Land Records (Khasra/Khatauni)<br>• Bank Passbook (front page) · Aadhaar-linked mobile",
+            nursery:
+              "• Owner Aadhaar card · Nursery land documents<br>• Nursery photos · Horticulture Dept. licence (if any)",
+            official:
+              "• Government Employee ID / Service Number<br>• Appointment / Posting Letter · Aadhaar card · PAN card",
+            market:
+              "• Aadhaar / Business Registration Certificate<br>• PAN card · Trade Licence or GST certificate · Bank details",
+          };
+          return `
+      <div style="background:#f5faf7;border:1.5px solid #d0eadb;border-radius:12px;padding:14px 16px;margin-bottom:16px">
+        <div style="font-size:13px;font-weight:700;color:#1a4a2e;margin-bottom:8px">📋 Documents Required — ${r.name}</div>
+        <div style="font-size:12px;color:#3d5a3d;line-height:1.9">${reqMap[AUTH_ROLE]}</div>
+      </div>
+      <button class="auth-submit-btn" onclick="launchRegWizard()">Start ${r.name} Registration →</button>
+      <div class="auth-or-reg" style="margin-top:12px">Already registered? <a onclick="switchAuthMode('login')">Login here →</a></div>`;
+        }
+      }
+
+      function launchRegWizard() {
+        closeAuthModal();
+        openReg(AUTH_ROLE);
+      }
+
+      function doLogin() {
+        const id = document.getElementById("authLoginId")?.value?.trim();
+        const pwd = document.getElementById("authLoginPwd")?.value?.trim();
+        if (!id || !pwd) {
+          showToast("⚠️ Please enter your ID and password");
+          return;
+        }
+        const btn = document.querySelector("#authBody .auth-submit-btn");
+        if (!btn) return;
+        btn.disabled = true;
+        btn.innerHTML =
+          '<span style="width:13px;height:13px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:rSpin .7s linear infinite;display:inline-block"></span>&nbsp;Logging in…';
+        setTimeout(() => {
+          AUTH_STEP = "success";
+          renderAuthStep();
+        }, 1400);
+      }
+
+      function doOtpLogin() {
+        const id = document.getElementById("authLoginId")?.value?.trim();
+        if (!id) {
+          showToast("⚠️ Enter your ID or mobile number first");
+          return;
+        }
+        AUTH_STEP = "otp";
+        renderAuthStep();
+      }
+
+      function renderAuthOTP() {
+        const body = document.getElementById("authBody");
+        body.innerHTML = `
+    <span class="auth-back-lnk" onclick="AUTH_STEP='form';renderAuthStep()">← Back</span>
+    <div class="auth-step-title">📱 OTP Verification</div>
+    <div class="auth-otp-note">A 6-digit OTP has been sent to your Aadhaar-linked mobile number. Valid for 5 minutes.</div>
+    <div class="auth-otp-row">
+      ${[0, 1, 2, 3, 4, 5].map((i) => `<input class="auth-otp-b" id="aotp${i}" maxlength="1" type="text" inputmode="numeric" oninput="authOtpAdv(this,${i})">`).join("")}
+    </div>
+    <div class="auth-timer" id="authOtpTimer">Resend in <strong id="authOtpCount">30</strong>s</div>
+    <button class="auth-submit-btn" id="authOtpBtn" onclick="verifyAuthOtp()" style="margin-top:14px" disabled>Verify & Login →</button>`;
+        startAuthOtpTimer();
+      }
+
+      function startAuthOtpTimer() {
+        clearInterval(AUTH_OTP_TIMER);
+        let s = 30;
+        const el = document.getElementById("authOtpCount");
+        if (el) el.textContent = s;
+        AUTH_OTP_TIMER = setInterval(() => {
+          s--;
+          const e = document.getElementById("authOtpCount");
+          if (e) e.textContent = s;
+          if (s <= 0) {
+            clearInterval(AUTH_OTP_TIMER);
+            const t = document.getElementById("authOtpTimer");
+            if (t)
+              t.innerHTML =
+                "<a onclick=\"startAuthOtpTimer();showToast('OTP resent')\">Resend OTP</a>";
+          }
+        }, 1000);
+      }
+
+      function authOtpAdv(inp, idx) {
+        inp.value = inp.value.replace(/\D/g, "").slice(-1);
+        if (inp.value && idx < 5)
+          document.getElementById("aotp" + (idx + 1))?.focus();
+        const all = [0, 1, 2, 3, 4, 5].every(
+          (i) => document.getElementById("aotp" + i)?.value,
+        );
+        const btn = document.getElementById("authOtpBtn");
+        if (btn) btn.disabled = !all;
+      }
+
+      function verifyAuthOtp() {
+        const btn = document.getElementById("authOtpBtn");
+        btn.disabled = true;
+        btn.innerHTML =
+          '<span style="width:13px;height:13px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:rSpin .7s linear infinite;display:inline-block"></span>&nbsp;Verifying…';
+        setTimeout(() => {
+          clearInterval(AUTH_OTP_TIMER);
+          AUTH_STEP = "success";
+          renderAuthStep();
+        }, 1200);
+      }
+
+      function renderAuthSuccess() {
+        const body = document.getElementById("authBody");
+        const r = AUTH_ROLES.find((x) => x.key === AUTH_ROLE);
+        const ids = {
+          farmer: "FRM-UK-2024-004821",
+          nursery: "NRS-UK-2024-001143",
+          official: "OFF-UK-CDO-DEHRADUN",
+          market: "MKT-UK-2024-00729",
+        };
+        const names = {
+          farmer: "Ramesh Kumar Sharma",
+          nursery: "Savitri Devi Rawat",
+          official: "Dr. Anita Singh, IAS",
+          market: "Agromart Trade Pvt. Ltd.",
+        };
+        body.innerHTML = `
+    <div class="auth-login-success">
+      <div class="sico">✅</div>
+      <h3>Login Successful!</h3>
+      <p>Welcome back, <strong>${names[AUTH_ROLE]}</strong>.<br>Logged in as <strong>${r.name}</strong>.</p>
+      <div style="background:#f5faf7;border:1px solid #d0eadb;border-radius:10px;padding:10px 14px;font-size:12px;color:#3d5a3d;margin:12px auto;max-width:320px">
+        <div style="font-weight:700;margin-bottom:4px">${r.ico} ${r.name} ID</div>
+        <div style="font-size:14px;font-weight:800;letter-spacing:1.5px;color:#1a4a2e">${ids[AUTH_ROLE]}</div>
+      </div>
+      <div class="auth-login-actions">
+        <button class="auth-action-btn primary" onclick="closeAuthModal();openDashboard('${AUTH_ROLE}')">Open My Dashboard →</button>
+        <button class="auth-action-btn ghost" onclick="closeAuthModal()">Close</button>
+      </div>
+    </div>`;
       }
     </script>
   </body>
