@@ -1440,184 +1440,22 @@
           <div class="dash-header">
             <h3>📊 BADRI-e-Kisan Analytics — Kharif 2025–26</h3>
             <div class="dash-tabs">
-              <div class="dash-tab active" onclick="setTab(this)">Overview</div>
-              <div class="dash-tab" onclick="setTab(this)">Farmers</div>
-              <div class="dash-tab" onclick="setTab(this)">Market</div>
-              <div class="dash-tab" onclick="setTab(this)">Nurseries</div>
-            </div>
-          </div>
-          <div class="kpi-grid">
-            <div class="kpi">
-              <div class="kpi-val">2.5<span>L</span></div>
-              <div class="kpi-label">Registered Farmers</div>
-              <div class="kpi-trend">↑ 12.4% this quarter</div>
-            </div>
-            <div class="kpi">
-              <div class="kpi-val">₹480<span>Cr</span></div>
-              <div class="kpi-label">Market Transactions</div>
-              <div class="kpi-trend">↑ 28% YoY</div>
-            </div>
-            <div class="kpi">
-              <div class="kpi-val">1,240</div>
-              <div class="kpi-label">Active Nurseries</div>
-              <div class="kpi-trend">↑ 6.8% this month</div>
-            </div>
-            <div class="kpi">
-              <div class="kpi-val">94<span>%</span></div>
-              <div class="kpi-label">AI Advisory Accuracy</div>
-              <div class="kpi-trend">↑ 2.1% vs last season</div>
-            </div>
-            <div class="kpi">
-              <div class="kpi-val">18,400</div>
-              <div class="kpi-label">Trainings Conducted</div>
-              <div class="kpi-trend">↑ 19% this year</div>
-            </div>
-            <div class="kpi">
-              <div class="kpi-val">99.8<span>%</span></div>
-              <div class="kpi-label">Portal Uptime</div>
-              <div class="kpi-trend">✓ Secure &amp; Stable</div>
-            </div>
-          </div>
-          <div class="chart-area">
-            <div class="chart-box">
-              <h4>📈 District-wise Farmer Registrations (Top 6 Districts)</h4>
-              <div class="bar-chart">
-                <div class="bar-col">
-                  <div class="bar" style="height: 85px"></div>
-                  <div class="bar-label">Almora</div>
-                </div>
-                <div class="bar-col">
-                  <div
-                    class="bar"
-                    style="
-                      height: 72px;
-                      background: linear-gradient(180deg, #f5a623, #e8860a);
-                    "
-                  ></div>
-                  <div class="bar-label">Dehradun</div>
-                </div>
-                <div class="bar-col">
-                  <div class="bar" style="height: 60px"></div>
-                  <div class="bar-label">Nainital</div>
-                </div>
-                <div class="bar-col">
-                  <div class="bar" style="height: 90px"></div>
-                  <div class="bar-label">Pithoragarh</div>
-                </div>
-                <div class="bar-col">
-                  <div
-                    class="bar"
-                    style="
-                      height: 48px;
-                      background: linear-gradient(180deg, #80cbc4, #26a69a);
-                    "
-                  ></div>
-                  <div class="bar-label">Chamoli</div>
-                </div>
-                <div class="bar-col">
-                  <div class="bar" style="height: 66px"></div>
-                  <div class="bar-label">Pauri</div>
-                </div>
+              <div class="dash-tab active" onclick="setTab(this, 'overview')">
+                Overview
               </div>
-            </div>
-            <div class="chart-box">
-              <h4>🥧 Module Usage Breakdown</h4>
-              <div class="donut-wrap">
-                <svg class="donut-svg" viewBox="0 0 36 36">
-                  <circle
-                    cx="18"
-                    cy="18"
-                    r="15.9"
-                    fill="none"
-                    stroke="#e8f3ec"
-                    stroke-width="3.8"
-                  />
-                  <circle
-                    cx="18"
-                    cy="18"
-                    r="15.9"
-                    fill="none"
-                    stroke="#2d7a4f"
-                    stroke-width="3.8"
-                    stroke-dasharray="32 68"
-                    stroke-dashoffset="25"
-                  />
-                  <circle
-                    cx="18"
-                    cy="18"
-                    r="15.9"
-                    fill="none"
-                    stroke="#e8860a"
-                    stroke-width="3.8"
-                    stroke-dasharray="22 78"
-                    stroke-dashoffset="-7"
-                  />
-                  <circle
-                    cx="18"
-                    cy="18"
-                    r="15.9"
-                    fill="none"
-                    stroke="#4caf7d"
-                    stroke-width="3.8"
-                    stroke-dasharray="18 82"
-                    stroke-dashoffset="-29"
-                  />
-                  <circle
-                    cx="18"
-                    cy="18"
-                    r="15.9"
-                    fill="none"
-                    stroke="#80cbc4"
-                    stroke-width="3.8"
-                    stroke-dasharray="14 86"
-                    stroke-dashoffset="-47"
-                  />
-                  <circle
-                    cx="18"
-                    cy="18"
-                    r="15.9"
-                    fill="none"
-                    stroke="#f5a623"
-                    stroke-width="3.8"
-                    stroke-dasharray="14 86"
-                    stroke-dashoffset="-61"
-                  />
-                  <text
-                    x="18"
-                    y="20.5"
-                    text-anchor="middle"
-                    font-size="4.5"
-                    fill="#1a4a2e"
-                    font-weight="bold"
-                  >
-                    Usage
-                  </text>
-                </svg>
-                <div>
-                  <div class="legend-item">
-                    <div class="legend-dot" style="background: #2d7a4f"></div>
-                    FRM — 32%
-                  </div>
-                  <div class="legend-item">
-                    <div class="legend-dot" style="background: #e8860a"></div>
-                    Market — 22%
-                  </div>
-                  <div class="legend-item">
-                    <div class="legend-dot" style="background: #4caf7d"></div>
-                    Distribution — 18%
-                  </div>
-                  <div class="legend-item">
-                    <div class="legend-dot" style="background: #80cbc4"></div>
-                    Nursery — 14%
-                  </div>
-                  <div class="legend-item">
-                    <div class="legend-dot" style="background: #f5a623"></div>
-                    Training — 14%
-                  </div>
-                </div>
+              <div class="dash-tab" onclick="setTab(this, 'farmers')">
+                Farmers
+              </div>
+              <div class="dash-tab" onclick="setTab(this, 'market')">
+                Market
+              </div>
+              <div class="dash-tab" onclick="setTab(this, 'nurseries')">
+                Nurseries
               </div>
             </div>
           </div>
+          <div class="kpi-grid" id="liveKpiGrid"></div>
+          <div class="chart-area" id="liveChartArea"></div>
         </div>
       </div>
     </section>
@@ -1987,13 +1825,410 @@
         });
       });
 
-      // Dashboard tabs
-      function setTab(el) {
+      // Dashboard tabs — Live Overview
+      const LIVE_DASH_DATA = {
+        overview: {
+          title: "BADRI-e-Kisan Analytics — Kharif 2025–26",
+          kpis: [
+            {
+              val: "2.5",
+              unit: "L",
+              label: "Registered Farmers",
+              trend: "↑ 12.4% this quarter",
+              up: true,
+            },
+            {
+              val: "₹480",
+              unit: "Cr",
+              label: "Market Transactions",
+              trend: "↑ 28% YoY",
+              up: true,
+            },
+            {
+              val: "1,240",
+              unit: "",
+              label: "Active Nurseries",
+              trend: "↑ 6.8% this month",
+              up: true,
+            },
+            {
+              val: "94",
+              unit: "%",
+              label: "AI Advisory Accuracy",
+              trend: "↑ 2.1% vs last season",
+              up: true,
+            },
+            {
+              val: "18,400",
+              unit: "",
+              label: "Trainings Conducted",
+              trend: "↑ 19% this year",
+              up: true,
+            },
+            {
+              val: "99.8",
+              unit: "%",
+              label: "Portal Uptime",
+              trend: "✓ Secure & Stable",
+              up: true,
+            },
+          ],
+          barTitle: "📈 District-wise Farmer Registrations (Top 6)",
+          bars: [
+            { label: "Almora", h: 85, color: "" },
+            {
+              label: "Dehradun",
+              h: 72,
+              color: "linear-gradient(180deg,#f5a623,#e8860a)",
+            },
+            { label: "Nainital", h: 60, color: "" },
+            { label: "Pithoragarh", h: 90, color: "" },
+            {
+              label: "Chamoli",
+              h: 48,
+              color: "linear-gradient(180deg,#80cbc4,#26a69a)",
+            },
+            { label: "Pauri", h: 66, color: "" },
+          ],
+          donutTitle: "🥧 Module Usage Breakdown",
+          donut: [
+            { pct: 32, color: "#2d7a4f", label: "FRM" },
+            { pct: 22, color: "#e8860a", label: "Market" },
+            { pct: 18, color: "#4caf7d", label: "Distribution" },
+            { pct: 14, color: "#80cbc4", label: "Nursery" },
+            { pct: 14, color: "#f5a623", label: "Training" },
+          ],
+        },
+        farmers: {
+          title: "Farmer Analytics — Kharif 2025–26",
+          kpis: [
+            {
+              val: "2,50,841",
+              unit: "",
+              label: "Total Registered Farmers",
+              trend: "↑ 12.4% this quarter",
+              up: true,
+            },
+            {
+              val: "84.2",
+              unit: "%",
+              label: "Aadhaar-Linked",
+              trend: "↑ 3.1% this month",
+              up: true,
+            },
+            {
+              val: "61,420",
+              unit: "",
+              label: "Scheme Beneficiaries",
+              trend: "↑ 8.7% vs last year",
+              up: true,
+            },
+            {
+              val: "₹1,840",
+              unit: "",
+              label: "Avg. Subsidy Received (₹)",
+              trend: "↑ 14% vs last season",
+              up: true,
+            },
+            {
+              val: "3,200",
+              unit: "",
+              label: "Soil Health Cards Issued",
+              trend: "↑ 22% this quarter",
+              up: true,
+            },
+            {
+              val: "47",
+              unit: "%",
+              label: "Irrigated Land Coverage",
+              trend: "↑ 5.2% YoY",
+              up: true,
+            },
+          ],
+          barTitle: "📈 Crop-wise Farmer Count (Top 6 Crops)",
+          bars: [
+            { label: "Wheat", h: 90, color: "" },
+            {
+              label: "Potato",
+              h: 78,
+              color: "linear-gradient(180deg,#f5a623,#e8860a)",
+            },
+            { label: "Mustard", h: 60, color: "" },
+            {
+              label: "Rice",
+              h: 54,
+              color: "linear-gradient(180deg,#80cbc4,#26a69a)",
+            },
+            { label: "Maize", h: 44, color: "" },
+            {
+              label: "Apple",
+              h: 70,
+              color: "linear-gradient(180deg,#ef9a9a,#e53935)",
+            },
+          ],
+          donutTitle: "🥧 Farmer Category Breakdown",
+          donut: [
+            { pct: 44, color: "#2d7a4f", label: "General" },
+            { pct: 28, color: "#e8860a", label: "OBC" },
+            { pct: 16, color: "#4caf7d", label: "SC" },
+            { pct: 12, color: "#80cbc4", label: "ST" },
+          ],
+        },
+        market: {
+          title: "Market Analytics — Kharif 2025–26",
+          kpis: [
+            {
+              val: "₹480",
+              unit: "Cr",
+              label: "Total Mandi Volume",
+              trend: "↑ 28% YoY",
+              up: true,
+            },
+            {
+              val: "8,420",
+              unit: "",
+              label: "Active Market Listings",
+              trend: "↑ 18.3% this quarter",
+              up: true,
+            },
+            {
+              val: "1,842",
+              unit: "",
+              label: "Blockchain Transactions",
+              trend: "↑ 34% this month",
+              up: true,
+            },
+            {
+              val: "₹2,320",
+              unit: "",
+              label: "Avg. Wheat Price (₹/q)",
+              trend: "↑ ₹80 vs MSP",
+              up: true,
+            },
+            {
+              val: "124",
+              unit: "",
+              label: "Registered Traders",
+              trend: "↑ 9.4% this year",
+              up: true,
+            },
+            {
+              val: "2.4",
+              unit: "s",
+              label: "Avg. Blockchain Confirm.",
+              trend: "✓ Fast & Secure",
+              up: true,
+            },
+          ],
+          barTitle: "📈 Commodity-wise Trade Volume (₹ Cr)",
+          bars: [
+            { label: "Wheat", h: 90, color: "" },
+            {
+              label: "Apple",
+              h: 82,
+              color: "linear-gradient(180deg,#ef9a9a,#e53935)",
+            },
+            {
+              label: "Potato",
+              h: 58,
+              color: "linear-gradient(180deg,#f5a623,#e8860a)",
+            },
+            { label: "Mustard", h: 46, color: "" },
+            {
+              label: "Onion",
+              h: 38,
+              color: "linear-gradient(180deg,#ce93d8,#8e24aa)",
+            },
+            {
+              label: "Pulses",
+              h: 52,
+              color: "linear-gradient(180deg,#80cbc4,#26a69a)",
+            },
+          ],
+          donutTitle: "🥧 Trade Channel Breakdown",
+          donut: [
+            { pct: 40, color: "#2d7a4f", label: "APMC Mandi" },
+            { pct: 30, color: "#e8860a", label: "Direct Farmer" },
+            { pct: 18, color: "#4caf7d", label: "FPO/Cooperative" },
+            { pct: 12, color: "#80cbc4", label: "Export" },
+          ],
+        },
+        nurseries: {
+          title: "Nursery Analytics — Kharif 2025–26",
+          kpis: [
+            {
+              val: "1,240",
+              unit: "",
+              label: "Registered Nurseries",
+              trend: "↑ 6.8% this month",
+              up: true,
+            },
+            {
+              val: "42.8",
+              unit: "L",
+              label: "Total Sapling Stock",
+              trend: "↑ 11.2% this quarter",
+              up: true,
+            },
+            {
+              val: "12,400",
+              unit: "",
+              label: "Saplings Dispatched",
+              trend: "↑ 9.3% YoY",
+              up: true,
+            },
+            {
+              val: "96.4",
+              unit: "%",
+              label: "Quality Pass Rate",
+              trend: "↑ 1.2% vs last batch",
+              up: true,
+            },
+            {
+              val: "284",
+              unit: "",
+              label: "Species Varieties",
+              trend: "↑ 18 new this season",
+              up: true,
+            },
+            {
+              val: "₹220",
+              unit: "",
+              label: "Avg. Sapling Price (₹)",
+              trend: "↓ 4% — buyer benefit",
+              up: false,
+            },
+          ],
+          barTitle: "📈 District-wise Nursery Count (Top 6)",
+          bars: [
+            { label: "Dehradun", h: 88, color: "" },
+            {
+              label: "Nainital",
+              h: 72,
+              color: "linear-gradient(180deg,#80cbc4,#26a69a)",
+            },
+            { label: "Almora", h: 58, color: "" },
+            {
+              label: "Haridwar",
+              h: 50,
+              color: "linear-gradient(180deg,#f5a623,#e8860a)",
+            },
+            { label: "Chamoli", h: 42, color: "" },
+            {
+              label: "Pithoragarh",
+              h: 36,
+              color: "linear-gradient(180deg,#ce93d8,#8e24aa)",
+            },
+          ],
+          donutTitle: "🥧 Nursery Type Breakdown",
+          donut: [
+            { pct: 38, color: "#2d7a4f", label: "Private" },
+            { pct: 32, color: "#e8860a", label: "Government" },
+            { pct: 18, color: "#4caf7d", label: "Cooperative" },
+            { pct: 12, color: "#80cbc4", label: "NGO / Trust" },
+          ],
+        },
+      };
+
+      function buildDonut(segments) {
+        const total = segments.reduce((s, x) => s + x.pct, 0);
+        let offset = 25;
+        const circles = segments.map((seg) => {
+          const da = (seg.pct / total) * 100;
+          const circle = `<circle cx="18" cy="18" r="15.9" fill="none" stroke="${seg.color}" stroke-width="3.8" stroke-dasharray="${da.toFixed(1)} ${(100 - da).toFixed(1)}" stroke-dashoffset="${offset}" style="transition:stroke-dasharray .5s ease"/>`;
+          offset -= da;
+          return circle;
+        });
+        return circles.join("");
+      }
+
+      function renderLiveDash(tabKey) {
+        const d = LIVE_DASH_DATA[tabKey];
+
+        // Title
+        const titleEl = document.querySelector(".dash-header h3");
+        if (titleEl) titleEl.textContent = "📊 " + d.title;
+
+        // KPIs with fade animation
+        const kpiGrid = document.getElementById("liveKpiGrid");
+        if (kpiGrid) {
+          kpiGrid.style.opacity = "0";
+          kpiGrid.style.transition = "opacity .25s";
+          setTimeout(() => {
+            kpiGrid.innerHTML = d.kpis
+              .map(
+                (k) => `
+        <div class="kpi">
+          <div class="kpi-val">${k.val}<span>${k.unit}</span></div>
+          <div class="kpi-label">${k.label}</div>
+          <div class="kpi-trend" style="color:${k.up ? "#22c55e" : "#f97316"}">${k.trend}</div>
+        </div>`,
+              )
+              .join("");
+            kpiGrid.style.opacity = "1";
+          }, 200);
+        }
+
+        // Charts with fade
+        const chartArea = document.getElementById("liveChartArea");
+        if (chartArea) {
+          chartArea.style.opacity = "0";
+          chartArea.style.transition = "opacity .3s";
+          setTimeout(() => {
+            const defaultBar = "linear-gradient(180deg,#4caf7d,#2d7a4f)";
+            const maxH = Math.max(...d.bars.map((b) => b.h));
+            const bars = d.bars
+              .map(
+                (b) => `
+        <div class="bar-col">
+          <div style="font-size:9px;color:#6b8f6b;margin-bottom:3px;font-weight:600">${Math.round((b.h / maxH) * 100)}%</div>
+          <div class="bar" style="height:${b.h}px;background:${b.color || defaultBar};transition:height .5s ease"></div>
+          <div class="bar-label">${b.label}</div>
+        </div>`,
+              )
+              .join("");
+
+            const donutCircles = buildDonut(d.donut);
+            const legend = d.donut
+              .map(
+                (s) =>
+                  `<div class="legend-item"><div class="legend-dot" style="background:${s.color}"></div>${s.label} — ${s.pct}%</div>`,
+              )
+              .join("");
+
+            chartArea.innerHTML = `
+        <div class="chart-box">
+          <h4>${d.barTitle}</h4>
+          <div class="bar-chart">${bars}</div>
+        </div>
+        <div class="chart-box">
+          <h4>${d.donutTitle}</h4>
+          <div class="donut-wrap">
+            <svg class="donut-svg" viewBox="0 0 36 36">
+              <circle cx="18" cy="18" r="15.9" fill="none" stroke="#e8f3ec" stroke-width="3.8"/>
+              ${donutCircles}
+              <text x="18" y="20.5" text-anchor="middle" font-size="4.5" fill="#1a4a2e" font-weight="bold">${tabKey.charAt(0).toUpperCase() + tabKey.slice(1)}</text>
+            </svg>
+            <div>${legend}</div>
+          </div>
+        </div>`;
+            chartArea.style.opacity = "1";
+          }, 260);
+        }
+      }
+
+      function setTab(el, tabKey) {
         document
           .querySelectorAll(".dash-tab")
           .forEach((t) => t.classList.remove("active"));
         el.classList.add("active");
+        renderLiveDash(tabKey);
       }
+
+      // Init on load
+      document.addEventListener("DOMContentLoaded", () =>
+        renderLiveDash("overview"),
+      );
 
       // Accessibility toolbar
       let fs = 100;
